@@ -21,3 +21,12 @@ class Settings(BaseSettings):
     supabase_service_role_key: str | None = None
 
     cors_origins: list[str] = ["http://localhost:5173"]
+
+    # Worker de jobs no mesmo processo da API (ADR 0004). Nos testes fica desligado e a
+    # fila é drenada de forma síncrona.
+    worker_ativo: bool = True
+    worker_intervalo_segundos: float = 2.0
+    job_lease_segundos: int = 120
+
+    # Agente de prospecção: "falso" ou "pacote.modulo:Classe".
+    agente_prospeccao: str = "falso"

@@ -64,7 +64,7 @@ def contexto_da_requisicao(
 
         usuario = Usuario(
             id=usuario_id,
-            organizacao_id=perfil["organizacao_id"],  # type: ignore[arg-type]
+            organizacao_id=perfil["organizacao_id"],
             papel=str(perfil["papel"]),
             nome=str(perfil["nome"]),
             email=str(perfil["email"]),

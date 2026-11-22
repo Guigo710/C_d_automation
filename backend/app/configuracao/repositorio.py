@@ -19,7 +19,7 @@ def segmentos_existentes(conn: Conexao, ids: Sequence[uuid.UUID]) -> set[uuid.UU
     linhas = conn.execute(
         "SELECT id FROM catalogo_segmentos WHERE id = ANY(%s)", (list(ids),)
     ).fetchall()
-    return {linha["id"] for linha in linhas}  # type: ignore[misc]
+    return {linha["id"] for linha in linhas}
 
 
 def listar_municipios(conn: Conexao) -> list[MunicipioOut]:

@@ -57,6 +57,58 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/campanhas/{campanha_id}/candidatos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Listar Candidatos */
+        get: operations["listar_candidatos_campanhas__campanha_id__candidatos_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/campanhas/{campanha_id}/execucoes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Listar Execucoes */
+        get: operations["listar_execucoes_campanhas__campanha_id__execucoes_get"];
+        put?: never;
+        /** Iniciar Execucao */
+        post: operations["iniciar_execucao_campanhas__campanha_id__execucoes_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/candidatos/{candidato_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Buscar Candidato */
+        get: operations["buscar_candidato_candidatos__candidato_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/catalogo-segmentos": {
         parameters: {
             query?: never;
@@ -105,6 +157,23 @@ export interface paths {
          * @description O frontend avisa a API logo após o login no Supabase.
          */
         post: operations["registrar_login_eu_login_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/execucoes/{execucao_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Buscar Execucao */
+        get: operations["buscar_execucao_execucoes__execucao_id__get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -270,6 +339,87 @@ export interface components {
             /** Teto Gasto Usd */
             teto_gasto_usd: string;
         };
+        /** CandidatoDetalhe */
+        CandidatoDetalhe: {
+            /** Contatos */
+            contatos: components["schemas"]["ContatoOut"][];
+            /**
+             * Criado Em
+             * Format: date-time
+             */
+            criado_em: string;
+            empresa: components["schemas"]["EmpresaResumo"];
+            /** Endereco */
+            endereco: string | null;
+            /** Evidencias */
+            evidencias: components["schemas"]["EvidenciaOut"][];
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Sinais */
+            sinais: {
+                [key: string]: unknown;
+            };
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "coletado" | "pendente" | "aprovado" | "recusado";
+        };
+        /** CandidatoResumo */
+        CandidatoResumo: {
+            /**
+             * Criado Em
+             * Format: date-time
+             */
+            criado_em: string;
+            empresa: components["schemas"]["EmpresaResumo"];
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "coletado" | "pendente" | "aprovado" | "recusado";
+        };
+        /** ContatoOut */
+        ContatoOut: {
+            /** Fonte */
+            fonte: string;
+            /** Nome */
+            nome: string | null;
+            /** Tipo */
+            tipo: string;
+            /** Valor */
+            valor: string;
+        };
+        /** EmpresaResumo */
+        EmpresaResumo: {
+            /** Cnpj */
+            cnpj: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Municipio Ibge */
+            municipio_ibge: string | null;
+            /** Nome Fantasia */
+            nome_fantasia: string | null;
+            /** Razao Social */
+            razao_social: string;
+            /** Segmento */
+            segmento: string | null;
+            /** Site */
+            site: string | null;
+            /** Situacao Cadastral */
+            situacao_cadastral: string | null;
+        };
         /** EuOut */
         EuOut: {
             /** Email */
@@ -307,6 +457,58 @@ export interface components {
             /** Usuario Id */
             usuario_id: string | null;
         };
+        /** EvidenciaOut */
+        EvidenciaOut: {
+            /** Campo */
+            campo: string;
+            /**
+             * Coletado Em
+             * Format: date-time
+             */
+            coletado_em: string;
+            /** Fonte */
+            fonte: string;
+            /** Url */
+            url: string | null;
+            /** Valor */
+            valor: string | null;
+        };
+        /** ExecucaoOut */
+        ExecucaoOut: {
+            /** Campanha Id */
+            campanha_id: string | null;
+            /**
+             * Criado Em
+             * Format: date-time
+             */
+            criado_em: string;
+            /** Custo Usd */
+            custo_usd: string;
+            /** Duplicadas */
+            duplicadas: number;
+            /** Encontradas */
+            encontradas: number;
+            /** Erro */
+            erro: string | null;
+            /** Gravadas */
+            gravadas: number;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Iniciado Em */
+            iniciado_em: string | null;
+            /** Motivo Parada */
+            motivo_parada: string | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "na_fila" | "executando" | "concluida" | "parcial" | "falhou";
+            /** Terminado Em */
+            terminado_em: string | null;
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
@@ -342,6 +544,13 @@ export interface components {
             id: string;
             /** Nome */
             nome: string;
+        };
+        /** PaginaDeCandidatos */
+        PaginaDeCandidatos: {
+            /** Itens */
+            itens: components["schemas"]["CandidatoResumo"][];
+            /** Total */
+            total: number;
         };
         /** PaginaDeEventos */
         PaginaDeEventos: {
@@ -580,6 +789,142 @@ export interface operations {
             };
         };
     };
+    listar_candidatos_campanhas__campanha_id__candidatos_get: {
+        parameters: {
+            query?: {
+                status?: ("coletado" | "pendente" | "aprovado" | "recusado") | null;
+                limite?: number;
+                deslocamento?: number;
+            };
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                campanha_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginaDeCandidatos"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    listar_execucoes_campanhas__campanha_id__execucoes_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                campanha_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExecucaoOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    iniciar_execucao_campanhas__campanha_id__execucoes_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                campanha_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExecucaoOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    buscar_candidato_candidatos__candidato_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                candidato_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CandidatoDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     catalogo_segmentos_catalogo_segmentos_get: {
         parameters: {
             query?: never;
@@ -659,6 +1004,39 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    buscar_execucao_execucoes__execucao_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                execucao_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExecucaoOut"];
+                };
             };
             /** @description Validation Error */
             422: {

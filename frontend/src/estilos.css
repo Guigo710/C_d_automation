@@ -276,3 +276,46 @@ label.opcao {
 .suave {
   color: var(--texto-suave);
 }
+
+/* Gaveta lateral */
+.fundo-da-gaveta {
+  position: fixed;
+  inset: 0;
+  background: rgb(0 0 0 / 0.35);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 10;
+}
+
+.gaveta {
+  width: min(560px, 100%);
+  height: 100%;
+  overflow-y: auto;
+  padding: 24px;
+  background: var(--superficie);
+  border-left: 1px solid var(--borda);
+  box-sizing: border-box;
+}
+
+.gaveta h3 {
+  font-size: 1rem;
+  margin: 24px 0 8px;
+}
+
+.gaveta ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.sinais {
+  background: var(--fundo);
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.85rem;
+}
+
+h2 {
+  font-size: 1.2rem;
+  margin: 0;
+}

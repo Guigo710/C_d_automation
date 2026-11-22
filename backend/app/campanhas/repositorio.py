@@ -55,7 +55,7 @@ def criar(conn: Conexao, dados: CampanhaIn) -> uuid.UUID:
         ),
     ).fetchone()
     assert linha is not None
-    campanha_id: uuid.UUID = linha["id"]  # type: ignore[assignment]
+    campanha_id: uuid.UUID = linha["id"]
     _substituir_vinculos(conn, campanha_id, dados)
     return campanha_id
 
@@ -101,4 +101,4 @@ def vendedores_ativos(conn: Conexao, ids: Sequence[uuid.UUID]) -> set[uuid.UUID]
         "SELECT usuario_id FROM perfis WHERE usuario_id = ANY(%s) AND papel = 'vendedor' AND ativo",
         (list(ids),),
     ).fetchall()
-    return {linha["usuario_id"] for linha in linhas}  # type: ignore[misc]
+    return {linha["usuario_id"] for linha in linhas}

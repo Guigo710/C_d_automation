@@ -61,5 +61,6 @@ Um teste do backend falha se `frontend/openapi.json` estiver desatualizado, e o 
 ```powershell
 cd backend
 .venv\Scripts\python -m app.cli criar-organizacao --nome "Destak"
+.venv\Scripts\python -m app.cli semear-configuracao --organizacao-id <id>
 .venv\Scripts\python -m app.cli criar-usuario --organizacao-id <id> --nome "Ana" --email ana@exemplo.com --papel coordenador
 ```

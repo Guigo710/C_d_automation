@@ -225,6 +225,229 @@
         "title": "CampanhaResumo",
         "type": "object"
       },
+      "CandidatoDetalhe": {
+        "properties": {
+          "contatos": {
+            "items": {
+              "$ref": "#/components/schemas/ContatoOut"
+            },
+            "title": "Contatos",
+            "type": "array"
+          },
+          "criado_em": {
+            "format": "date-time",
+            "title": "Criado Em",
+            "type": "string"
+          },
+          "empresa": {
+            "$ref": "#/components/schemas/EmpresaResumo"
+          },
+          "endereco": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Endereco"
+          },
+          "evidencias": {
+            "items": {
+              "$ref": "#/components/schemas/EvidenciaOut"
+            },
+            "title": "Evidencias",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "sinais": {
+            "additionalProperties": true,
+            "title": "Sinais",
+            "type": "object"
+          },
+          "status": {
+            "enum": [
+              "coletado",
+              "pendente",
+              "aprovado",
+              "recusado"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "criado_em",
+          "empresa",
+          "endereco",
+          "sinais",
+          "contatos",
+          "evidencias"
+        ],
+        "title": "CandidatoDetalhe",
+        "type": "object"
+      },
+      "CandidatoResumo": {
+        "properties": {
+          "criado_em": {
+            "format": "date-time",
+            "title": "Criado Em",
+            "type": "string"
+          },
+          "empresa": {
+            "$ref": "#/components/schemas/EmpresaResumo"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "coletado",
+              "pendente",
+              "aprovado",
+              "recusado"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "criado_em",
+          "empresa"
+        ],
+        "title": "CandidatoResumo",
+        "type": "object"
+      },
+      "ContatoOut": {
+        "properties": {
+          "fonte": {
+            "title": "Fonte",
+            "type": "string"
+          },
+          "nome": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nome"
+          },
+          "tipo": {
+            "title": "Tipo",
+            "type": "string"
+          },
+          "valor": {
+            "title": "Valor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tipo",
+          "valor",
+          "nome",
+          "fonte"
+        ],
+        "title": "ContatoOut",
+        "type": "object"
+      },
+      "EmpresaResumo": {
+        "properties": {
+          "cnpj": {
+            "title": "Cnpj",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "municipio_ibge": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Municipio Ibge"
+          },
+          "nome_fantasia": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nome Fantasia"
+          },
+          "razao_social": {
+            "title": "Razao Social",
+            "type": "string"
+          },
+          "segmento": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Segmento"
+          },
+          "site": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Site"
+          },
+          "situacao_cadastral": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Situacao Cadastral"
+          }
+        },
+        "required": [
+          "id",
+          "cnpj",
+          "razao_social",
+          "nome_fantasia",
+          "situacao_cadastral",
+          "municipio_ibge",
+          "segmento",
+          "site"
+        ],
+        "title": "EmpresaResumo",
+        "type": "object"
+      },
       "EuOut": {
         "properties": {
           "email": {
@@ -325,6 +548,169 @@
         "title": "EventoOut",
         "type": "object"
       },
+      "EvidenciaOut": {
+        "properties": {
+          "campo": {
+            "title": "Campo",
+            "type": "string"
+          },
+          "coletado_em": {
+            "format": "date-time",
+            "title": "Coletado Em",
+            "type": "string"
+          },
+          "fonte": {
+            "title": "Fonte",
+            "type": "string"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          },
+          "valor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valor"
+          }
+        },
+        "required": [
+          "campo",
+          "valor",
+          "fonte",
+          "url",
+          "coletado_em"
+        ],
+        "title": "EvidenciaOut",
+        "type": "object"
+      },
+      "ExecucaoOut": {
+        "properties": {
+          "campanha_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Campanha Id"
+          },
+          "criado_em": {
+            "format": "date-time",
+            "title": "Criado Em",
+            "type": "string"
+          },
+          "custo_usd": {
+            "title": "Custo Usd",
+            "type": "string"
+          },
+          "duplicadas": {
+            "title": "Duplicadas",
+            "type": "integer"
+          },
+          "encontradas": {
+            "title": "Encontradas",
+            "type": "integer"
+          },
+          "erro": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Erro"
+          },
+          "gravadas": {
+            "title": "Gravadas",
+            "type": "integer"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "iniciado_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Iniciado Em"
+          },
+          "motivo_parada": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Motivo Parada"
+          },
+          "status": {
+            "enum": [
+              "na_fila",
+              "executando",
+              "concluida",
+              "parcial",
+              "falhou"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "terminado_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Terminado Em"
+          }
+        },
+        "required": [
+          "id",
+          "campanha_id",
+          "status",
+          "motivo_parada",
+          "encontradas",
+          "gravadas",
+          "duplicadas",
+          "custo_usd",
+          "erro",
+          "criado_em",
+          "iniciado_em",
+          "terminado_em"
+        ],
+        "title": "ExecucaoOut",
+        "type": "object"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -402,6 +788,27 @@
           "nome"
         ],
         "title": "OrganizacaoOut",
+        "type": "object"
+      },
+      "PaginaDeCandidatos": {
+        "properties": {
+          "itens": {
+            "items": {
+              "$ref": "#/components/schemas/CandidatoResumo"
+            },
+            "title": "Itens",
+            "type": "array"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "itens",
+          "total"
+        ],
+        "title": "PaginaDeCandidatos",
         "type": "object"
       },
       "PaginaDeEventos": {
@@ -873,6 +1280,289 @@
         ]
       }
     },
+    "/campanhas/{campanha_id}/candidatos": {
+      "get": {
+        "operationId": "listar_candidatos_campanhas__campanha_id__candidatos_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "campanha_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Campanha Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "coletado",
+                    "pendente",
+                    "aprovado",
+                    "recusado"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limite",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limite",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "deslocamento",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Deslocamento",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginaDeCandidatos"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Listar Candidatos",
+        "tags": [
+          "prospecção"
+        ]
+      }
+    },
+    "/campanhas/{campanha_id}/execucoes": {
+      "get": {
+        "operationId": "listar_execucoes_campanhas__campanha_id__execucoes_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "campanha_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Campanha Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ExecucaoOut"
+                  },
+                  "title": "Response Listar Execucoes Campanhas  Campanha Id  Execucoes Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Listar Execucoes",
+        "tags": [
+          "prospecção"
+        ]
+      },
+      "post": {
+        "operationId": "iniciar_execucao_campanhas__campanha_id__execucoes_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "campanha_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Campanha Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExecucaoOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Iniciar Execucao",
+        "tags": [
+          "prospecção"
+        ]
+      }
+    },
+    "/candidatos/{candidato_id}": {
+      "get": {
+        "operationId": "buscar_candidato_candidatos__candidato_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "candidato_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Candidato Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CandidatoDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Buscar Candidato",
+        "tags": [
+          "prospecção"
+        ]
+      }
+    },
     "/catalogo-segmentos": {
       "get": {
         "operationId": "catalogo_segmentos_catalogo_segmentos_get",
@@ -1015,6 +1705,65 @@
         "summary": "Registrar Login",
         "tags": [
           "auditoria"
+        ]
+      }
+    },
+    "/execucoes/{execucao_id}": {
+      "get": {
+        "operationId": "buscar_execucao_execucoes__execucao_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "execucao_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Execucao Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExecucaoOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Buscar Execucao",
+        "tags": [
+          "prospecção"
         ]
       }
     },

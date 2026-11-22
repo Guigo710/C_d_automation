@@ -5,6 +5,7 @@ import type { components } from "../api/schema";
 import { useEu } from "../eu";
 import { irPara } from "../rota";
 import { NOMES_DOS_STATUS } from "./Campanhas";
+import { SecaoProspeccao } from "./SecaoProspeccao";
 
 type CampanhaIn = components["schemas"]["CampanhaIn"];
 type Segmento = components["schemas"]["SegmentoOut"];
@@ -105,7 +106,7 @@ export function CampanhaForm({ campanhaId }: { campanhaId: string | null }) {
     else setErro(typeof error?.detail === "string" ? error.detail : "Confira os campos da campanha.");
   }
 
-  return (
+  const formulario = (
     <section className="painel">
       <header className="cabecalho-da-pagina">
         <h1>{campanhaId ? campanha.nome || "Campanha" : "Nova campanha"}</h1>
@@ -237,5 +238,14 @@ export function CampanhaForm({ campanhaId }: { campanhaId: string | null }) {
         )}
       </form>
     </section>
+  );
+
+  return (
+    <>
+      {formulario}
+      {campanhaId && (eu?.papel === "coordenador" || eu?.papel === "administrador") && (
+        <SecaoProspeccao campanhaId={campanhaId} />
+      )}
+    </>
   );
 }

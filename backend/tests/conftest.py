@@ -71,7 +71,12 @@ def banco() -> Iterator[str]:
 
 @pytest.fixture(scope="session")
 def settings(banco: str) -> Settings:
-    return Settings(database_url=banco, supabase_jwt_secret=SEGREDO_JWT)
+    return Settings(
+        database_url=banco,
+        supabase_jwt_secret=SEGREDO_JWT,
+        worker_ativo=False,  # a fila é drenada pelos testes, de forma síncrona
+        agente_prospeccao="falso",
+    )
 
 
 @pytest.fixture(scope="session")

@@ -1,0 +1,1127 @@
+[
+  {
+    "cnpj": "99000001000107",
+    "razao_social": "Supermercado Bom Preço Taquaral Ltda",
+    "nome_fantasia": "Bom Preço Taquaral",
+    "situacao_cadastral": "ATIVA",
+    "endereco": "Rua Fictícia, 101 - Campinas/SP",
+    "municipio_ibge": "3509502",
+    "segmento": "Supermercado",
+    "site": "https://bomprecotaquaral.example.com",
+    "contatos": [
+      {
+        "tipo": "telefone",
+        "valor": "(19) 3001-1001",
+        "fonte": "google_places"
+      },
+      {
+        "tipo": "email",
+        "valor": "compras@bomprecotaquaral.example.com",
+        "fonte": "site",
+        "nome": "Setor de compras"
+      }
+    ],
+    "sinais": {
+      "lojas": 3,
+      "linhas_de_produto": [
+        "mercearia",
+        "bebidas",
+        "limpeza"
+      ],
+      "canal_de_compras": "comprador central"
+    },
+    "evidencias": [
+      {
+        "campo": "razao_social",
+        "valor": "Supermercado Bom Preço Taquaral Ltda",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "situacao_cadastral",
+        "valor": "ATIVA",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "cnae_principal",
+        "valor": "4711302",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "endereco",
+        "valor": "Rua Fictícia, 101 - Campinas/SP",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/1",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "telefone",
+        "valor": "(19) 3001-1001",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/1",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "site",
+        "valor": "https://bomprecotaquaral.example.com",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/1",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "sinais",
+        "valor": "{\"lojas\": 3, \"linhas_de_produto\": [\"mercearia\", \"bebidas\", \"limpeza\"], \"canal_de_compras\": \"comprador central\"}",
+        "fonte": "site",
+        "url": "https://bomprecotaquaral.example.com",
+        "coletado_em": "2026-11-16T10:00:00+00:00"
+      }
+    ],
+    "custo_usd": "0.03"
+  },
+  {
+    "cnpj": "99000002000114",
+    "razao_social": "Mercado Vila Nova Campinas Ltda",
+    "nome_fantasia": "Mercado Vila Nova",
+    "situacao_cadastral": "ATIVA",
+    "endereco": "Rua Fictícia, 102 - Campinas/SP",
+    "municipio_ibge": "3509502",
+    "segmento": "Supermercado",
+    "site": null,
+    "contatos": [
+      {
+        "tipo": "telefone",
+        "valor": "(19) 3002-1002",
+        "fonte": "google_places"
+      }
+    ],
+    "sinais": {
+      "lojas": 1,
+      "linhas_de_produto": [
+        "mercearia",
+        "hortifruti"
+      ]
+    },
+    "evidencias": [
+      {
+        "campo": "razao_social",
+        "valor": "Mercado Vila Nova Campinas Ltda",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "situacao_cadastral",
+        "valor": "ATIVA",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "cnae_principal",
+        "valor": "4711302",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "endereco",
+        "valor": "Rua Fictícia, 102 - Campinas/SP",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/2",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "telefone",
+        "valor": "(19) 3002-1002",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/2",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      }
+    ],
+    "custo_usd": "0.03"
+  },
+  {
+    "cnpj": "99000003000121",
+    "razao_social": "Supermercado Baixada Ltda",
+    "nome_fantasia": "Super Baixada",
+    "situacao_cadastral": "BAIXADA",
+    "endereco": "Rua Fictícia, 103 - Campinas/SP",
+    "municipio_ibge": "3509502",
+    "segmento": "Supermercado",
+    "site": "https://superbaixada.example.com",
+    "contatos": [
+      {
+        "tipo": "telefone",
+        "valor": "(19) 3003-1003",
+        "fonte": "google_places"
+      },
+      {
+        "tipo": "email",
+        "valor": "compras@superbaixada.example.com",
+        "fonte": "site",
+        "nome": "Setor de compras"
+      }
+    ],
+    "sinais": {},
+    "evidencias": [
+      {
+        "campo": "razao_social",
+        "valor": "Supermercado Baixada Ltda",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "situacao_cadastral",
+        "valor": "BAIXADA",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "cnae_principal",
+        "valor": "4711302",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "endereco",
+        "valor": "Rua Fictícia, 103 - Campinas/SP",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/3",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "telefone",
+        "valor": "(19) 3003-1003",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/3",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "site",
+        "valor": "https://superbaixada.example.com",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/3",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      }
+    ],
+    "custo_usd": "0.03"
+  },
+  {
+    "cnpj": "99000004000128",
+    "razao_social": "Panificadora Trigo Dourado Ltda",
+    "nome_fantasia": "Trigo Dourado",
+    "situacao_cadastral": "ATIVA",
+    "endereco": "Rua Fictícia, 104 - Campinas/SP",
+    "municipio_ibge": "3509502",
+    "segmento": "Padaria",
+    "site": "https://trigodourado.example.com",
+    "contatos": [
+      {
+        "tipo": "telefone",
+        "valor": "(19) 3004-1004",
+        "fonte": "google_places"
+      },
+      {
+        "tipo": "email",
+        "valor": "compras@trigodourado.example.com",
+        "fonte": "site",
+        "nome": "Setor de compras"
+      }
+    ],
+    "sinais": {
+      "lojas": 2,
+      "linhas_de_produto": [
+        "panificação",
+        "frios",
+        "mercearia"
+      ]
+    },
+    "evidencias": [
+      {
+        "campo": "razao_social",
+        "valor": "Panificadora Trigo Dourado Ltda",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "situacao_cadastral",
+        "valor": "ATIVA",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "cnae_principal",
+        "valor": "4721102",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "endereco",
+        "valor": "Rua Fictícia, 104 - Campinas/SP",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/4",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "telefone",
+        "valor": "(19) 3004-1004",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/4",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "site",
+        "valor": "https://trigodourado.example.com",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/4",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "sinais",
+        "valor": "{\"lojas\": 2, \"linhas_de_produto\": [\"panificação\", \"frios\", \"mercearia\"]}",
+        "fonte": "site",
+        "url": "https://trigodourado.example.com",
+        "coletado_em": "2026-11-16T10:00:00+00:00"
+      }
+    ],
+    "custo_usd": "0.03"
+  },
+  {
+    "cnpj": "99000005000135",
+    "razao_social": "Padaria Cambuí Pães e Doces Ltda",
+    "nome_fantasia": "Pães do Cambuí",
+    "situacao_cadastral": "ATIVA",
+    "endereco": "Rua Fictícia, 105 - Campinas/SP",
+    "municipio_ibge": "3509502",
+    "segmento": "Padaria",
+    "site": "https://paesdocambui.example.com",
+    "contatos": [
+      {
+        "tipo": "telefone",
+        "valor": "(19) 3005-1005",
+        "fonte": "google_places"
+      },
+      {
+        "tipo": "email",
+        "valor": "compras@paesdocambui.example.com",
+        "fonte": "site",
+        "nome": "Setor de compras"
+      }
+    ],
+    "sinais": {
+      "lojas": 1
+    },
+    "evidencias": [
+      {
+        "campo": "razao_social",
+        "valor": "Padaria Cambuí Pães e Doces Ltda",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "situacao_cadastral",
+        "valor": "ATIVA",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "cnae_principal",
+        "valor": "4721102",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "endereco",
+        "valor": "Rua Fictícia, 105 - Campinas/SP",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/5",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "telefone",
+        "valor": "(19) 3005-1005",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/5",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "site",
+        "valor": "https://paesdocambui.example.com",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/5",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "sinais",
+        "valor": "{\"lojas\": 1}",
+        "fonte": "site",
+        "url": "https://paesdocambui.example.com",
+        "coletado_em": "2026-11-16T10:00:00+00:00"
+      }
+    ],
+    "custo_usd": "0.03"
+  },
+  {
+    "cnpj": "99000006000142",
+    "razao_social": "Atacarejo Rodovia Comércio de Alimentos Ltda",
+    "nome_fantasia": "Rodovia Atacarejo",
+    "situacao_cadastral": "ATIVA",
+    "endereco": "Rua Fictícia, 106 - Campinas/SP",
+    "municipio_ibge": "3509502",
+    "segmento": "Atacarejo",
+    "site": null,
+    "contatos": [
+      {
+        "tipo": "telefone",
+        "valor": "(19) 3006-1006",
+        "fonte": "google_places"
+      }
+    ],
+    "sinais": {
+      "lojas": 5,
+      "linhas_de_produto": [
+        "mercearia",
+        "bebidas",
+        "limpeza",
+        "higiene"
+      ],
+      "canal_de_compras": "central de compras"
+    },
+    "evidencias": [
+      {
+        "campo": "razao_social",
+        "valor": "Atacarejo Rodovia Comércio de Alimentos Ltda",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "situacao_cadastral",
+        "valor": "ATIVA",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "cnae_principal",
+        "valor": "4711301",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "endereco",
+        "valor": "Rua Fictícia, 106 - Campinas/SP",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/6",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "telefone",
+        "valor": "(19) 3006-1006",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/6",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      }
+    ],
+    "custo_usd": "0.03"
+  },
+  {
+    "cnpj": "99000007000149",
+    "razao_social": "Mercearia Dona Clara ME",
+    "nome_fantasia": "Mercearia Dona Clara",
+    "situacao_cadastral": "ATIVA",
+    "endereco": "Rua Fictícia, 107 - Campinas/SP",
+    "municipio_ibge": "3509502",
+    "segmento": "Mercearia e minimercado",
+    "site": "https://merceariadonaclara.example.com",
+    "contatos": [
+      {
+        "tipo": "telefone",
+        "valor": "(19) 3007-1007",
+        "fonte": "google_places"
+      },
+      {
+        "tipo": "email",
+        "valor": "compras@merceariadonaclara.example.com",
+        "fonte": "site",
+        "nome": "Setor de compras"
+      }
+    ],
+    "sinais": {
+      "lojas": 1
+    },
+    "evidencias": [
+      {
+        "campo": "razao_social",
+        "valor": "Mercearia Dona Clara ME",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "situacao_cadastral",
+        "valor": "ATIVA",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "cnae_principal",
+        "valor": "4712100",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "endereco",
+        "valor": "Rua Fictícia, 107 - Campinas/SP",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/7",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "telefone",
+        "valor": "(19) 3007-1007",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/7",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "site",
+        "valor": "https://merceariadonaclara.example.com",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/7",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "sinais",
+        "valor": "{\"lojas\": 1}",
+        "fonte": "site",
+        "url": "https://merceariadonaclara.example.com",
+        "coletado_em": "2026-11-16T10:00:00+00:00"
+      }
+    ],
+    "custo_usd": "0.03"
+  },
+  {
+    "cnpj": "99000008000156",
+    "razao_social": "Supermercado Serra do Japi Ltda",
+    "nome_fantasia": "Serra do Japi",
+    "situacao_cadastral": "ATIVA",
+    "endereco": "Rua Fictícia, 108 - Jundiaí/SP",
+    "municipio_ibge": "3525904",
+    "segmento": "Supermercado",
+    "site": "https://serradojapi.example.com",
+    "contatos": [
+      {
+        "tipo": "telefone",
+        "valor": "(11) 3008-1008",
+        "fonte": "google_places"
+      },
+      {
+        "tipo": "email",
+        "valor": "compras@serradojapi.example.com",
+        "fonte": "site",
+        "nome": "Setor de compras"
+      }
+    ],
+    "sinais": {
+      "lojas": 4,
+      "linhas_de_produto": [
+        "mercearia",
+        "bebidas",
+        "açougue"
+      ],
+      "canal_de_compras": "comprador central"
+    },
+    "evidencias": [
+      {
+        "campo": "razao_social",
+        "valor": "Supermercado Serra do Japi Ltda",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "situacao_cadastral",
+        "valor": "ATIVA",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "cnae_principal",
+        "valor": "4711302",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "endereco",
+        "valor": "Rua Fictícia, 108 - Jundiaí/SP",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/8",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "telefone",
+        "valor": "(11) 3008-1008",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/8",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "site",
+        "valor": "https://serradojapi.example.com",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/8",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "sinais",
+        "valor": "{\"lojas\": 4, \"linhas_de_produto\": [\"mercearia\", \"bebidas\", \"açougue\"], \"canal_de_compras\": \"comprador central\"}",
+        "fonte": "site",
+        "url": "https://serradojapi.example.com",
+        "coletado_em": "2026-11-16T10:00:00+00:00"
+      }
+    ],
+    "custo_usd": "0.03"
+  },
+  {
+    "cnpj": "99000009000163",
+    "razao_social": "Mercado Anhangabaú Jundiaí Ltda",
+    "nome_fantasia": "Mercado Anhangabaú",
+    "situacao_cadastral": "ATIVA",
+    "endereco": "Rua Fictícia, 109 - Jundiaí/SP",
+    "municipio_ibge": "3525904",
+    "segmento": "Supermercado",
+    "site": "https://mercadoanhangabau.example.com",
+    "contatos": [
+      {
+        "tipo": "telefone",
+        "valor": "(11) 3009-1009",
+        "fonte": "google_places"
+      },
+      {
+        "tipo": "email",
+        "valor": "compras@mercadoanhangabau.example.com",
+        "fonte": "site",
+        "nome": "Setor de compras"
+      }
+    ],
+    "sinais": {
+      "lojas": 1
+    },
+    "evidencias": [
+      {
+        "campo": "razao_social",
+        "valor": "Mercado Anhangabaú Jundiaí Ltda",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "situacao_cadastral",
+        "valor": "ATIVA",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "cnae_principal",
+        "valor": "4711302",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "endereco",
+        "valor": "Rua Fictícia, 109 - Jundiaí/SP",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/9",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "telefone",
+        "valor": "(11) 3009-1009",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/9",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "site",
+        "valor": "https://mercadoanhangabau.example.com",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/9",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "sinais",
+        "valor": "{\"lojas\": 1}",
+        "fonte": "site",
+        "url": "https://mercadoanhangabau.example.com",
+        "coletado_em": "2026-11-16T10:00:00+00:00"
+      }
+    ],
+    "custo_usd": "0.03"
+  },
+  {
+    "cnpj": "99000010000170",
+    "razao_social": "Empório Uva e Vinho Ltda",
+    "nome_fantasia": "Empório Uva e Vinho",
+    "situacao_cadastral": "ATIVA",
+    "endereco": "Rua Fictícia, 110 - Jundiaí/SP",
+    "municipio_ibge": "3525904",
+    "segmento": "Empório",
+    "site": null,
+    "contatos": [
+      {
+        "tipo": "telefone",
+        "valor": "(11) 3010-1010",
+        "fonte": "google_places"
+      }
+    ],
+    "sinais": {
+      "lojas": 1,
+      "linhas_de_produto": [
+        "vinhos",
+        "queijos",
+        "importados"
+      ]
+    },
+    "evidencias": [
+      {
+        "campo": "razao_social",
+        "valor": "Empório Uva e Vinho Ltda",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "situacao_cadastral",
+        "valor": "ATIVA",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "cnae_principal",
+        "valor": "4729699",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "endereco",
+        "valor": "Rua Fictícia, 110 - Jundiaí/SP",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/10",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "telefone",
+        "valor": "(11) 3010-1010",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/10",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      }
+    ],
+    "custo_usd": "0.03"
+  },
+  {
+    "cnpj": "99000011000177",
+    "razao_social": "Hortifruti Colheita Fresca Ltda",
+    "nome_fantasia": "Colheita Fresca",
+    "situacao_cadastral": "ATIVA",
+    "endereco": "Rua Fictícia, 111 - Jundiaí/SP",
+    "municipio_ibge": "3525904",
+    "segmento": "Hortifruti",
+    "site": "https://colheitafresca.example.com",
+    "contatos": [
+      {
+        "tipo": "telefone",
+        "valor": "(11) 3011-1011",
+        "fonte": "google_places"
+      },
+      {
+        "tipo": "email",
+        "valor": "compras@colheitafresca.example.com",
+        "fonte": "site",
+        "nome": "Setor de compras"
+      }
+    ],
+    "sinais": {
+      "lojas": 2
+    },
+    "evidencias": [
+      {
+        "campo": "razao_social",
+        "valor": "Hortifruti Colheita Fresca Ltda",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "situacao_cadastral",
+        "valor": "ATIVA",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "cnae_principal",
+        "valor": "4724500",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "endereco",
+        "valor": "Rua Fictícia, 111 - Jundiaí/SP",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/11",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "telefone",
+        "valor": "(11) 3011-1011",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/11",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "site",
+        "valor": "https://colheitafresca.example.com",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/11",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "sinais",
+        "valor": "{\"lojas\": 2}",
+        "fonte": "site",
+        "url": "https://colheitafresca.example.com",
+        "coletado_em": "2026-11-16T10:00:00+00:00"
+      }
+    ],
+    "custo_usd": "0.03"
+  },
+  {
+    "cnpj": "99000012000184",
+    "razao_social": "Supermercado Rio Sorocaba Ltda",
+    "nome_fantasia": "Rio Sorocaba",
+    "situacao_cadastral": "ATIVA",
+    "endereco": "Rua Fictícia, 112 - Sorocaba/SP",
+    "municipio_ibge": "3552205",
+    "segmento": "Supermercado",
+    "site": "https://riosorocaba.example.com",
+    "contatos": [
+      {
+        "tipo": "telefone",
+        "valor": "(15) 3012-1012",
+        "fonte": "google_places"
+      },
+      {
+        "tipo": "email",
+        "valor": "compras@riosorocaba.example.com",
+        "fonte": "site",
+        "nome": "Setor de compras"
+      }
+    ],
+    "sinais": {
+      "lojas": 6,
+      "linhas_de_produto": [
+        "mercearia",
+        "bebidas",
+        "limpeza",
+        "padaria"
+      ],
+      "canal_de_compras": "central de compras"
+    },
+    "evidencias": [
+      {
+        "campo": "razao_social",
+        "valor": "Supermercado Rio Sorocaba Ltda",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "situacao_cadastral",
+        "valor": "ATIVA",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "cnae_principal",
+        "valor": "4711302",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "endereco",
+        "valor": "Rua Fictícia, 112 - Sorocaba/SP",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/12",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "telefone",
+        "valor": "(15) 3012-1012",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/12",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "site",
+        "valor": "https://riosorocaba.example.com",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/12",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "sinais",
+        "valor": "{\"lojas\": 6, \"linhas_de_produto\": [\"mercearia\", \"bebidas\", \"limpeza\", \"padaria\"], \"canal_de_compras\": \"central de compras\"}",
+        "fonte": "site",
+        "url": "https://riosorocaba.example.com",
+        "coletado_em": "2026-11-16T10:00:00+00:00"
+      }
+    ],
+    "custo_usd": "0.03"
+  },
+  {
+    "cnpj": "99000013000191",
+    "razao_social": "Mercado Campolim Ltda",
+    "nome_fantasia": "Mercado Campolim",
+    "situacao_cadastral": "ATIVA",
+    "endereco": "Rua Fictícia, 113 - Sorocaba/SP",
+    "municipio_ibge": "3552205",
+    "segmento": "Supermercado",
+    "site": "https://mercadocampolim.example.com",
+    "contatos": [
+      {
+        "tipo": "telefone",
+        "valor": "(15) 3013-1013",
+        "fonte": "google_places"
+      },
+      {
+        "tipo": "email",
+        "valor": "compras@mercadocampolim.example.com",
+        "fonte": "site",
+        "nome": "Setor de compras"
+      }
+    ],
+    "sinais": {
+      "lojas": 1
+    },
+    "evidencias": [
+      {
+        "campo": "razao_social",
+        "valor": "Mercado Campolim Ltda",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "situacao_cadastral",
+        "valor": "ATIVA",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "cnae_principal",
+        "valor": "4711302",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "endereco",
+        "valor": "Rua Fictícia, 113 - Sorocaba/SP",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/13",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "telefone",
+        "valor": "(15) 3013-1013",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/13",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "site",
+        "valor": "https://mercadocampolim.example.com",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/13",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "sinais",
+        "valor": "{\"lojas\": 1}",
+        "fonte": "site",
+        "url": "https://mercadocampolim.example.com",
+        "coletado_em": "2026-11-16T10:00:00+00:00"
+      }
+    ],
+    "custo_usd": "0.03"
+  },
+  {
+    "cnpj": "99000014000198",
+    "razao_social": "Distribuidora Tropeiro Alimentos Ltda",
+    "nome_fantasia": "Tropeiro Distribuidora",
+    "situacao_cadastral": "ATIVA",
+    "endereco": "Rua Fictícia, 114 - Sorocaba/SP",
+    "municipio_ibge": "3552205",
+    "segmento": "Distribuidora",
+    "site": null,
+    "contatos": [
+      {
+        "tipo": "telefone",
+        "valor": "(15) 3014-1014",
+        "fonte": "google_places"
+      }
+    ],
+    "sinais": {
+      "clientes_atendidos": "varejo da região",
+      "linhas_de_produto": [
+        "mercearia",
+        "bebidas"
+      ]
+    },
+    "evidencias": [
+      {
+        "campo": "razao_social",
+        "valor": "Distribuidora Tropeiro Alimentos Ltda",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "situacao_cadastral",
+        "valor": "ATIVA",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "cnae_principal",
+        "valor": "4639701",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "endereco",
+        "valor": "Rua Fictícia, 114 - Sorocaba/SP",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/14",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "telefone",
+        "valor": "(15) 3014-1014",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/14",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      }
+    ],
+    "custo_usd": "0.03"
+  },
+  {
+    "cnpj": "99000015000105",
+    "razao_social": "Conveniência Estrela da Manhã Ltda",
+    "nome_fantasia": "Estrela da Manhã",
+    "situacao_cadastral": "ATIVA",
+    "endereco": "Rua Fictícia, 115 - Sorocaba/SP",
+    "municipio_ibge": "3552205",
+    "segmento": "Conveniência",
+    "site": "https://estreladamanha.example.com",
+    "contatos": [
+      {
+        "tipo": "telefone",
+        "valor": "(15) 3015-1015",
+        "fonte": "google_places"
+      },
+      {
+        "tipo": "email",
+        "valor": "compras@estreladamanha.example.com",
+        "fonte": "site",
+        "nome": "Setor de compras"
+      }
+    ],
+    "sinais": {
+      "lojas": 2
+    },
+    "evidencias": [
+      {
+        "campo": "razao_social",
+        "valor": "Conveniência Estrela da Manhã Ltda",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "situacao_cadastral",
+        "valor": "ATIVA",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "cnae_principal",
+        "valor": "4729602",
+        "fonte": "receita",
+        "url": null,
+        "coletado_em": "2026-11-02T09:00:00+00:00"
+      },
+      {
+        "campo": "endereco",
+        "valor": "Rua Fictícia, 115 - Sorocaba/SP",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/15",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "telefone",
+        "valor": "(15) 3015-1015",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/15",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "site",
+        "valor": "https://estreladamanha.example.com",
+        "fonte": "google_places",
+        "url": "https://maps.example.com/place/15",
+        "coletado_em": "2026-11-15T14:00:00+00:00"
+      },
+      {
+        "campo": "sinais",
+        "valor": "{\"lojas\": 2}",
+        "fonte": "site",
+        "url": "https://estreladamanha.example.com",
+        "coletado_em": "2026-11-16T10:00:00+00:00"
+      }
+    ],
+    "custo_usd": "0.03"
+  }
+]
