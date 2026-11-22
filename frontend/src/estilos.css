@@ -122,3 +122,157 @@ dt {
 dd {
   margin: 0;
 }
+
+/* Portal */
+.portal {
+  min-height: 100vh;
+}
+
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 24px;
+  background: var(--superficie);
+  border-bottom: 1px solid var(--borda);
+}
+
+.menu a {
+  color: var(--texto-suave);
+  text-decoration: none;
+}
+
+.menu a.ativo {
+  color: var(--destaque);
+  font-weight: 600;
+}
+
+.menu .espaco {
+  flex: 1;
+}
+
+.menu button.link {
+  margin: 0;
+}
+
+.painel {
+  max-width: 960px;
+  margin: 24px auto;
+  padding: 24px;
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+}
+
+.portal .cartao {
+  margin: 24px auto;
+}
+
+.cabecalho-da-pagina {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.cabecalho-da-pagina h1 {
+  margin: 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--borda);
+}
+
+th {
+  font-size: 0.8rem;
+  color: var(--texto-suave);
+  font-weight: 600;
+}
+
+.numero {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+tr.clicavel {
+  cursor: pointer;
+}
+
+tr.clicavel:hover {
+  background: var(--fundo);
+}
+
+.etiqueta {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  border: 1px solid var(--borda);
+}
+
+.etiqueta.ativa {
+  color: var(--sucesso);
+  border-color: var(--sucesso);
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+select {
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  background: var(--fundo);
+  color: var(--texto);
+}
+
+.grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.grupo > span {
+  font-size: 0.9rem;
+  color: var(--texto-suave);
+}
+
+label.opcao {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  color: var(--texto);
+  font-size: 1rem;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.linha > label {
+  flex: 1;
+  min-width: 160px;
+}
+
+.suave {
+  color: var(--texto-suave);
+}

@@ -10,6 +10,14 @@ class OrganizacaoOut(BaseModel):
     nome: str
 
 
+class UsuarioOut(BaseModel):
+    id: uuid.UUID
+    nome: str
+    email: str
+    papel: str
+    ativo: bool
+
+
 class EuOut(BaseModel):
     usuario_id: uuid.UUID
     nome: str

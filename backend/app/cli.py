@@ -17,6 +17,7 @@ from typing import Any
 import httpx
 import psycopg
 
+from app import semente
 from app.core.config import Settings
 
 PAPEIS = ("administrador", "coordenador", "vendedor")
@@ -78,6 +79,11 @@ def main() -> None:
     org = comandos.add_parser("criar-organizacao")
     org.add_argument("--nome", required=True)
 
+    sem = comandos.add_parser(
+        "semear-configuracao", help="Grava a configuração de exemplo da Destak na organização"
+    )
+    sem.add_argument("--organizacao-id", required=True, type=uuid.UUID)
+
     usr = comandos.add_parser("criar-usuario")
     usr.add_argument("--organizacao-id", required=True, type=uuid.UUID)
     usr.add_argument("--nome", required=True)
@@ -90,6 +96,11 @@ def main() -> None:
 
     if args.comando == "criar-organizacao":
         print(criar_organizacao(settings, args.nome))
+        return
+
+    if args.comando == "semear-configuracao":
+        versao = semente.semear(settings.database_url, args.organizacao_id, semente.DESTAK)
+        print(f"configuração gravada como versão {versao}")
         return
 
     if not settings.supabase_url or not settings.supabase_service_role_key:

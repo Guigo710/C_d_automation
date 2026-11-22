@@ -1,6 +1,230 @@
 {
   "components": {
     "schemas": {
+      "CampanhaIn": {
+        "properties": {
+          "limite_empresas": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 100000.0,
+            "title": "Limite Empresas",
+            "type": "integer"
+          },
+          "membro_ids": {
+            "default": [],
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Membro Ids",
+            "type": "array"
+          },
+          "municipios_ibge": {
+            "items": {
+              "pattern": "^[0-9]{7}$",
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Municipios Ibge",
+            "type": "array"
+          },
+          "nome": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Nome",
+            "type": "string"
+          },
+          "segmento_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Segmento Ids",
+            "type": "array"
+          },
+          "status": {
+            "default": "rascunho",
+            "enum": [
+              "rascunho",
+              "ativa",
+              "pausada",
+              "encerrada"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "teto_gasto_usd": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Teto Gasto Usd"
+          },
+          "tiers_alvo": {
+            "items": {
+              "enum": [
+                "A",
+                "B",
+                "C"
+              ],
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Tiers Alvo",
+            "type": "array"
+          }
+        },
+        "required": [
+          "nome",
+          "municipios_ibge",
+          "segmento_ids",
+          "tiers_alvo",
+          "limite_empresas",
+          "teto_gasto_usd"
+        ],
+        "title": "CampanhaIn",
+        "type": "object"
+      },
+      "CampanhaOut": {
+        "properties": {
+          "atualizada_em": {
+            "format": "date-time",
+            "title": "Atualizada Em",
+            "type": "string"
+          },
+          "criada_em": {
+            "format": "date-time",
+            "title": "Criada Em",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "limite_empresas": {
+            "title": "Limite Empresas",
+            "type": "integer"
+          },
+          "membros": {
+            "items": {
+              "$ref": "#/components/schemas/MembroDaCampanha"
+            },
+            "title": "Membros",
+            "type": "array"
+          },
+          "municipios_ibge": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Municipios Ibge",
+            "type": "array"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "segmentos": {
+            "items": {
+              "$ref": "#/components/schemas/SegmentoDaCampanha"
+            },
+            "title": "Segmentos",
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "rascunho",
+              "ativa",
+              "pausada",
+              "encerrada"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "teto_gasto_usd": {
+            "title": "Teto Gasto Usd",
+            "type": "string"
+          },
+          "tiers_alvo": {
+            "items": {
+              "enum": [
+                "A",
+                "B",
+                "C"
+              ],
+              "type": "string"
+            },
+            "title": "Tiers Alvo",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "nome",
+          "status",
+          "limite_empresas",
+          "teto_gasto_usd",
+          "criada_em",
+          "municipios_ibge",
+          "tiers_alvo",
+          "segmentos",
+          "membros",
+          "atualizada_em"
+        ],
+        "title": "CampanhaOut",
+        "type": "object"
+      },
+      "CampanhaResumo": {
+        "properties": {
+          "criada_em": {
+            "format": "date-time",
+            "title": "Criada Em",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "limite_empresas": {
+            "title": "Limite Empresas",
+            "type": "integer"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "rascunho",
+              "ativa",
+              "pausada",
+              "encerrada"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "teto_gasto_usd": {
+            "title": "Teto Gasto Usd",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "nome",
+          "status",
+          "limite_empresas",
+          "teto_gasto_usd",
+          "criada_em"
+        ],
+        "title": "CampanhaResumo",
+        "type": "object"
+      },
       "EuOut": {
         "properties": {
           "email": {
@@ -114,6 +338,53 @@
         "title": "HTTPValidationError",
         "type": "object"
       },
+      "MembroDaCampanha": {
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "nome"
+        ],
+        "title": "MembroDaCampanha",
+        "type": "object"
+      },
+      "MunicipioOut": {
+        "properties": {
+          "municipio_ibge": {
+            "title": "Municipio Ibge",
+            "type": "string"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "tem_rota": {
+            "title": "Tem Rota",
+            "type": "boolean"
+          },
+          "uf": {
+            "title": "Uf",
+            "type": "string"
+          }
+        },
+        "required": [
+          "municipio_ibge",
+          "nome",
+          "uf",
+          "tem_rota"
+        ],
+        "title": "MunicipioOut",
+        "type": "object"
+      },
       "OrganizacaoOut": {
         "properties": {
           "id": {
@@ -159,6 +430,86 @@
           "proximo_antes_de"
         ],
         "title": "PaginaDeEventos",
+        "type": "object"
+      },
+      "SegmentoDaCampanha": {
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "nome"
+        ],
+        "title": "SegmentoDaCampanha",
+        "type": "object"
+      },
+      "SegmentoOut": {
+        "properties": {
+          "cnaes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Cnaes",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "nome",
+          "cnaes"
+        ],
+        "title": "SegmentoOut",
+        "type": "object"
+      },
+      "UsuarioOut": {
+        "properties": {
+          "ativo": {
+            "title": "Ativo",
+            "type": "boolean"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "papel": {
+            "title": "Papel",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "nome",
+          "email",
+          "papel",
+          "ativo"
+        ],
+        "title": "UsuarioOut",
         "type": "object"
       },
       "ValidationError": {
@@ -286,6 +637,295 @@
         ]
       }
     },
+    "/campanhas": {
+      "get": {
+        "operationId": "listar_campanhas_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CampanhaResumo"
+                  },
+                  "title": "Response Listar Campanhas Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Listar",
+        "tags": [
+          "campanhas"
+        ]
+      },
+      "post": {
+        "operationId": "criar_campanhas_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CampanhaIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampanhaOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Criar",
+        "tags": [
+          "campanhas"
+        ]
+      }
+    },
+    "/campanhas/{campanha_id}": {
+      "get": {
+        "operationId": "buscar_campanhas__campanha_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "campanha_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Campanha Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampanhaOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Buscar",
+        "tags": [
+          "campanhas"
+        ]
+      },
+      "put": {
+        "operationId": "atualizar_campanhas__campanha_id__put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "campanha_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Campanha Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CampanhaIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampanhaOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Atualizar",
+        "tags": [
+          "campanhas"
+        ]
+      }
+    },
+    "/catalogo-segmentos": {
+      "get": {
+        "operationId": "catalogo_segmentos_catalogo_segmentos_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SegmentoOut"
+                  },
+                  "title": "Response Catalogo Segmentos Catalogo Segmentos Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Catalogo Segmentos",
+        "tags": [
+          "configuração"
+        ]
+      }
+    },
     "/eu": {
       "get": {
         "operationId": "eu_eu_get",
@@ -403,6 +1043,59 @@
         ]
       }
     },
+    "/municipios-atendidos": {
+      "get": {
+        "operationId": "municipios_atendidos_municipios_atendidos_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MunicipioOut"
+                  },
+                  "title": "Response Municipios Atendidos Municipios Atendidos Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Municipios Atendidos",
+        "tags": [
+          "configuração"
+        ]
+      }
+    },
     "/organizacoes/{organizacao_id}": {
       "get": {
         "operationId": "organizacao_organizacoes__organizacao_id__get",
@@ -457,6 +1150,80 @@
           }
         },
         "summary": "Organizacao",
+        "tags": [
+          "organizações"
+        ]
+      }
+    },
+    "/usuarios": {
+      "get": {
+        "operationId": "usuarios_usuarios_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "papel",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "administrador",
+                    "coordenador",
+                    "vendedor"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Papel"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/UsuarioOut"
+                  },
+                  "title": "Response Usuarios Usuarios Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Usuarios",
         "tags": [
           "organizações"
         ]

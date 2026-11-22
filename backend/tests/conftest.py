@@ -81,9 +81,7 @@ def client(settings: Settings) -> Iterator[TestClient]:
 
 
 def _tabelas_de_negocio(conn: psycopg.Connection) -> list[str]:
-    linhas = conn.execute(
-        "SELECT tablename FROM pg_tables WHERE schemaname = 'public'"
-    ).fetchall()
+    linhas = conn.execute("SELECT tablename FROM pg_tables WHERE schemaname = 'public'").fetchall()
     return [f"public.{linha[0]}" for linha in linhas]
 
 
@@ -130,6 +128,19 @@ def dados(conn_admin: psycopg.Connection) -> Dados:
     tabelas = _tabelas_de_negocio(conn_admin) + ["auth.users"]
     conn_admin.execute(f"TRUNCATE {', '.join(tabelas)} CASCADE")
     return Dados(a=_criar_organizacao(conn_admin, "a"), b=_criar_organizacao(conn_admin, "b"))
+
+
+def criar_segmento(
+    conn: psycopg.Connection, organizacao_id: uuid.UUID, nome: str, cnaes: list[str]
+) -> uuid.UUID:
+    linha = conn.execute(
+        "INSERT INTO catalogo_segmentos (organizacao_id, nome, cnaes) VALUES (%s, %s, %s) "
+        "RETURNING id",
+        (organizacao_id, nome, cnaes),
+    ).fetchone()
+    assert linha is not None
+    segmento_id: uuid.UUID = linha[0]
+    return segmento_id
 
 
 def emitir_token(usuario_id: uuid.UUID, **extra: object) -> str:

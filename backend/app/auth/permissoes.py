@@ -17,6 +17,10 @@ PERMISSOES: dict[str, frozenset[str]] = {
     "organizacao.ler": TODOS,
     "sessao.registrar": TODOS,
     "auditoria.ler": frozenset({ADMINISTRADOR}),
+    "usuarios.listar": frozenset({ADMINISTRADOR, COORDENADOR}),
+    "configuracao.ler": TODOS,
+    "campanha.ler": TODOS,
+    "campanha.editar": frozenset({COORDENADOR}),
 }
 
 

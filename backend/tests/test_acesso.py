@@ -40,7 +40,9 @@ def test_usuario_sem_perfil_e_recusado(
     client: TestClient, dados: Dados, conn_admin: psycopg.Connection
 ) -> None:
     sem_perfil = uuid.uuid4()
-    conn_admin.execute("INSERT INTO auth.users (id, email) VALUES (%s, 'x@exemplo.com')", (sem_perfil,))
+    conn_admin.execute(
+        "INSERT INTO auth.users (id, email) VALUES (%s, 'x@exemplo.com')", (sem_perfil,)
+    )
 
     resposta = client.get("/eu", headers={"Authorization": f"Bearer {emitir_token(sem_perfil)}"})
 

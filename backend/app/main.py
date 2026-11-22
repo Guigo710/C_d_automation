@@ -7,6 +7,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.auditoria.rotas import router as auditoria_router
+from app.campanhas.rotas import router as campanhas_router
+from app.configuracao.rotas import router as configuracao_router
 from app.core.config import Settings
 from app.core.db import Banco
 from app.core.seguranca import VerificadorDeToken
@@ -43,4 +45,6 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     app.include_router(organizacoes_router)
     app.include_router(auditoria_router)
+    app.include_router(configuracao_router)
+    app.include_router(campanhas_router)
     return app
