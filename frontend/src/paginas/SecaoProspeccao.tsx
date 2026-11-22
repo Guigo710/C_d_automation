@@ -23,6 +23,28 @@ const MOTIVOS_DE_PARADA: Record<string, string> = {
 
 const EM_ANDAMENTO = new Set(["na_fila", "executando"]);
 
+const NOMES_DOS_TIPOS: Record<string, string> = {
+  prospeccao: "Prospecção",
+  qualificacao: "Qualificação",
+};
+
+export const MOTIVOS_DE_RECUSA: Record<string, string> = {
+  fora_do_perfil: "Fora do perfil",
+  cnpj_inativo: "CNPJ inativo",
+  fora_da_regiao: "Fora da região",
+  dados_incompletos: "Dados incompletos",
+  ja_e_cliente: "Já é cliente",
+  duplicado: "Duplicado",
+  opt_out: "Pediu para não ser contatado",
+};
+
+const NOMES_DOS_STATUS_DO_CANDIDATO: Record<string, string> = {
+  coletado: "Aguardando qualificação",
+  pendente: "Pendente",
+  aprovado: "Aprovado",
+  recusado: "Recusado",
+};
+
 export function SecaoProspeccao({ campanhaId }: { campanhaId: string }) {
   const { eu } = useEu();
   const [execucoes, setExecucoes] = useState<Execucao[]>([]);
@@ -46,8 +68,10 @@ export function SecaoProspeccao({ campanhaId }: { campanhaId: string }) {
     carregar();
   }, [carregar]);
 
-  const ultima = execucoes[0];
-  const andamento = ultima && EM_ANDAMENTO.has(ultima.status);
+  const ultimas = ["prospeccao", "qualificacao"]
+    .map((tipo) => execucoes.find((e) => e.tipo === tipo))
+    .filter((e): e is Execucao => !!e);
+  const andamento = ultimas.some((e) => EM_ANDAMENTO.has(e.status));
 
   // Enquanto a execução anda, consulta o progresso a cada 2 segundos.
   useEffect(() => {
@@ -85,17 +109,19 @@ export function SecaoProspeccao({ campanhaId }: { campanhaId: string }) {
       </header>
       {erro && <p className="erro">{erro}</p>}
 
-      {ultima ? (
-        <p className="suave">
-          Última execução: <strong>{NOMES_DOS_STATUS_DA_EXECUCAO[ultima.status]}</strong>
-          {ultima.motivo_parada && ` (${MOTIVOS_DE_PARADA[ultima.motivo_parada] ?? ultima.motivo_parada})`}
+      {ultimas.length === 0 && <p className="suave">Nenhuma execução ainda.</p>}
+      {ultimas.map((e) => (
+        <p key={e.id} className="suave">
+          {NOMES_DOS_TIPOS[e.tipo] ?? e.tipo}: <strong>{NOMES_DOS_STATUS_DA_EXECUCAO[e.status]}</strong>
+          {e.motivo_parada && ` (${MOTIVOS_DE_PARADA[e.motivo_parada] ?? e.motivo_parada})`}
           {" · "}
-          {ultima.gravadas} novas, {ultima.duplicadas} já conhecidas · US$ {Number(ultima.custo_usd).toFixed(2)}
-          {ultima.erro && <span className="erro"> · {ultima.erro}</span>}
+          {e.tipo === "prospeccao"
+            ? `${e.gravadas} novas, ${e.duplicadas} já conhecidas`
+            : `${e.gravadas} qualificadas, ${e.duplicadas} recusadas por regra`}
+          {" · "}US$ {Number(e.custo_usd).toFixed(2)}
+          {e.erro && <span className="erro"> · {e.erro}</span>}
         </p>
-      ) : (
-        <p className="suave">Nenhuma execução ainda.</p>
-      )}
+      ))}
 
       {candidatos && candidatos.total > 0 && (
         <table>
@@ -103,8 +129,9 @@ export function SecaoProspeccao({ campanhaId }: { campanhaId: string }) {
             <tr>
               <th>Empresa</th>
               <th>Segmento</th>
-              <th>CNPJ</th>
-              <th>Situação</th>
+              <th>Tier</th>
+              <th className="numero">Nota</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -112,8 +139,17 @@ export function SecaoProspeccao({ campanhaId }: { campanhaId: string }) {
               <tr key={c.id} className="clicavel" onClick={() => abrir(c.id)}>
                 <td>{c.empresa.nome_fantasia ?? c.empresa.razao_social}</td>
                 <td>{c.empresa.segmento}</td>
-                <td>{c.empresa.cnpj}</td>
-                <td>{c.empresa.situacao_cadastral}</td>
+                <td>
+                  {c.tier_final ?? c.tier_sugerido ?? "—"}
+                  {c.baixa_confianca && <span className="etiqueta alerta">baixa confiança</span>}
+                  {c.em_revisao && <span className="etiqueta alerta">revisão</span>}
+                </td>
+                <td className="numero">{c.nota_total ?? "—"}</td>
+                <td>
+                  {NOMES_DOS_STATUS_DO_CANDIDATO[c.status]}
+                  {c.motivo_recusa && ` · ${MOTIVOS_DE_RECUSA[c.motivo_recusa] ?? c.motivo_recusa}`}
+                  {c.recusa_sugerida && <span className="suave"> (sugerido)</span>}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -157,12 +193,51 @@ function GavetaDoCandidato({
           <dd>{e.site ? <a href={e.site}>{e.site}</a> : "—"}</dd>
         </dl>
 
+        <h3>Notas</h3>
+        {candidato.em_revisao && <p className="erro">Em revisão: {candidato.motivo_revisao}</p>}
+        <dl>
+          <dt>Total</dt>
+          <dd>
+            {candidato.nota_total ?? "—"} · tier {candidato.tier_final ?? candidato.tier_sugerido ?? "—"}
+            {candidato.baixa_confianca && " · baixa confiança"}
+          </dd>
+          <dt>Aderência</dt>
+          <dd>
+            {candidato.nota_aderencia ?? "—"}
+            {typeof candidato.justificativas.aderencia === "string" && (
+              <span className="suave"> · {candidato.justificativas.aderencia}</span>
+            )}
+          </dd>
+          <dt>Potencial</dt>
+          <dd>
+            {candidato.nota_potencial ?? "—"}
+            {typeof candidato.justificativas.potencial === "string" && (
+              <span className="suave"> · {candidato.justificativas.potencial}</span>
+            )}
+          </dd>
+          <dt>Geografia</dt>
+          <dd>{candidato.nota_geografia ?? "—"}</dd>
+          <dt>Dados</dt>
+          <dd>{candidato.nota_dados ?? "—"}</dd>
+          {candidato.lacunas.length > 0 && (
+            <>
+              <dt>Lacunas</dt>
+              <dd>{candidato.lacunas.join("; ")}</dd>
+            </>
+          )}
+        </dl>
+
         <h3>Contatos</h3>
         {candidato.contatos.length === 0 && <p className="suave">Nenhum contato.</p>}
         <ul>
           {candidato.contatos.map((c) => (
             <li key={`${c.tipo}-${c.valor}`}>
-              {c.valor} <span className="suave">({c.tipo}{c.nome ? `, ${c.nome}` : ""} · {c.fonte})</span>
+              {c.valor}{" "}
+              <span className="suave">
+                ({c.tipo}
+                {c.nome ? `, ${c.nome}` : ""} · {c.fonte}
+                {c.status_validacao ? ` · ${c.status_validacao}` : ""})
+              </span>
             </li>
           ))}
         </ul>

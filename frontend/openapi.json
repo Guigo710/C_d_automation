@@ -227,6 +227,21 @@
       },
       "CandidatoDetalhe": {
         "properties": {
+          "baixa_confianca": {
+            "title": "Baixa Confianca",
+            "type": "boolean"
+          },
+          "confianca": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confianca"
+          },
           "contatos": {
             "items": {
               "$ref": "#/components/schemas/ContatoOut"
@@ -238,6 +253,10 @@
             "format": "date-time",
             "title": "Criado Em",
             "type": "string"
+          },
+          "em_revisao": {
+            "title": "Em Revisao",
+            "type": "boolean"
           },
           "empresa": {
             "$ref": "#/components/schemas/EmpresaResumo"
@@ -265,6 +284,110 @@
             "title": "Id",
             "type": "string"
           },
+          "justificativas": {
+            "additionalProperties": true,
+            "title": "Justificativas",
+            "type": "object"
+          },
+          "lacunas": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Lacunas",
+            "type": "array"
+          },
+          "modelo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Modelo"
+          },
+          "motivo_recusa": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Motivo Recusa"
+          },
+          "motivo_revisao": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Motivo Revisao"
+          },
+          "nota_aderencia": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nota Aderencia"
+          },
+          "nota_dados": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nota Dados"
+          },
+          "nota_geografia": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nota Geografia"
+          },
+          "nota_potencial": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nota Potencial"
+          },
+          "nota_total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nota Total"
+          },
+          "recusa_sugerida": {
+            "title": "Recusa Sugerida",
+            "type": "boolean"
+          },
           "sinais": {
             "additionalProperties": true,
             "title": "Sinais",
@@ -279,6 +402,50 @@
             ],
             "title": "Status",
             "type": "string"
+          },
+          "tier_final": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tier Final"
+          },
+          "tier_sugerido": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tier Sugerido"
+          },
+          "versao_prompt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Versao Prompt"
+          },
+          "versao_regras": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Versao Regras"
           }
         },
         "required": [
@@ -286,8 +453,26 @@
           "status",
           "criado_em",
           "empresa",
+          "nota_total",
+          "tier_sugerido",
+          "tier_final",
+          "motivo_recusa",
+          "recusa_sugerida",
+          "baixa_confianca",
+          "em_revisao",
           "endereco",
           "sinais",
+          "nota_aderencia",
+          "nota_potencial",
+          "nota_geografia",
+          "nota_dados",
+          "justificativas",
+          "lacunas",
+          "confianca",
+          "motivo_revisao",
+          "modelo",
+          "versao_prompt",
+          "versao_regras",
           "contatos",
           "evidencias"
         ],
@@ -296,10 +481,18 @@
       },
       "CandidatoResumo": {
         "properties": {
+          "baixa_confianca": {
+            "title": "Baixa Confianca",
+            "type": "boolean"
+          },
           "criado_em": {
             "format": "date-time",
             "title": "Criado Em",
             "type": "string"
+          },
+          "em_revisao": {
+            "title": "Em Revisao",
+            "type": "boolean"
           },
           "empresa": {
             "$ref": "#/components/schemas/EmpresaResumo"
@@ -308,6 +501,32 @@
             "format": "uuid",
             "title": "Id",
             "type": "string"
+          },
+          "motivo_recusa": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Motivo Recusa"
+          },
+          "nota_total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nota Total"
+          },
+          "recusa_sugerida": {
+            "title": "Recusa Sugerida",
+            "type": "boolean"
           },
           "status": {
             "enum": [
@@ -318,13 +537,42 @@
             ],
             "title": "Status",
             "type": "string"
+          },
+          "tier_final": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tier Final"
+          },
+          "tier_sugerido": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tier Sugerido"
           }
         },
         "required": [
           "id",
           "status",
           "criado_em",
-          "empresa"
+          "empresa",
+          "nota_total",
+          "tier_sugerido",
+          "tier_final",
+          "motivo_recusa",
+          "recusa_sugerida",
+          "baixa_confianca",
+          "em_revisao"
         ],
         "title": "CandidatoResumo",
         "type": "object"
@@ -430,6 +678,17 @@
             ],
             "title": "Nome"
           },
+          "status_validacao": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status Validacao"
+          },
           "tipo": {
             "title": "Tipo",
             "type": "string"
@@ -443,7 +702,8 @@
           "tipo",
           "valor",
           "nome",
-          "fonte"
+          "fonte",
+          "status_validacao"
         ],
         "title": "ContatoOut",
         "type": "object"
@@ -776,10 +1036,15 @@
               }
             ],
             "title": "Terminado Em"
+          },
+          "tipo": {
+            "title": "Tipo",
+            "type": "string"
           }
         },
         "required": [
           "id",
+          "tipo",
           "campanha_id",
           "status",
           "motivo_parada",
@@ -1604,6 +1869,70 @@
           }
         },
         "summary": "Iniciar Execucao",
+        "tags": [
+          "prospecção"
+        ]
+      }
+    },
+    "/campanhas/{campanha_id}/qualificacoes": {
+      "post": {
+        "description": "Põe na fila a qualificação dos candidatos ainda não qualificados (por exemplo, depois\nde cadastrar a chave da Claude API).",
+        "operationId": "qualificar_campanhas__campanha_id__qualificacoes_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "campanha_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Campanha Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Qualificar Campanhas  Campanha Id  Qualificacoes Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Qualificar",
         "tags": [
           "prospecção"
         ]

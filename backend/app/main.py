@@ -17,13 +17,16 @@ from app.fila.fila import Fila
 from app.organizacoes.rotas import router as organizacoes_router
 from app.prospeccao import servico as prospeccao
 from app.prospeccao.rotas import router as prospeccao_router
+from app.qualificacao import servico as qualificacao
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
     settings = settings or Settings()  # type: ignore[call-arg]
     banco = Banco(settings.database_url)
     fila = Fila(banco, settings.job_lease_segundos, settings.worker_intervalo_segundos)
+    cofre = Cofre(settings.chave_cifragem)
     fila.registrar(prospeccao.TIPO_JOB, prospeccao.executor(settings))
+    fila.registrar(qualificacao.TIPO_JOB, qualificacao.executor(settings, cofre))
 
     @asynccontextmanager
     async def ciclo_de_vida(app: FastAPI) -> AsyncIterator[None]:
@@ -41,7 +44,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.banco = banco
     app.state.fila = fila
     app.state.verificador = VerificadorDeToken(settings)
-    app.state.cofre = Cofre(settings.chave_cifragem)
+    app.state.cofre = cofre
 
     app.add_middleware(
         CORSMiddleware,

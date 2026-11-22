@@ -11,6 +11,7 @@ from app.fila.fila import Fila, Job
 from app.prospeccao import repositorio
 from app.prospeccao.agente import carregar_agente
 from app.prospeccao.esquemas import CandidatoDetalhe, ExecucaoOut, PaginaDeCandidatos
+from app.qualificacao.repositorio import enfileirar_se_nao_houver
 
 TIPO_JOB = "prospeccao"
 
@@ -81,11 +82,14 @@ class ExecutorDeProspeccao:
 
     def __call__(self, fila: Fila, job: Job) -> None:
         assert job.campanha_id is not None
+        campanha_id = job.campanha_id
         banco = fila.banco
 
         def terminar(status: str, motivo: str | None = None) -> None:
             with como_sistema(banco, job.organizacao_id, job.criado_por) as conn:
                 repositorio.terminar_execucao(conn, job.id, status, motivo)
+                # Terminada a prospecção, o Agente 2 qualifica o que foi coletado.
+                enfileirar_se_nao_houver(conn, "qualificacao", campanha_id)
 
         with como_sistema(banco, job.organizacao_id, job.criado_por) as conn:
             foto = repositorio.foto_da_campanha(conn, job.campanha_id)

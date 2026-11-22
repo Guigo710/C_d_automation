@@ -6,6 +6,8 @@
 
 **Status:** ready-for-agent
 
+> **Pendente (22/11/2026):** código commitado; tipos, lint, build e as regras com o cliente de IA falso (rodadas isoladamente) passam. Validação de MX do e-mail não implementada (só sintaxe e domínio de contabilidade). Testes de API (`tests/test_qualificacao.py`) aguardam o PostgreSQL de teste (Docker). A chamada real à Claude API ainda não foi exercitada.
+
 - [ ] Interface única de cliente de IA com implementação para a Claude API (Claude Haiku 5.5), usando a chave da organização; versão falsa determinística para testes
 - [ ] Saída estruturada validada antes de gravar; resposta fora do esquema ou que cite evidência inexistente é reenviada uma vez e, na segunda falha, o candidato vai para revisão com o motivo
 - [ ] Cache de respostas por hash (modelo, versão do prompt, entrada); checagem do teto antes de cada chamada; no máximo 2 novas tentativas e timeout de 60 segundos

@@ -15,8 +15,13 @@ from app.prospeccao.esquemas import (
 )
 
 _COLUNAS_JOB = (
-    "id, campanha_id, status, motivo_parada, encontradas, gravadas, duplicadas, custo_usd, "
+    "id, tipo, campanha_id, status, motivo_parada, encontradas, gravadas, duplicadas, custo_usd, "
     "erro, criado_em, iniciado_em, terminado_em"
+)
+
+_COLUNAS_CANDIDATO = (
+    "c.id, c.status, c.criado_em, c.nota_total, c.tier_sugerido, c.tier_final, "
+    "c.motivo_recusa, c.recusa_sugerida, c.baixa_confianca, c.em_revisao"
 )
 
 _EMPRESA_JSON = (
@@ -39,16 +44,13 @@ def execucao_em_andamento(conn: Conexao, campanha_id: uuid.UUID) -> bool:
 
 
 def buscar_execucao(conn: Conexao, job_id: uuid.UUID) -> ExecucaoOut | None:
-    linha = conn.execute(
-        f"SELECT {_COLUNAS_JOB} FROM jobs WHERE id = %s AND tipo = 'prospeccao'", (job_id,)
-    ).fetchone()
+    linha = conn.execute(f"SELECT {_COLUNAS_JOB} FROM jobs WHERE id = %s", (job_id,)).fetchone()
     return ExecucaoOut.model_validate(linha) if linha else None
 
 
 def listar_execucoes(conn: Conexao, campanha_id: uuid.UUID) -> list[ExecucaoOut]:
     linhas = conn.execute(
-        f"SELECT {_COLUNAS_JOB} FROM jobs WHERE campanha_id = %s AND tipo = 'prospeccao' "
-        "ORDER BY criado_em DESC",
+        f"SELECT {_COLUNAS_JOB} FROM jobs WHERE campanha_id = %s ORDER BY criado_em DESC",
         (campanha_id,),
     ).fetchall()
     return [ExecucaoOut.model_validate(linha) for linha in linhas]
@@ -222,10 +224,11 @@ def listar_candidatos(
         filtro,
     ).fetchone()
     linhas = conn.execute(
-        f"SELECT c.id, c.status, c.criado_em, {_EMPRESA_JSON} AS empresa "
+        f"SELECT {_COLUNAS_CANDIDATO}, {_EMPRESA_JSON} AS empresa "
         "FROM candidatos c JOIN empresas e ON e.id = c.empresa_id "
         "WHERE c.campanha_id = %(campanha)s AND (%(status)s::text IS NULL OR c.status = %(status)s) "
-        "ORDER BY c.criado_em, e.razao_social LIMIT %(limite)s OFFSET %(desloc)s",
+        "ORDER BY c.nota_total DESC NULLS LAST, c.criado_em, e.razao_social "
+        "LIMIT %(limite)s OFFSET %(desloc)s",
         {**filtro, "limite": limite, "desloc": deslocamento},
     ).fetchall()
     assert total is not None
@@ -237,15 +240,18 @@ def listar_candidatos(
 
 def buscar_candidato(conn: Conexao, candidato_id: uuid.UUID) -> CandidatoDetalhe | None:
     linha = conn.execute(
-        f"SELECT c.id, c.status, c.criado_em, {_EMPRESA_JSON} AS empresa, "
-        "e.endereco, e.sinais, e.id AS empresa_id "
+        f"SELECT {_COLUNAS_CANDIDATO}, {_EMPRESA_JSON} AS empresa, "
+        "e.endereco, e.sinais, e.id AS empresa_id, c.nota_aderencia, c.nota_potencial, "
+        "c.nota_geografia, c.nota_dados, c.justificativas, c.lacunas, c.confianca, "
+        "c.motivo_revisao, c.modelo, c.versao_prompt, c.versao_regras "
         "FROM candidatos c JOIN empresas e ON e.id = c.empresa_id WHERE c.id = %s",
         (candidato_id,),
     ).fetchone()
     if linha is None:
         return None
     contatos = conn.execute(
-        "SELECT tipo, valor, nome, fonte FROM contatos WHERE empresa_id = %s ORDER BY tipo, valor",
+        "SELECT tipo, valor, nome, fonte, status_validacao FROM contatos WHERE empresa_id = %s "
+        "ORDER BY tipo, valor",
         (linha["empresa_id"],),
     ).fetchall()
     evidencias = conn.execute(

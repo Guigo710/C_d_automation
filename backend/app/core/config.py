@@ -32,5 +32,8 @@ class Settings(BaseSettings):
     # Gerar com: python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
     chave_cifragem: str | None = None
 
+    # Cliente de IA: "claude" ou "pacote.modulo:Classe" (cliente falso nos testes).
+    cliente_ia: str = "claude"
+
     # Agente de prospecção: "falso" ou "pacote.modulo:Classe".
     agente_prospeccao: str = "falso"

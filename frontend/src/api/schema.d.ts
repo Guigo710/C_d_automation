@@ -92,6 +92,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/campanhas/{campanha_id}/qualificacoes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Qualificar
+         * @description Põe na fila a qualificação dos candidatos ainda não qualificados (por exemplo, depois
+         *     de cadastrar a chave da Claude API).
+         */
+        post: operations["qualificar_campanhas__campanha_id__qualificacoes_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/candidatos/{candidato_id}": {
         parameters: {
             query?: never;
@@ -393,6 +414,10 @@ export interface components {
         };
         /** CandidatoDetalhe */
         CandidatoDetalhe: {
+            /** Baixa Confianca */
+            baixa_confianca: boolean;
+            /** Confianca */
+            confianca: string | null;
             /** Contatos */
             contatos: components["schemas"]["ContatoOut"][];
             /**
@@ -400,6 +425,8 @@ export interface components {
              * Format: date-time
              */
             criado_em: string;
+            /** Em Revisao */
+            em_revisao: boolean;
             empresa: components["schemas"]["EmpresaResumo"];
             /** Endereco */
             endereco: string | null;
@@ -410,6 +437,30 @@ export interface components {
              * Format: uuid
              */
             id: string;
+            /** Justificativas */
+            justificativas: {
+                [key: string]: unknown;
+            };
+            /** Lacunas */
+            lacunas: string[];
+            /** Modelo */
+            modelo: string | null;
+            /** Motivo Recusa */
+            motivo_recusa: string | null;
+            /** Motivo Revisao */
+            motivo_revisao: string | null;
+            /** Nota Aderencia */
+            nota_aderencia: number | null;
+            /** Nota Dados */
+            nota_dados: number | null;
+            /** Nota Geografia */
+            nota_geografia: number | null;
+            /** Nota Potencial */
+            nota_potencial: number | null;
+            /** Nota Total */
+            nota_total: number | null;
+            /** Recusa Sugerida */
+            recusa_sugerida: boolean;
             /** Sinais */
             sinais: {
                 [key: string]: unknown;
@@ -419,25 +470,47 @@ export interface components {
              * @enum {string}
              */
             status: "coletado" | "pendente" | "aprovado" | "recusado";
+            /** Tier Final */
+            tier_final: string | null;
+            /** Tier Sugerido */
+            tier_sugerido: string | null;
+            /** Versao Prompt */
+            versao_prompt: string | null;
+            /** Versao Regras */
+            versao_regras: number | null;
         };
         /** CandidatoResumo */
         CandidatoResumo: {
+            /** Baixa Confianca */
+            baixa_confianca: boolean;
             /**
              * Criado Em
              * Format: date-time
              */
             criado_em: string;
+            /** Em Revisao */
+            em_revisao: boolean;
             empresa: components["schemas"]["EmpresaResumo"];
             /**
              * Id
              * Format: uuid
              */
             id: string;
+            /** Motivo Recusa */
+            motivo_recusa: string | null;
+            /** Nota Total */
+            nota_total: number | null;
+            /** Recusa Sugerida */
+            recusa_sugerida: boolean;
             /**
              * Status
              * @enum {string}
              */
             status: "coletado" | "pendente" | "aprovado" | "recusado";
+            /** Tier Final */
+            tier_final: string | null;
+            /** Tier Sugerido */
+            tier_sugerido: string | null;
         };
         /** ChaveIn */
         ChaveIn: {
@@ -470,6 +543,8 @@ export interface components {
             fonte: string;
             /** Nome */
             nome: string | null;
+            /** Status Validacao */
+            status_validacao: string | null;
             /** Tipo */
             tipo: string;
             /** Valor */
@@ -585,6 +660,8 @@ export interface components {
             status: "na_fila" | "executando" | "concluida" | "parcial" | "falhou";
             /** Terminado Em */
             terminado_em: string | null;
+            /** Tipo */
+            tipo: string;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -961,6 +1038,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ExecucaoOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    qualificar_campanhas__campanha_id__qualificacoes_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                campanha_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: string;
+                    };
                 };
             };
             /** @description Validation Error */

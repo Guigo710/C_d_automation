@@ -14,6 +14,7 @@ from app.prospeccao.esquemas import (
     PaginaDeCandidatos,
     StatusCandidato,
 )
+from app.qualificacao import servico as qualificacao
 
 router = APIRouter(tags=["prospecção"])
 
@@ -79,3 +80,14 @@ def buscar_candidato(candidato_id: uuid.UUID, contexto: Ler) -> CandidatoDetalhe
         return servico.buscar_candidato(contexto, candidato_id)
     except servico.NaoEncontrado as erro:
         raise _nao_encontrado() from erro
+
+
+@router.post("/campanhas/{campanha_id}/qualificacoes", status_code=status.HTTP_202_ACCEPTED)
+def qualificar(campanha_id: uuid.UUID, contexto: Executar) -> dict[str, str]:
+    """Põe na fila a qualificação dos candidatos ainda não qualificados (por exemplo, depois
+    de cadastrar a chave da Claude API)."""
+    try:
+        qualificacao.enfileirar(contexto, campanha_id)
+    except qualificacao.NaoEncontrado as erro:
+        raise _nao_encontrado() from erro
+    return {"status": "na_fila"}

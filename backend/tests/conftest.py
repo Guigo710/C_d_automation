@@ -77,6 +77,7 @@ def settings(banco: str) -> Settings:
         supabase_jwt_secret=SEGREDO_JWT,
         worker_ativo=False,  # a fila é drenada pelos testes, de forma síncrona
         agente_prospeccao="falso",
+        cliente_ia="tests.ia:ClienteFalso",
         chave_cifragem=CHAVE_CIFRAGEM,
     )
 
