@@ -6,6 +6,8 @@
 
 **Status:** ready-for-agent
 
+> **Pendente (22/11/2026):** código commitado; tipos, lint e build passam. Testes de API (`tests/test_promocao.py`) aguardam o PostgreSQL de teste (Docker). A ficha pela Claude API real ainda não foi exercitada.
+
 - [ ] Promoção exige chave de idempotência por clique; repetir o lote ou o clique não cria empresas duplicadas (testado)
 - [ ] Promoção ignora clientes atuais e empresas na lista de bloqueio (testado)
 - [ ] Empresas promovidas entram sem responsável

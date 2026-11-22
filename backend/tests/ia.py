@@ -33,6 +33,12 @@ class ClienteFalso:
         modelo: str = MODELO_PADRAO,
     ) -> RespostaDaIA:
         ClienteFalso.chamadas.append(entrada)
+        if "ficha" in esquema["properties"]:
+            return RespostaDaIA(
+                dados={"ficha": "Ficha de teste com fatos.", "fatos_citados": ["E1"]},
+                modelo=modelo,
+                custo_usd=CUSTO_POR_CHAMADA,
+            )
         fatos = json.loads(entrada.splitlines()[1])
         ids = re.findall(r"^(E\d+):", entrada, flags=re.MULTILINE)
         lojas = int((fatos.get("sinais") or {}).get("lojas", 0))

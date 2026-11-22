@@ -405,3 +405,8 @@ button.secundario {
   color: var(--destaque);
   border: 1px solid var(--destaque);
 }
+
+.ficha {
+  white-space: pre-wrap;
+  line-height: 1.5;
+}

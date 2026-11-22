@@ -765,6 +765,193 @@
         "title": "ContatoOut",
         "type": "object"
       },
+      "EmpresaDaCampanhaDetalhe": {
+        "properties": {
+          "campanha_id": {
+            "format": "uuid",
+            "title": "Campanha Id",
+            "type": "string"
+          },
+          "contato_oculto": {
+            "title": "Contato Oculto",
+            "type": "boolean"
+          },
+          "contatos": {
+            "items": {
+              "$ref": "#/components/schemas/ContatoOut"
+            },
+            "title": "Contatos",
+            "type": "array"
+          },
+          "empresa": {
+            "$ref": "#/components/schemas/EmpresaResumo"
+          },
+          "endereco": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Endereco"
+          },
+          "ficha": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ficha"
+          },
+          "ficha_status": {
+            "enum": [
+              "preparando",
+              "pronta",
+              "falhou"
+            ],
+            "title": "Ficha Status",
+            "type": "string"
+          },
+          "historico": {
+            "items": {
+              "$ref": "#/components/schemas/EventoDoHistorico"
+            },
+            "title": "Historico",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "nota_total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nota Total"
+          },
+          "promovida_em": {
+            "format": "date-time",
+            "title": "Promovida Em",
+            "type": "string"
+          },
+          "responsavel": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Responsavel"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sinais": {
+            "additionalProperties": true,
+            "title": "Sinais",
+            "type": "object"
+          },
+          "tier": {
+            "title": "Tier",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "campanha_id",
+          "tier",
+          "nota_total",
+          "ficha_status",
+          "responsavel",
+          "promovida_em",
+          "empresa",
+          "endereco",
+          "sinais",
+          "ficha",
+          "contatos",
+          "contato_oculto",
+          "historico"
+        ],
+        "title": "EmpresaDaCampanhaDetalhe",
+        "type": "object"
+      },
+      "EmpresaDaCampanhaResumo": {
+        "properties": {
+          "campanha_id": {
+            "format": "uuid",
+            "title": "Campanha Id",
+            "type": "string"
+          },
+          "empresa": {
+            "$ref": "#/components/schemas/EmpresaResumo"
+          },
+          "ficha_status": {
+            "enum": [
+              "preparando",
+              "pronta",
+              "falhou"
+            ],
+            "title": "Ficha Status",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "nota_total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nota Total"
+          },
+          "promovida_em": {
+            "format": "date-time",
+            "title": "Promovida Em",
+            "type": "string"
+          },
+          "responsavel": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Responsavel"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tier": {
+            "title": "Tier",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "campanha_id",
+          "tier",
+          "nota_total",
+          "ficha_status",
+          "responsavel",
+          "promovida_em",
+          "empresa"
+        ],
+        "title": "EmpresaDaCampanhaResumo",
+        "type": "object"
+      },
       "EmpresaResumo": {
         "properties": {
           "cnpj": {
@@ -880,6 +1067,70 @@
           "organizacao"
         ],
         "title": "EuOut",
+        "type": "object"
+      },
+      "EventoDoHistorico": {
+        "properties": {
+          "de_usuario": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "De Usuario"
+          },
+          "detalhes": {
+            "additionalProperties": true,
+            "title": "Detalhes",
+            "type": "object"
+          },
+          "ocorrido_em": {
+            "format": "date-time",
+            "title": "Ocorrido Em",
+            "type": "string"
+          },
+          "para_usuario": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Para Usuario"
+          },
+          "por_usuario": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Por Usuario"
+          },
+          "tipo": {
+            "title": "Tipo",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tipo",
+          "por_usuario",
+          "de_usuario",
+          "para_usuario",
+          "detalhes",
+          "ocorrido_em"
+        ],
+        "title": "EventoDoHistorico",
         "type": "object"
       },
       "EventoOut": {
@@ -1245,6 +1496,51 @@
         "title": "PaginaDeEventos",
         "type": "object"
       },
+      "PromocaoIn": {
+        "properties": {
+          "candidato_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "maxItems": 500,
+            "minItems": 1,
+            "title": "Candidato Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "candidato_ids"
+        ],
+        "title": "PromocaoIn",
+        "type": "object"
+      },
+      "PromocaoOut": {
+        "properties": {
+          "ignoradas": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Ignoradas",
+            "type": "array"
+          },
+          "promovidas": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Promovidas",
+            "type": "array"
+          }
+        },
+        "required": [
+          "promovidas",
+          "ignoradas"
+        ],
+        "title": "PromocaoOut",
+        "type": "object"
+      },
       "RecusaIn": {
         "properties": {
           "motivo": {
@@ -1265,6 +1561,25 @@
           "motivo"
         ],
         "title": "RecusaIn",
+        "type": "object"
+      },
+      "Responsavel": {
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "nome"
+        ],
+        "title": "Responsavel",
         "type": "object"
       },
       "SegmentoDaCampanha": {
@@ -1963,6 +2278,69 @@
         ]
       }
     },
+    "/campanhas/{campanha_id}/empresas": {
+      "get": {
+        "operationId": "listar_campanhas__campanha_id__empresas_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "campanha_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Campanha Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/EmpresaDaCampanhaResumo"
+                  },
+                  "title": "Response Listar Campanhas  Campanha Id  Empresas Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Listar",
+        "tags": [
+          "operação"
+        ]
+      }
+    },
     "/campanhas/{campanha_id}/execucoes": {
       "get": {
         "operationId": "listar_execucoes_campanhas__campanha_id__execucoes_get",
@@ -2080,6 +2458,87 @@
         "summary": "Iniciar Execucao",
         "tags": [
           "prospecção"
+        ]
+      }
+    },
+    "/campanhas/{campanha_id}/promocoes": {
+      "post": {
+        "description": "Sobe os aprovados para a operação. Cada clique manda uma Idempotency-Key nova;\nrepetir a mesma chave devolve o mesmo resultado sem duplicar nada.",
+        "operationId": "promover_campanhas__campanha_id__promocoes_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "campanha_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Campanha Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "maxLength": 200,
+              "minLength": 8,
+              "title": "Idempotency-Key",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PromocaoIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PromocaoOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Promover",
+        "tags": [
+          "operação"
         ]
       }
     },
@@ -2674,6 +3133,65 @@
         "summary": "Definir Teto",
         "tags": [
           "configuração"
+        ]
+      }
+    },
+    "/empresas-da-campanha/{empresa_id}": {
+      "get": {
+        "operationId": "detalhe_empresas_da_campanha__empresa_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "empresa_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Empresa Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmpresaDaCampanhaDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Detalhe",
+        "tags": [
+          "operação"
         ]
       }
     },

@@ -14,6 +14,8 @@ from app.core.config import Settings
 from app.core.db import Banco
 from app.core.seguranca import VerificadorDeToken
 from app.fila.fila import Fila
+from app.operacao import servico as operacao
+from app.operacao.rotas import router as operacao_router
 from app.organizacoes.rotas import router as organizacoes_router
 from app.prospeccao import servico as prospeccao
 from app.prospeccao.rotas import router as prospeccao_router
@@ -28,6 +30,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     cofre = Cofre(settings.chave_cifragem)
     fila.registrar(prospeccao.TIPO_JOB, prospeccao.executor(settings))
     fila.registrar(qualificacao.TIPO_JOB, qualificacao.executor(settings, cofre))
+    fila.registrar(operacao.TIPO_JOB_FICHA, operacao.executor(settings, cofre))
 
     @asynccontextmanager
     async def ciclo_de_vida(app: FastAPI) -> AsyncIterator[None]:
@@ -64,4 +67,5 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(campanhas_router)
     app.include_router(prospeccao_router)
     app.include_router(triagem_router)
+    app.include_router(operacao_router)
     return app

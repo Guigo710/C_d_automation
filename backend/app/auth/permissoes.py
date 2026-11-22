@@ -25,6 +25,8 @@ PERMISSOES: dict[str, frozenset[str]] = {
     "prospeccao.executar": frozenset({COORDENADOR}),
     "prospeccao.ler": frozenset({ADMINISTRADOR, COORDENADOR}),
     "triagem.decidir": frozenset({COORDENADOR}),
+    "lead.promover": frozenset({COORDENADOR}),
+    "operacao.ler": frozenset({ADMINISTRADOR, COORDENADOR}),
 }
 
 

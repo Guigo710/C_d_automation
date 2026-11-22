@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { api } from "../api/cliente";
 import type { components } from "../api/schema";
 import { useEu } from "../eu";
+import { EmpresasDaCampanha } from "./EmpresasDaCampanha";
 import { Kanban } from "./Kanban";
 
 type Execucao = components["schemas"]["ExecucaoOut"];
@@ -46,6 +47,7 @@ export function SecaoProspeccao({ campanhaId }: { campanhaId: string }) {
   const [candidatos, setCandidatos] = useState<PaginaDeCandidatos | null>(null);
   const [aberto, setAberto] = useState<CandidatoDetalhe | null>(null);
   const [erro, setErro] = useState<string | null>(null);
+  const [versaoDaOperacao, setVersaoDaOperacao] = useState(0);
   const caminho = { params: { path: { campanha_id: campanhaId } } };
 
   const carregar = useCallback(async () => {
@@ -97,6 +99,22 @@ export function SecaoProspeccao({ campanhaId }: { campanhaId: string }) {
     await carregar();
   }
 
+  const aprovados = candidatos?.itens.filter((c) => c.status === "aprovado") ?? [];
+
+  async function subirParaOperacao() {
+    setErro(null);
+    const { data, error } = await api.POST("/campanhas/{campanha_id}/promocoes", {
+      params: {
+        path: { campanha_id: campanhaId },
+        // Uma chave nova por clique: repetir o mesmo pedido não duplica nada.
+        header: { "Idempotency-Key": crypto.randomUUID() },
+      },
+      body: { candidato_ids: aprovados.map((c) => c.id) },
+    });
+    if (error) setErro("Não foi possível enviar para a operação.");
+    else if (data) setVersaoDaOperacao((v) => v + 1);
+  }
+
   async function abrir(candidatoId: string) {
     const { data } = await api.GET("/candidatos/{candidato_id}", {
       params: { path: { candidato_id: candidatoId } },
@@ -105,13 +123,19 @@ export function SecaoProspeccao({ campanhaId }: { campanhaId: string }) {
   }
 
   return (
+    <>
     <section className="painel">
       <header className="cabecalho-da-pagina">
         <h2>Prospecção</h2>
         {eu?.papel === "coordenador" && (
-          <button onClick={executar} disabled={!!andamento}>
-            {andamento ? "Executando..." : "Executar prospecção"}
-          </button>
+          <div className="linha">
+            <button onClick={executar} disabled={!!andamento}>
+              {andamento ? "Executando..." : "Executar prospecção"}
+            </button>
+            <button className="secundario" onClick={subirParaOperacao} disabled={aprovados.length === 0}>
+              Subir {aprovados.length} aprovado(s) para operação
+            </button>
+          </div>
         )}
       </header>
       {erro && <p className="erro">{erro}</p>}
@@ -151,6 +175,8 @@ export function SecaoProspeccao({ campanhaId }: { campanhaId: string }) {
         />
       )}
     </section>
+    <EmpresasDaCampanha campanhaId={campanhaId} versao={versaoDaOperacao} />
+    </>
   );
 }
 

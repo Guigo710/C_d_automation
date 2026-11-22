@@ -91,6 +91,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/campanhas/{campanha_id}/empresas": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Listar */
+        get: operations["listar_campanhas__campanha_id__empresas_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/campanhas/{campanha_id}/execucoes": {
         parameters: {
             query?: never;
@@ -103,6 +120,27 @@ export interface paths {
         put?: never;
         /** Iniciar Execucao */
         post: operations["iniciar_execucao_campanhas__campanha_id__execucoes_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/campanhas/{campanha_id}/promocoes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Promover
+         * @description Sobe os aprovados para a operação. Cada clique manda uma Idempotency-Key nova;
+         *     repetir a mesma chave devolve o mesmo resultado sem duplicar nada.
+         */
+        post: operations["promover_campanhas__campanha_id__promocoes_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -260,6 +298,23 @@ export interface paths {
         get?: never;
         /** Definir Teto */
         put: operations["definir_teto_configuracao_teto_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/empresas-da-campanha/{empresa_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Detalhe */
+        get: operations["detalhe_empresas_da_campanha__empresa_id__get"];
+        put?: never;
         post?: never;
         delete?: never;
         options?: never;
@@ -640,6 +695,78 @@ export interface components {
             /** Valor */
             valor: string;
         };
+        /** EmpresaDaCampanhaDetalhe */
+        EmpresaDaCampanhaDetalhe: {
+            /**
+             * Campanha Id
+             * Format: uuid
+             */
+            campanha_id: string;
+            /** Contato Oculto */
+            contato_oculto: boolean;
+            /** Contatos */
+            contatos: components["schemas"]["ContatoOut"][];
+            empresa: components["schemas"]["EmpresaResumo"];
+            /** Endereco */
+            endereco: string | null;
+            /** Ficha */
+            ficha: string | null;
+            /**
+             * Ficha Status
+             * @enum {string}
+             */
+            ficha_status: "preparando" | "pronta" | "falhou";
+            /** Historico */
+            historico: components["schemas"]["EventoDoHistorico"][];
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Nota Total */
+            nota_total: number | null;
+            /**
+             * Promovida Em
+             * Format: date-time
+             */
+            promovida_em: string;
+            responsavel: components["schemas"]["Responsavel"] | null;
+            /** Sinais */
+            sinais: {
+                [key: string]: unknown;
+            };
+            /** Tier */
+            tier: string;
+        };
+        /** EmpresaDaCampanhaResumo */
+        EmpresaDaCampanhaResumo: {
+            /**
+             * Campanha Id
+             * Format: uuid
+             */
+            campanha_id: string;
+            empresa: components["schemas"]["EmpresaResumo"];
+            /**
+             * Ficha Status
+             * @enum {string}
+             */
+            ficha_status: "preparando" | "pronta" | "falhou";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Nota Total */
+            nota_total: number | null;
+            /**
+             * Promovida Em
+             * Format: date-time
+             */
+            promovida_em: string;
+            responsavel: components["schemas"]["Responsavel"] | null;
+            /** Tier */
+            tier: string;
+        };
         /** EmpresaResumo */
         EmpresaResumo: {
             /** Cnpj */
@@ -676,6 +803,26 @@ export interface components {
              * Format: uuid
              */
             usuario_id: string;
+        };
+        /** EventoDoHistorico */
+        EventoDoHistorico: {
+            /** De Usuario */
+            de_usuario: string | null;
+            /** Detalhes */
+            detalhes: {
+                [key: string]: unknown;
+            };
+            /**
+             * Ocorrido Em
+             * Format: date-time
+             */
+            ocorrido_em: string;
+            /** Para Usuario */
+            para_usuario: string | null;
+            /** Por Usuario */
+            por_usuario: string | null;
+            /** Tipo */
+            tipo: string;
         };
         /** EventoOut */
         EventoOut: {
@@ -803,6 +950,18 @@ export interface components {
             /** Proximo Antes De */
             proximo_antes_de: number | null;
         };
+        /** PromocaoIn */
+        PromocaoIn: {
+            /** Candidato Ids */
+            candidato_ids: string[];
+        };
+        /** PromocaoOut */
+        PromocaoOut: {
+            /** Ignoradas */
+            ignoradas: string[];
+            /** Promovidas */
+            promovidas: string[];
+        };
         /** RecusaIn */
         RecusaIn: {
             /**
@@ -810,6 +969,16 @@ export interface components {
              * @enum {string}
              */
             motivo: "fora_do_perfil" | "cnpj_inativo" | "fora_da_regiao" | "dados_incompletos" | "ja_e_cliente" | "duplicado" | "opt_out";
+        };
+        /** Responsavel */
+        Responsavel: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Nome */
+            nome: string;
         };
         /** SegmentoDaCampanha */
         SegmentoDaCampanha: {
@@ -1132,6 +1301,39 @@ export interface operations {
             };
         };
     };
+    listar_campanhas__campanha_id__empresas_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                campanha_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EmpresaDaCampanhaResumo"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     listar_execucoes_campanhas__campanha_id__execucoes_get: {
         parameters: {
             query?: never;
@@ -1185,6 +1387,44 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ExecucaoOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    promover_campanhas__campanha_id__promocoes_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+                authorization?: string | null;
+            };
+            path: {
+                campanha_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PromocaoIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PromocaoOut"];
                 };
             };
             /** @description Validation Error */
@@ -1521,6 +1761,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ConfiguracaoDaOrganizacao"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    detalhe_empresas_da_campanha__empresa_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                empresa_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EmpresaDaCampanhaDetalhe"];
                 };
             };
             /** @description Validation Error */
