@@ -107,6 +107,15 @@ def decisao_do_candidato(conn: Conexao, candidato_id: uuid.UUID) -> dict[str, An
     ).fetchone()
 
 
+def assumir(conn: Conexao, empresa_da_campanha_id: uuid.UUID, usuario_id: uuid.UUID) -> bool:
+    linha = conn.execute(
+        "UPDATE empresas_da_campanha SET responsavel_id = %s "
+        "WHERE id = %s AND responsavel_id IS NULL RETURNING id",
+        (usuario_id, empresa_da_campanha_id),
+    ).fetchone()
+    return linha is not None
+
+
 # --- leitura -----------------------------------------------------------------------------
 
 

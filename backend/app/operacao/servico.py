@@ -31,6 +31,10 @@ class NaoEncontrado(Exception):
     pass
 
 
+class JaAssumida(Exception):
+    pass
+
+
 def promover(
     contexto: Contexto, campanha_id: uuid.UUID, ids: list[uuid.UUID], chave: str
 ) -> PromocaoOut:
@@ -88,6 +92,29 @@ def detalhe(contexto: Contexto, empresa_da_campanha_id: uuid.UUID) -> EmpresaDaC
     contatos = repo.contatos(contexto.conn, linha["empresa_id"]) if ve_contato else []
     eventos = repo.historico(contexto.conn, empresa_da_campanha_id)
     return repo.montar_detalhe(linha, contatos, not ve_contato, eventos)
+
+
+def assumir(contexto: Contexto, empresa_da_campanha_id: uuid.UUID) -> EmpresaDaCampanhaDetalhe:
+    """O primeiro vendedor a assumir fica com a empresa; o banco garante."""
+    atual = repo.buscar(contexto.conn, empresa_da_campanha_id)
+    if atual is None:
+        raise NaoEncontrado
+    if atual["responsavel_id"] == contexto.usuario.id:
+        return detalhe(contexto, empresa_da_campanha_id)
+    if not repo.assumir(contexto.conn, empresa_da_campanha_id, contexto.usuario.id):
+        raise JaAssumida
+    repo.registrar_no_historico(
+        contexto.conn,
+        empresa_da_campanha_id,
+        "assumida",
+        contexto.usuario.id,
+        para_usuario=contexto.usuario.id,
+    )
+    auditoria.registrar(
+        contexto, "empresa.assumida", "empresa_da_campanha", empresa_da_campanha_id,
+        {"para": str(contexto.usuario.id)},
+    )  # fmt: skip
+    return detalhe(contexto, empresa_da_campanha_id)
 
 
 # --- ficha (worker) ----------------------------------------------------------------------

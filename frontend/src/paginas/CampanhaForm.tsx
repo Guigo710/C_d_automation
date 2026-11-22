@@ -5,6 +5,7 @@ import type { components } from "../api/schema";
 import { useEu } from "../eu";
 import { irPara } from "../rota";
 import { NOMES_DOS_STATUS } from "./Campanhas";
+import { EmpresasDaCampanha } from "./EmpresasDaCampanha";
 import { SecaoProspeccao } from "./SecaoProspeccao";
 
 type CampanhaIn = components["schemas"]["CampanhaIn"];
@@ -246,6 +247,7 @@ export function CampanhaForm({ campanhaId }: { campanhaId: string | null }) {
       {campanhaId && (eu?.papel === "coordenador" || eu?.papel === "administrador") && (
         <SecaoProspeccao campanhaId={campanhaId} />
       )}
+      {campanhaId && eu?.papel === "vendedor" && <EmpresasDaCampanha campanhaId={campanhaId} versao={0} />}
     </>
   );
 }

@@ -54,3 +54,17 @@ def detalhe(empresa_id: uuid.UUID, contexto: Ler) -> EmpresaDaCampanhaDetalhe:
         return servico.detalhe(contexto, empresa_id)
     except servico.NaoEncontrado as erro:
         raise _nao_encontrado() from erro
+
+
+@router.post("/empresas-da-campanha/{empresa_id}/assumir", response_model=EmpresaDaCampanhaDetalhe)
+def assumir(
+    empresa_id: uuid.UUID, contexto: Annotated[Contexto, Depends(exige("lead.assumir"))]
+) -> EmpresaDaCampanhaDetalhe:
+    try:
+        return servico.assumir(contexto, empresa_id)
+    except servico.NaoEncontrado as erro:
+        raise _nao_encontrado() from erro
+    except servico.JaAssumida as erro:
+        raise HTTPException(
+            status.HTTP_409_CONFLICT, "Outro vendedor assumiu esta empresa primeiro"
+        ) from erro

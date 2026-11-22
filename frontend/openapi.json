@@ -3195,6 +3195,65 @@
         ]
       }
     },
+    "/empresas-da-campanha/{empresa_id}/assumir": {
+      "post": {
+        "operationId": "assumir_empresas_da_campanha__empresa_id__assumir_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "empresa_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Empresa Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmpresaDaCampanhaDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Assumir",
+        "tags": [
+          "operação"
+        ]
+      }
+    },
     "/eu": {
       "get": {
         "operationId": "eu_eu_get",
