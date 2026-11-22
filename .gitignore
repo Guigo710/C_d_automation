@@ -30,3 +30,7 @@ Thumbs.db
 
 # Claude Code local
 .claude/settings.local.json
+
+# Build do frontend
+frontend/dist/
+*.tsbuildinfo

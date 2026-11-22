@@ -6,6 +6,8 @@
 
 **Status:** ready-for-agent
 
+> **Pendente (22/11/2026):** código escrito e commitado; tipos, lint, build do frontend e teste de contrato passam. Os testes de API contra o PostgreSQL (`tests/test_acesso.py`) ainda não rodaram porque o Docker Desktop não inicia nesta máquina. Rodar `docker compose up -d db-test` e `pytest` antes de considerar o ticket feito.
+
 - [ ] Existem organização e perfil de usuário (vínculo do usuário do Supabase Auth com organização, papel — administrador, coordenador ou vendedor — e status ativo); o token do usuário carrega `organizacao_id` e papel vindos do perfil, nunca do próprio usuário
 - [ ] Toda tabela de negócio tem `organizacao_id` e política de RLS que restringe leitura e escrita à organização do token
 - [ ] A API valida o token do Supabase; uma rota devolve a organização e o papel do usuário logado; usuário inativo ou sem perfil é recusado

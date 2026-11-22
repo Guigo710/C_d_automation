@@ -1,0 +1,18 @@
+services:
+  # PostgreSQL usado pelos testes da API (porta fora do padrão para não colidir).
+  db-test:
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "54329:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+
+  # API rodando localmente com a mesma imagem que vai para o Render.
+  api:
+    build: ./backend
+    env_file: ./backend/.env
+    ports:
+      - "8000:8000"
+    profiles: ["api"]
