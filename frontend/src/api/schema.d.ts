@@ -339,6 +339,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/empresas-da-campanha/{empresa_id}/responsavel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Definir Responsavel
+         * @description Coordenador atribui uma empresa sem responsável ou transfere entre vendedores.
+         */
+        put: operations["definir_responsavel_empresas_da_campanha__empresa_id__responsavel_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/eu": {
         parameters: {
             query?: never;
@@ -996,6 +1016,14 @@ export interface components {
             id: string;
             /** Nome */
             nome: string;
+        };
+        /** ResponsavelIn */
+        ResponsavelIn: {
+            /**
+             * Vendedor Id
+             * Format: uuid
+             */
+            vendedor_id: string;
         };
         /** SegmentoDaCampanha */
         SegmentoDaCampanha: {
@@ -1836,6 +1864,43 @@ export interface operations {
             cookie?: never;
         };
         requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EmpresaDaCampanhaDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    definir_responsavel_empresas_da_campanha__empresa_id__responsavel_put: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                empresa_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResponsavelIn"];
+            };
+        };
         responses: {
             /** @description Successful Response */
             200: {

@@ -17,8 +17,8 @@ const EVENTOS: Record<string, string> = {
   aprovada: "Aprovada na triagem",
   promovida: "Enviada para a operação",
   assumida: "Assumida",
-  atribuida: "Atribuída",
-  transferida: "Transferida",
+  atribuida: "Atribuída pelo coordenador",
+  transferida: "Transferida pelo coordenador",
 };
 
 export function EmpresasDaCampanha({ campanhaId, versao }: { campanhaId: string; versao: number }) {
@@ -27,6 +27,30 @@ export function EmpresasDaCampanha({ campanhaId, versao }: { campanhaId: string;
   const [aviso, setAviso] = useState<string | null>(null);
   const { eu } = useEu();
   const ehVendedor = eu?.papel === "vendedor";
+  const ehCoordenador = eu?.papel === "coordenador";
+  const [membros, setMembros] = useState<{ id: string; nome: string }[]>([]);
+  const [destino, setDestino] = useState("");
+
+  useEffect(() => {
+    if (!ehCoordenador) return;
+    api
+      .GET("/campanhas/{campanha_id}", { params: { path: { campanha_id: campanhaId } } })
+      .then(({ data }) => data && setMembros(data.membros));
+  }, [ehCoordenador, campanhaId]);
+
+  async function definirResponsavel(empresaId: string) {
+    if (!destino) return;
+    setAviso(null);
+    const { data } = await api.PUT("/empresas-da-campanha/{empresa_id}/responsavel", {
+      params: { path: { empresa_id: empresaId } },
+      body: { vendedor_id: destino },
+    });
+    if (data) {
+      setAberta(data);
+      setDestino("");
+      carregar();
+    } else setAviso("Não foi possível trocar o responsável.");
+  }
 
   const carregar = useCallback(async () => {
     const { data } = await api.GET("/campanhas/{campanha_id}/empresas", {
@@ -125,6 +149,28 @@ export function EmpresasDaCampanha({ campanhaId, versao }: { campanhaId: string;
             </header>
             {ehVendedor && !aberta.responsavel && (
               <button onClick={() => assumir(aberta.id)}>Assumir esta empresa</button>
+            )}
+            {ehCoordenador && (
+              <div className="acoes">
+                <span className="suave">
+                  Responsável: {aberta.responsavel?.nome ?? "ninguém ainda"}
+                </span>
+                <div className="linha">
+                  <select value={destino} onChange={(ev) => setDestino(ev.target.value)}>
+                    <option value="">Escolher vendedor da campanha</option>
+                    {membros
+                      .filter((m) => m.id !== aberta.responsavel?.id)
+                      .map((m) => (
+                        <option key={m.id} value={m.id}>
+                          {m.nome}
+                        </option>
+                      ))}
+                  </select>
+                  <button disabled={!destino} onClick={() => definirResponsavel(aberta.id)}>
+                    {aberta.responsavel ? "Transferir" : "Atribuir"}
+                  </button>
+                </div>
+              </div>
             )}
             <p>
               <span className="etiqueta">Tier {aberta.tier}</span>{" "}

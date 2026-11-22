@@ -15,6 +15,10 @@ class PromocaoIn(BaseModel):
     candidato_ids: Annotated[list[uuid.UUID], Field(min_length=1, max_length=500)]
 
 
+class ResponsavelIn(BaseModel):
+    vendedor_id: uuid.UUID
+
+
 class PromocaoOut(BaseModel):
     promovidas: list[uuid.UUID]
     ignoradas: list[uuid.UUID]

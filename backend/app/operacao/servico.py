@@ -35,6 +35,10 @@ class JaAssumida(Exception):
     pass
 
 
+class VendedorInvalido(Exception):
+    pass
+
+
 def promover(
     contexto: Contexto, campanha_id: uuid.UUID, ids: list[uuid.UUID], chave: str
 ) -> PromocaoOut:
@@ -114,6 +118,38 @@ def assumir(contexto: Contexto, empresa_da_campanha_id: uuid.UUID) -> EmpresaDaC
         contexto, "empresa.assumida", "empresa_da_campanha", empresa_da_campanha_id,
         {"para": str(contexto.usuario.id)},
     )  # fmt: skip
+    return detalhe(contexto, empresa_da_campanha_id)
+
+
+def definir_responsavel(
+    contexto: Contexto, empresa_da_campanha_id: uuid.UUID, vendedor_id: uuid.UUID
+) -> EmpresaDaCampanhaDetalhe:
+    """Atribui (empresa sem responsável) ou transfere (de um vendedor para outro)."""
+    atual = repo.buscar(contexto.conn, empresa_da_campanha_id)
+    if atual is None:
+        raise NaoEncontrado
+    if not repo.vendedor_da_campanha(contexto.conn, atual["campanha_id"], vendedor_id):
+        raise VendedorInvalido("O vendedor precisa ser membro ativo da campanha")
+    anterior = atual["responsavel_id"]
+    if anterior == vendedor_id:
+        return detalhe(contexto, empresa_da_campanha_id)
+    repo.trocar_responsavel(contexto.conn, empresa_da_campanha_id, vendedor_id)
+    tipo = "atribuida" if anterior is None else "transferida"
+    repo.registrar_no_historico(
+        contexto.conn,
+        empresa_da_campanha_id,
+        tipo,
+        contexto.usuario.id,
+        de_usuario=anterior,
+        para_usuario=vendedor_id,
+    )
+    auditoria.registrar(
+        contexto,
+        f"empresa.{tipo}",
+        "empresa_da_campanha",
+        empresa_da_campanha_id,
+        {"de": str(anterior) if anterior else None, "para": str(vendedor_id)},
+    )
     return detalhe(contexto, empresa_da_campanha_id)
 
 

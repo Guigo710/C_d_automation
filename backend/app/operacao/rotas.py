@@ -13,6 +13,7 @@ from app.operacao.esquemas import (
     EmpresaDaCampanhaResumo,
     PromocaoIn,
     PromocaoOut,
+    ResponsavelIn,
 )
 
 router = APIRouter(tags=["operação"])
@@ -68,3 +69,20 @@ def assumir(
         raise HTTPException(
             status.HTTP_409_CONFLICT, "Outro vendedor assumiu esta empresa primeiro"
         ) from erro
+
+
+@router.put(
+    "/empresas-da-campanha/{empresa_id}/responsavel", response_model=EmpresaDaCampanhaDetalhe
+)
+def definir_responsavel(
+    empresa_id: uuid.UUID,
+    dados: ResponsavelIn,
+    contexto: Annotated[Contexto, Depends(exige("lead.atribuir"))],
+) -> EmpresaDaCampanhaDetalhe:
+    """Coordenador atribui uma empresa sem responsável ou transfere entre vendedores."""
+    try:
+        return servico.definir_responsavel(contexto, empresa_id, dados.vendedor_id)
+    except servico.NaoEncontrado as erro:
+        raise _nao_encontrado() from erro
+    except servico.VendedorInvalido as erro:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, str(erro)) from erro

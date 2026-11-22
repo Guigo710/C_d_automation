@@ -116,6 +116,24 @@ def assumir(conn: Conexao, empresa_da_campanha_id: uuid.UUID, usuario_id: uuid.U
     return linha is not None
 
 
+def vendedor_da_campanha(conn: Conexao, campanha_id: uuid.UUID, usuario_id: uuid.UUID) -> bool:
+    linha = conn.execute(
+        "SELECT 1 FROM campanha_membros m JOIN perfis p ON p.usuario_id = m.usuario_id "
+        "WHERE m.campanha_id = %s AND m.usuario_id = %s AND p.papel = 'vendedor' AND p.ativo",
+        (campanha_id, usuario_id),
+    ).fetchone()
+    return linha is not None
+
+
+def trocar_responsavel(
+    conn: Conexao, empresa_da_campanha_id: uuid.UUID, usuario_id: uuid.UUID
+) -> None:
+    conn.execute(
+        "UPDATE empresas_da_campanha SET responsavel_id = %s WHERE id = %s",
+        (usuario_id, empresa_da_campanha_id),
+    )
+
+
 # --- leitura -----------------------------------------------------------------------------
 
 

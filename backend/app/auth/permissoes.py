@@ -28,6 +28,7 @@ PERMISSOES: dict[str, frozenset[str]] = {
     "lead.promover": frozenset({COORDENADOR}),
     "operacao.ler": TODOS,
     "lead.assumir": frozenset({VENDEDOR}),
+    "lead.atribuir": frozenset({COORDENADOR}),
 }
 
 

@@ -6,6 +6,8 @@
 
 **Status:** ready-for-agent
 
+> **Pendente (22/11/2026):** código commitado; tipos, lint e build passam. Testes de API (`tests/test_atribuicao.py`) aguardam o PostgreSQL de teste (Docker).
+
 - [ ] Coordenador atribui empresa sem responsável a um vendedor membro da campanha
 - [ ] Coordenador transfere empresa entre vendedores membros da campanha
 - [ ] A API recusa atribuir ou transferir para quem não é membro da campanha

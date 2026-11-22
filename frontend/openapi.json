@@ -1582,6 +1582,20 @@
         "title": "Responsavel",
         "type": "object"
       },
+      "ResponsavelIn": {
+        "properties": {
+          "vendedor_id": {
+            "format": "uuid",
+            "title": "Vendedor Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "vendedor_id"
+        ],
+        "title": "ResponsavelIn",
+        "type": "object"
+      },
       "SegmentoDaCampanha": {
         "properties": {
           "id": {
@@ -3249,6 +3263,76 @@
           }
         },
         "summary": "Assumir",
+        "tags": [
+          "operação"
+        ]
+      }
+    },
+    "/empresas-da-campanha/{empresa_id}/responsavel": {
+      "put": {
+        "description": "Coordenador atribui uma empresa sem responsável ou transfere entre vendedores.",
+        "operationId": "definir_responsavel_empresas_da_campanha__empresa_id__responsavel_put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "empresa_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Empresa Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResponsavelIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmpresaDaCampanhaDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Definir Responsavel",
         "tags": [
           "operação"
         ]
