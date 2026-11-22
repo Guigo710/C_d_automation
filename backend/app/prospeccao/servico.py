@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import uuid
+from decimal import Decimal
 
 from app.auth.contexto import Contexto
 from app.campanhas import repositorio as campanhas
@@ -82,29 +83,42 @@ class ExecutorDeProspeccao:
         assert job.campanha_id is not None
         banco = fila.banco
 
+        def terminar(status: str, motivo: str | None = None) -> None:
+            with como_sistema(banco, job.organizacao_id, job.criado_por) as conn:
+                repositorio.terminar_execucao(conn, job.id, status, motivo)
+
         with como_sistema(banco, job.organizacao_id, job.criado_por) as conn:
             foto = repositorio.foto_da_campanha(conn, job.campanha_id)
             if foto is None:
                 repositorio.terminar_execucao(conn, job.id, "falhou", "campanha_nao_encontrada")
                 return
-            ja_gravadas = repositorio.candidatos_na_campanha(conn, job.campanha_id)
-            if ja_gravadas >= foto.limite_empresas:
-                repositorio.terminar_execucao(conn, job.id, "parcial", "limite_de_empresas")
-                return
+            gravadas = repositorio.candidatos_na_campanha(conn, job.campanha_id)
 
+        if gravadas >= foto.limite_empresas:
+            terminar("parcial", "limite_de_empresas")
+            return
+        if foto.saldo_teto_usd <= 0:
+            terminar("parcial", "teto_de_gasto")
+            return
+
+        # A plataforma controla limite e teto: para de consumir o agente quando acabam.
+        gasto = Decimal(0)
         agente = carregar_agente(self._settings.agente_prospeccao)
-        gravadas = ja_gravadas
         for candidato in agente.executar(foto):
             with como_sistema(banco, job.organizacao_id, job.criado_por) as conn:
                 resultado = repositorio.gravar_candidato(conn, job.campanha_id, job.id, candidato)
                 repositorio.registrar_progresso(conn, job.id, resultado, candidato.custo_usd)
                 fila.renovar_lease(conn, job.id)
+            if resultado == "ja_processada":
+                continue
+            gasto += candidato.custo_usd
             if resultado == "gravada":
                 gravadas += 1
             if gravadas >= foto.limite_empresas:
-                with como_sistema(banco, job.organizacao_id, job.criado_por) as conn:
-                    repositorio.terminar_execucao(conn, job.id, "parcial", "limite_de_empresas")
+                terminar("parcial", "limite_de_empresas")
+                return
+            if gasto >= foto.saldo_teto_usd:
+                terminar("parcial", "teto_de_gasto")
                 return
 
-        with como_sistema(banco, job.organizacao_id, job.criado_por) as conn:
-            repositorio.terminar_execucao(conn, job.id, "concluida")
+        terminar("concluida")

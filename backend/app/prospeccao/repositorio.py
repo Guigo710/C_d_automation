@@ -54,9 +54,17 @@ def listar_execucoes(conn: Conexao, campanha_id: uuid.UUID) -> list[ExecucaoOut]
     return [ExecucaoOut.model_validate(linha) for linha in linhas]
 
 
+Resultado = Literal["gravada", "duplicada", "ja_processada"]
+
+
 def registrar_progresso(
-    conn: Conexao, job_id: uuid.UUID, resultado: Literal["gravada", "duplicada"], custo: Decimal
+    conn: Conexao, job_id: uuid.UUID, resultado: Resultado, custo: Decimal
 ) -> None:
+    """Conta o candidato no job. Um candidato que este mesmo job já gravou antes de ser
+    interrompido não conta de novo, nem o seu custo."""
+    if resultado == "ja_processada":
+        conn.execute("UPDATE jobs SET ultima_atividade = now() WHERE id = %s", (job_id,))
+        return
     conn.execute(
         "UPDATE jobs SET encontradas = encontradas + 1, "
         "gravadas = gravadas + %(g)s, duplicadas = duplicadas + %(d)s, "
@@ -97,16 +105,26 @@ def foto_da_campanha(conn: Conexao, campanha_id: uuid.UUID) -> FotoDaCampanha | 
         "ORDER BY s.nome",
         (campanha_id,),
     ).fetchall()
-    gasto = gasto_da_campanha(conn, campanha_id)
-    teto: Decimal = campanha["teto_gasto_usd"]
+    saldo_campanha = campanha["teto_gasto_usd"] - gasto_da_campanha(conn, campanha_id)
+    saldo_mensal = saldo_mensal_da_organizacao(conn)
     return FotoDaCampanha(
         organizacao_id=campanha["organizacao_id"],
         campanha_id=campanha_id,
         municipios_ibge=list(campanha["municipios_ibge"]),
         segmentos=[SegmentoAlvo(nome=str(s["nome"]), cnaes=list(s["cnaes"])) for s in segmentos],
         limite_empresas=int(campanha["limite_empresas"]),
-        saldo_teto_usd=max(teto - gasto, Decimal(0)),
+        saldo_teto_usd=max(min(saldo_campanha, saldo_mensal), Decimal(0)),
     )
+
+
+def saldo_mensal_da_organizacao(conn: Conexao) -> Decimal:
+    linha = conn.execute(
+        "SELECT teto_mensal_usd - app.gasto_do_mes() AS saldo FROM organizacoes "
+        "WHERE id = app.organizacao_atual()"
+    ).fetchone()
+    assert linha is not None
+    saldo: Decimal = linha["saldo"]
+    return saldo
 
 
 def gasto_da_campanha(conn: Conexao, campanha_id: uuid.UUID) -> Decimal:
@@ -132,18 +150,20 @@ def candidatos_na_campanha(conn: Conexao, campanha_id: uuid.UUID) -> int:
 
 def gravar_candidato(
     conn: Conexao, campanha_id: uuid.UUID, job_id: uuid.UUID, c: CandidatoProspectado
-) -> Literal["gravada", "duplicada"]:
+) -> Resultado:
     """Grava empresa, contatos, evidências e candidato. Mesmo CNPJ já nesta campanha ou em
-    outra campanha ativa da organização conta como duplicada e não é gravado de novo."""
+    outra campanha ativa da organização conta como duplicada e não é gravado de novo; se foi
+    este mesmo job que o gravou (execução retomada), é 'ja_processada'."""
     cnpj = c.cnpj.strip().upper()
-    ja_em_campanha = conn.execute(
-        "SELECT 1 FROM candidatos ca JOIN empresas e ON e.id = ca.empresa_id "
+    existente = conn.execute(
+        "SELECT ca.job_id FROM candidatos ca JOIN empresas e ON e.id = ca.empresa_id "
         "JOIN campanhas cp ON cp.id = ca.campanha_id "
-        "WHERE e.cnpj = %s AND (ca.campanha_id = %s OR cp.status = 'ativa')",
-        (cnpj, campanha_id),
+        "WHERE e.cnpj = %s AND (ca.campanha_id = %s OR cp.status = 'ativa') "
+        "ORDER BY (ca.job_id = %s) DESC NULLS LAST LIMIT 1",
+        (cnpj, campanha_id, job_id),
     ).fetchone()
-    if ja_em_campanha:
-        return "duplicada"
+    if existente:
+        return "ja_processada" if existente["job_id"] == job_id else "duplicada"
 
     linha = conn.execute(
         "INSERT INTO empresas (cnpj, razao_social, nome_fantasia, situacao_cadastral, endereco, "

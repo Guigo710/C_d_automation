@@ -6,6 +6,8 @@
 
 **Status:** ready-for-agent
 
+> **Pendente (22/11/2026):** código commitado; tipos e lint passam. Testes de API (`tests/test_limites_e_retomada.py`) aguardam o PostgreSQL de teste (Docker).
+
 - [ ] O agente recebe o saldo do teto (o menor entre o saldo da campanha e o saldo mensal da organização)
 - [ ] A plataforma deixa de consumir candidatos quando o limite de empresas ou o saldo acaba, e o job termina como parcial
 - [ ] Custo de cada execução registrado e somado ao gasto do mês
