@@ -15,6 +15,8 @@ TODOS = frozenset({ADMINISTRADOR, COORDENADOR, VENDEDOR})
 
 PERMISSOES: dict[str, frozenset[str]] = {
     "organizacao.ler": TODOS,
+    "sessao.registrar": TODOS,
+    "auditoria.ler": frozenset({ADMINISTRADOR}),
 }
 
 

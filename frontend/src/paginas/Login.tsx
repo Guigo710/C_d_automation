@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from "react";
 
+import { api } from "../api/cliente";
 import { supabase } from "../supabase";
 
 export function Login() {
@@ -16,7 +17,12 @@ export function Login() {
     setEnviando(true);
     const { error } = await supabase.auth.signInWithPassword({ email, password: senha });
     setEnviando(false);
-    if (error) setErro("E-mail ou senha incorretos.");
+    if (error) {
+      setErro("E-mail ou senha incorretos.");
+      return;
+    }
+    // Registro do login na auditoria; uma falha aqui não impede o acesso.
+    await api.POST("/eu/login").catch(() => undefined);
   }
 
   async function recuperarSenha() {

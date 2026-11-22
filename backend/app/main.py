@@ -6,6 +6,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.auditoria.rotas import router as auditoria_router
 from app.core.config import Settings
 from app.core.db import Banco
 from app.core.seguranca import VerificadorDeToken
@@ -41,4 +42,5 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         return {"status": "ok"}
 
     app.include_router(organizacoes_router)
+    app.include_router(auditoria_router)
     return app

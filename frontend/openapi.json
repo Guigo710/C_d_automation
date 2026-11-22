@@ -34,6 +34,73 @@
         "title": "EuOut",
         "type": "object"
       },
+      "EventoOut": {
+        "properties": {
+          "acao": {
+            "title": "Acao",
+            "type": "string"
+          },
+          "criado_em": {
+            "format": "date-time",
+            "title": "Criado Em",
+            "type": "string"
+          },
+          "detalhes": {
+            "additionalProperties": true,
+            "title": "Detalhes",
+            "type": "object"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "recurso_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recurso Id"
+          },
+          "recurso_tipo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recurso Tipo"
+          },
+          "usuario_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Usuario Id"
+          }
+        },
+        "required": [
+          "id",
+          "usuario_id",
+          "acao",
+          "recurso_tipo",
+          "recurso_id",
+          "detalhes",
+          "criado_em"
+        ],
+        "title": "EventoOut",
+        "type": "object"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -64,6 +131,34 @@
           "nome"
         ],
         "title": "OrganizacaoOut",
+        "type": "object"
+      },
+      "PaginaDeEventos": {
+        "properties": {
+          "itens": {
+            "items": {
+              "$ref": "#/components/schemas/EventoOut"
+            },
+            "title": "Itens",
+            "type": "array"
+          },
+          "proximo_antes_de": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Proximo Antes De"
+          }
+        },
+        "required": [
+          "itens",
+          "proximo_antes_de"
+        ],
+        "title": "PaginaDeEventos",
         "type": "object"
       },
       "ValidationError": {
@@ -114,6 +209,83 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/auditoria": {
+      "get": {
+        "operationId": "listar_auditoria_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limite",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limite",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "antes_de",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Antes De"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginaDeEventos"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Listar",
+        "tags": [
+          "auditoria"
+        ]
+      }
+    },
     "/eu": {
       "get": {
         "operationId": "eu_eu_get",
@@ -160,6 +332,49 @@
         "summary": "Eu",
         "tags": [
           "organizações"
+        ]
+      }
+    },
+    "/eu/login": {
+      "post": {
+        "description": "O frontend avisa a API logo após o login no Supabase.",
+        "operationId": "registrar_login_eu_login_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Registrar Login",
+        "tags": [
+          "auditoria"
         ]
       }
     },
