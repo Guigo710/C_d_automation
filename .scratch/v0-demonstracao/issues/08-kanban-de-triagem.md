@@ -6,6 +6,8 @@
 
 **Status:** ready-for-agent
 
+> **Pendente (22/11/2026):** código commitado; tipos, lint e build passam. Testes de API (`tests/test_triagem.py`) aguardam o PostgreSQL de teste (Docker).
+
 - [ ] Kanban com pendentes, aprovados e recusados (recusas por regra marcadas como "sugerido"), com filtro e ordenação por tier, nota e segmento
 - [ ] Gaveta lateral do candidato com todos os dados, notas, justificativa da IA, evidências, lacunas e selo de baixa confiança
 - [ ] Aprovação em lote

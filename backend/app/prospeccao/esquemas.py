@@ -40,6 +40,7 @@ class EmpresaResumo(BaseModel):
 
 class CandidatoResumo(BaseModel):
     id: uuid.UUID
+    campanha_id: uuid.UUID
     status: StatusCandidato
     criado_em: datetime
     empresa: EmpresaResumo

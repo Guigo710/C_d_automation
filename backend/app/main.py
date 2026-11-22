@@ -18,6 +18,7 @@ from app.organizacoes.rotas import router as organizacoes_router
 from app.prospeccao import servico as prospeccao
 from app.prospeccao.rotas import router as prospeccao_router
 from app.qualificacao import servico as qualificacao
+from app.triagem.rotas import router as triagem_router
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -62,4 +63,5 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(configuracao_router)
     app.include_router(campanhas_router)
     app.include_router(prospeccao_router)
+    app.include_router(triagem_router)
     return app

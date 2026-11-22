@@ -1,6 +1,51 @@
 {
   "components": {
     "schemas": {
+      "AprovacaoIn": {
+        "properties": {
+          "candidato_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "maxItems": 500,
+            "minItems": 1,
+            "title": "Candidato Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "candidato_ids"
+        ],
+        "title": "AprovacaoIn",
+        "type": "object"
+      },
+      "AprovacaoOut": {
+        "properties": {
+          "aprovados": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Aprovados",
+            "type": "array"
+          },
+          "ignorados": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Ignorados",
+            "type": "array"
+          }
+        },
+        "required": [
+          "aprovados",
+          "ignorados"
+        ],
+        "title": "AprovacaoOut",
+        "type": "object"
+      },
       "CampanhaIn": {
         "properties": {
           "limite_empresas": {
@@ -231,6 +276,11 @@
             "title": "Baixa Confianca",
             "type": "boolean"
           },
+          "campanha_id": {
+            "format": "uuid",
+            "title": "Campanha Id",
+            "type": "string"
+          },
           "confianca": {
             "anyOf": [
               {
@@ -450,6 +500,7 @@
         },
         "required": [
           "id",
+          "campanha_id",
           "status",
           "criado_em",
           "empresa",
@@ -484,6 +535,11 @@
           "baixa_confianca": {
             "title": "Baixa Confianca",
             "type": "boolean"
+          },
+          "campanha_id": {
+            "format": "uuid",
+            "title": "Campanha Id",
+            "type": "string"
           },
           "criado_em": {
             "format": "date-time",
@@ -563,6 +619,7 @@
         },
         "required": [
           "id",
+          "campanha_id",
           "status",
           "criado_em",
           "empresa",
@@ -1188,6 +1245,28 @@
         "title": "PaginaDeEventos",
         "type": "object"
       },
+      "RecusaIn": {
+        "properties": {
+          "motivo": {
+            "enum": [
+              "fora_do_perfil",
+              "cnpj_inativo",
+              "fora_da_regiao",
+              "dados_incompletos",
+              "ja_e_cliente",
+              "duplicado",
+              "opt_out"
+            ],
+            "title": "Motivo",
+            "type": "string"
+          }
+        },
+        "required": [
+          "motivo"
+        ],
+        "title": "RecusaIn",
+        "type": "object"
+      },
       "SegmentoDaCampanha": {
         "properties": {
           "id": {
@@ -1253,6 +1332,30 @@
           "teto_mensal_usd"
         ],
         "title": "TetoIn",
+        "type": "object"
+      },
+      "TrocaDeTierIn": {
+        "properties": {
+          "justificativa": {
+            "minLength": 3,
+            "title": "Justificativa",
+            "type": "string"
+          },
+          "tier": {
+            "enum": [
+              "A",
+              "B",
+              "C"
+            ],
+            "title": "Tier",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tier",
+          "justificativa"
+        ],
+        "title": "TrocaDeTierIn",
         "type": "object"
       },
       "UsuarioOut": {
@@ -1650,6 +1753,75 @@
         ]
       }
     },
+    "/campanhas/{campanha_id}/aprovacoes": {
+      "post": {
+        "operationId": "aprovar_campanhas__campanha_id__aprovacoes_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "campanha_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Campanha Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AprovacaoIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AprovacaoOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Aprovar",
+        "tags": [
+          "triagem"
+        ]
+      }
+    },
     "/campanhas/{campanha_id}/candidatos": {
       "get": {
         "operationId": "listar_candidatos_campanhas__campanha_id__candidatos_get",
@@ -1707,6 +1879,43 @@
               "minimum": 0,
               "title": "Deslocamento",
               "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "tier",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "A",
+                    "B",
+                    "C"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Tier"
+            }
+          },
+          {
+            "in": "query",
+            "name": "segmento",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Segmento"
             }
           },
           {
@@ -1994,6 +2203,182 @@
         "summary": "Buscar Candidato",
         "tags": [
           "prospecção"
+        ]
+      }
+    },
+    "/candidatos/{candidato_id}/recusa": {
+      "post": {
+        "operationId": "recusar_candidatos__candidato_id__recusa_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "candidato_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Candidato Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecusaIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Recusar",
+        "tags": [
+          "triagem"
+        ]
+      }
+    },
+    "/candidatos/{candidato_id}/restauracao": {
+      "post": {
+        "operationId": "restaurar_candidatos__candidato_id__restauracao_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "candidato_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Candidato Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Restaurar",
+        "tags": [
+          "triagem"
+        ]
+      }
+    },
+    "/candidatos/{candidato_id}/tier": {
+      "put": {
+        "operationId": "trocar_tier_candidatos__candidato_id__tier_put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "candidato_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Candidato Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrocaDeTierIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Trocar Tier",
+        "tags": [
+          "triagem"
         ]
       }
     },

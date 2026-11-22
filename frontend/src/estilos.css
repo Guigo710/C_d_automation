@@ -325,3 +325,83 @@ h2 {
   color: var(--erro);
   border-color: var(--erro);
 }
+
+/* Kanban de triagem */
+.painel:has(.kanban) {
+  max-width: 1200px;
+}
+
+.filtros {
+  align-items: flex-end;
+  margin: 16px 0;
+}
+
+.filtros > label {
+  flex: 0 1 180px;
+}
+
+.kanban {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 800px) {
+  .kanban {
+    grid-template-columns: repeat(3, 80vw);
+    overflow-x: auto;
+  }
+}
+
+.coluna {
+  background: var(--fundo);
+  border-radius: 10px;
+  padding: 12px;
+  min-height: 120px;
+}
+
+.coluna h3 {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+}
+
+.cartao-kanban {
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.cartao-kanban header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.cartao-kanban p {
+  margin: 6px 0 0;
+  font-size: 0.9rem;
+}
+
+.acoes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+}
+
+.acoes .linha > input {
+  flex: 1;
+  min-width: 160px;
+}
+
+button.secundario {
+  background: none;
+  color: var(--destaque);
+  border: 1px solid var(--destaque);
+}

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import uuid
-from typing import Annotated
+from typing import Annotated, Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 
@@ -65,10 +65,12 @@ def listar_candidatos(
     status_candidato: Annotated[StatusCandidato | None, Query(alias="status")] = None,
     limite: Annotated[int, Query(ge=1, le=200)] = 50,
     deslocamento: Annotated[int, Query(ge=0)] = 0,
+    tier: Literal["A", "B", "C"] | None = None,
+    segmento: str | None = None,
 ) -> PaginaDeCandidatos:
     try:
         return servico.listar_candidatos(
-            contexto, campanha_id, status_candidato, limite, deslocamento
+            contexto, campanha_id, status_candidato, limite, deslocamento, tier, segmento
         )
     except servico.NaoEncontrado as erro:
         raise _nao_encontrado() from erro

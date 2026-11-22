@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { api } from "../api/cliente";
 import type { components } from "../api/schema";
 import { useEu } from "../eu";
+import { Kanban } from "./Kanban";
 
 type Execucao = components["schemas"]["ExecucaoOut"];
 type PaginaDeCandidatos = components["schemas"]["PaginaDeCandidatos"];
@@ -38,12 +39,6 @@ export const MOTIVOS_DE_RECUSA: Record<string, string> = {
   opt_out: "Pediu para não ser contatado",
 };
 
-const NOMES_DOS_STATUS_DO_CANDIDATO: Record<string, string> = {
-  coletado: "Aguardando qualificação",
-  pendente: "Pendente",
-  aprovado: "Aprovado",
-  recusado: "Recusado",
-};
 
 export function SecaoProspeccao({ campanhaId }: { campanhaId: string }) {
   const { eu } = useEu();
@@ -90,6 +85,18 @@ export function SecaoProspeccao({ campanhaId }: { campanhaId: string }) {
     carregar();
   }
 
+  const podeDecidir = eu?.papel === "coordenador";
+
+  async function aprovar(ids: string[]) {
+    if (ids.length === 0) return;
+    const { error } = await api.POST("/campanhas/{campanha_id}/aprovacoes", {
+      ...caminho,
+      body: { candidato_ids: ids },
+    });
+    if (error) setErro("Não foi possível aprovar.");
+    await carregar();
+  }
+
   async function abrir(candidatoId: string) {
     const { data } = await api.GET("/candidatos/{candidato_id}", {
       params: { path: { candidato_id: candidatoId } },
@@ -124,51 +131,122 @@ export function SecaoProspeccao({ campanhaId }: { campanhaId: string }) {
       ))}
 
       {candidatos && candidatos.total > 0 && (
-        <table>
-          <thead>
-            <tr>
-              <th>Empresa</th>
-              <th>Segmento</th>
-              <th>Tier</th>
-              <th className="numero">Nota</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {candidatos.itens.map((c) => (
-              <tr key={c.id} className="clicavel" onClick={() => abrir(c.id)}>
-                <td>{c.empresa.nome_fantasia ?? c.empresa.razao_social}</td>
-                <td>{c.empresa.segmento}</td>
-                <td>
-                  {c.tier_final ?? c.tier_sugerido ?? "—"}
-                  {c.baixa_confianca && <span className="etiqueta alerta">baixa confiança</span>}
-                  {c.em_revisao && <span className="etiqueta alerta">revisão</span>}
-                </td>
-                <td className="numero">{c.nota_total ?? "—"}</td>
-                <td>
-                  {NOMES_DOS_STATUS_DO_CANDIDATO[c.status]}
-                  {c.motivo_recusa && ` · ${MOTIVOS_DE_RECUSA[c.motivo_recusa] ?? c.motivo_recusa}`}
-                  {c.recusa_sugerida && <span className="suave"> (sugerido)</span>}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Kanban
+          candidatos={candidatos.itens}
+          podeDecidir={podeDecidir}
+          aoAbrir={abrir}
+          aoAprovar={aprovar}
+        />
       )}
 
-      {aberto && <GavetaDoCandidato candidato={aberto} aoFechar={() => setAberto(null)} />}
+      {aberto && (
+        <GavetaDoCandidato
+          candidato={aberto}
+          podeDecidir={podeDecidir}
+          aoFechar={() => setAberto(null)}
+          aoMudar={async () => {
+            await carregar();
+            await abrir(aberto.id);
+          }}
+        />
+      )}
     </section>
   );
 }
 
+type Motivo = components["schemas"]["RecusaIn"]["motivo"];
+
 function GavetaDoCandidato({
   candidato,
+  podeDecidir,
   aoFechar,
+  aoMudar,
 }: {
   candidato: CandidatoDetalhe;
+  podeDecidir: boolean;
   aoFechar: () => void;
+  aoMudar: () => Promise<void>;
 }) {
   const e = candidato.empresa;
+  const [motivo, setMotivo] = useState<Motivo>("fora_do_perfil");
+  const [novoTier, setNovoTier] = useState<"A" | "B" | "C">("A");
+  const [justificativa, setJustificativa] = useState("");
+  const [erro, setErro] = useState<string | null>(null);
+  const caminho = { params: { path: { candidato_id: candidato.id } } };
+
+  async function agir(acao: () => Promise<{ error?: unknown }>) {
+    setErro(null);
+    const { error } = await acao();
+    if (error) setErro("Não foi possível concluir a ação.");
+    else await aoMudar();
+  }
+
+  const acoes = podeDecidir && (
+    <div className="acoes">
+      {candidato.status === "pendente" && (
+        <button
+          onClick={() =>
+            agir(() =>
+              api.POST("/campanhas/{campanha_id}/aprovacoes", {
+                params: { path: { campanha_id: candidato.campanha_id } },
+                body: { candidato_ids: [candidato.id] },
+              }),
+            )
+          }
+        >
+          Aprovar
+        </button>
+      )}
+      {candidato.status !== "aprovado" && (
+        <div className="linha">
+          <select value={motivo} onChange={(ev) => setMotivo(ev.target.value as Motivo)}>
+            {Object.entries(MOTIVOS_DE_RECUSA).map(([valor, nome]) => (
+              <option key={valor} value={valor}>
+                {nome}
+              </option>
+            ))}
+          </select>
+          <button
+            className="secundario"
+            onClick={() => agir(() => api.POST("/candidatos/{candidato_id}/recusa", { ...caminho, body: { motivo } }))}
+          >
+            Recusar
+          </button>
+        </div>
+      )}
+      {candidato.status === "recusado" && candidato.recusa_sugerida && (
+        <button className="secundario" onClick={() => agir(() => api.POST("/candidatos/{candidato_id}/restauracao", caminho))}>
+          Restaurar (recusa sugerida)
+        </button>
+      )}
+      {(candidato.status === "pendente" || candidato.status === "aprovado") && (
+        <div className="linha">
+          <select value={novoTier} onChange={(ev) => setNovoTier(ev.target.value as "A" | "B" | "C")}>
+            <option value="A">Tier A</option>
+            <option value="B">Tier B</option>
+            <option value="C">Tier C</option>
+          </select>
+          <input
+            placeholder="Justificativa da troca de tier"
+            value={justificativa}
+            onChange={(ev) => setJustificativa(ev.target.value)}
+          />
+          <button
+            className="secundario"
+            disabled={justificativa.trim().length < 3}
+            onClick={() =>
+              agir(() =>
+                api.PUT("/candidatos/{candidato_id}/tier", { ...caminho, body: { tier: novoTier, justificativa } }),
+              )
+            }
+          >
+            Trocar tier
+          </button>
+        </div>
+      )}
+      {erro && <p className="erro">{erro}</p>}
+    </div>
+  );
   return (
     <div className="fundo-da-gaveta" onClick={aoFechar}>
       <aside className="gaveta" onClick={(ev) => ev.stopPropagation()}>
@@ -178,6 +256,7 @@ function GavetaDoCandidato({
             Fechar
           </button>
         </header>
+        {acoes}
         <dl>
           <dt>Razão social</dt>
           <dd>{e.razao_social}</dd>

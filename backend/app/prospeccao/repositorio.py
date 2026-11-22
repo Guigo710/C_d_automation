@@ -20,7 +20,7 @@ _COLUNAS_JOB = (
 )
 
 _COLUNAS_CANDIDATO = (
-    "c.id, c.status, c.criado_em, c.nota_total, c.tier_sugerido, c.tier_final, "
+    "c.id, c.campanha_id, c.status, c.criado_em, c.nota_total, c.tier_sugerido, c.tier_final, "
     "c.motivo_recusa, c.recusa_sugerida, c.baixa_confianca, c.em_revisao"
 )
 
@@ -215,18 +215,29 @@ def gravar_candidato(
 
 
 def listar_candidatos(
-    conn: Conexao, campanha_id: uuid.UUID, status: str | None, limite: int, deslocamento: int
+    conn: Conexao,
+    campanha_id: uuid.UUID,
+    status: str | None,
+    limite: int,
+    deslocamento: int,
+    tier: str | None = None,
+    segmento: str | None = None,
 ) -> PaginaDeCandidatos:
-    filtro = {"campanha": campanha_id, "status": status}
+    filtro = {"campanha": campanha_id, "status": status, "tier": tier, "segmento": segmento}
+    filtros_sql = (
+        "c.campanha_id = %(campanha)s AND (%(status)s::text IS NULL OR c.status = %(status)s) "
+        "AND (%(tier)s::text IS NULL OR coalesce(c.tier_final, c.tier_sugerido) = %(tier)s) "
+        "AND (%(segmento)s::text IS NULL OR e.segmento = %(segmento)s)"
+    )
     total = conn.execute(
-        "SELECT count(*) AS n FROM candidatos WHERE campanha_id = %(campanha)s "
-        "AND (%(status)s::text IS NULL OR status = %(status)s)",
+        f"SELECT count(*) AS n FROM candidatos c JOIN empresas e ON e.id = c.empresa_id "
+        f"WHERE {filtros_sql}",
         filtro,
     ).fetchone()
     linhas = conn.execute(
         f"SELECT {_COLUNAS_CANDIDATO}, {_EMPRESA_JSON} AS empresa "
         "FROM candidatos c JOIN empresas e ON e.id = c.empresa_id "
-        "WHERE c.campanha_id = %(campanha)s AND (%(status)s::text IS NULL OR c.status = %(status)s) "
+        f"WHERE {filtros_sql} "
         "ORDER BY c.nota_total DESC NULLS LAST, c.criado_em, e.razao_social "
         "LIMIT %(limite)s OFFSET %(desloc)s",
         {**filtro, "limite": limite, "desloc": deslocamento},

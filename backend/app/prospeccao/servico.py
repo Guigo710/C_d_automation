@@ -52,11 +52,19 @@ def listar_execucoes(contexto: Contexto, campanha_id: uuid.UUID) -> list[Execuca
 
 
 def listar_candidatos(
-    contexto: Contexto, campanha_id: uuid.UUID, status: str | None, limite: int, deslocamento: int
+    contexto: Contexto,
+    campanha_id: uuid.UUID,
+    status: str | None,
+    limite: int,
+    deslocamento: int,
+    tier: str | None = None,
+    segmento: str | None = None,
 ) -> PaginaDeCandidatos:
     if campanhas.buscar(contexto.conn, campanha_id) is None:
         raise NaoEncontrado
-    return repositorio.listar_candidatos(contexto.conn, campanha_id, status, limite, deslocamento)
+    return repositorio.listar_candidatos(
+        contexto.conn, campanha_id, status, limite, deslocamento, tier, segmento
+    )
 
 
 def buscar_candidato(contexto: Contexto, candidato_id: uuid.UUID) -> CandidatoDetalhe:

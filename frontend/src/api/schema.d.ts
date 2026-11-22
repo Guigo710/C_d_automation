@@ -57,6 +57,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/campanhas/{campanha_id}/aprovacoes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Aprovar */
+        post: operations["aprovar_campanhas__campanha_id__aprovacoes_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/campanhas/{campanha_id}/candidatos": {
         parameters: {
             query?: never;
@@ -123,6 +140,57 @@ export interface paths {
         /** Buscar Candidato */
         get: operations["buscar_candidato_candidatos__candidato_id__get"];
         put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/candidatos/{candidato_id}/recusa": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Recusar */
+        post: operations["recusar_candidatos__candidato_id__recusa_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/candidatos/{candidato_id}/restauracao": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Restaurar */
+        post: operations["restaurar_candidatos__candidato_id__restauracao_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/candidatos/{candidato_id}/tier": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Trocar Tier */
+        put: operations["trocar_tier_candidatos__candidato_id__tier_put"];
         post?: never;
         delete?: never;
         options?: never;
@@ -325,6 +393,18 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** AprovacaoIn */
+        AprovacaoIn: {
+            /** Candidato Ids */
+            candidato_ids: string[];
+        };
+        /** AprovacaoOut */
+        AprovacaoOut: {
+            /** Aprovados */
+            aprovados: string[];
+            /** Ignorados */
+            ignorados: string[];
+        };
         /** CampanhaIn */
         CampanhaIn: {
             /** Limite Empresas */
@@ -416,6 +496,11 @@ export interface components {
         CandidatoDetalhe: {
             /** Baixa Confianca */
             baixa_confianca: boolean;
+            /**
+             * Campanha Id
+             * Format: uuid
+             */
+            campanha_id: string;
             /** Confianca */
             confianca: string | null;
             /** Contatos */
@@ -483,6 +568,11 @@ export interface components {
         CandidatoResumo: {
             /** Baixa Confianca */
             baixa_confianca: boolean;
+            /**
+             * Campanha Id
+             * Format: uuid
+             */
+            campanha_id: string;
             /**
              * Criado Em
              * Format: date-time
@@ -713,6 +803,14 @@ export interface components {
             /** Proximo Antes De */
             proximo_antes_de: number | null;
         };
+        /** RecusaIn */
+        RecusaIn: {
+            /**
+             * Motivo
+             * @enum {string}
+             */
+            motivo: "fora_do_perfil" | "cnpj_inativo" | "fora_da_regiao" | "dados_incompletos" | "ja_e_cliente" | "duplicado" | "opt_out";
+        };
         /** SegmentoDaCampanha */
         SegmentoDaCampanha: {
             /**
@@ -739,6 +837,16 @@ export interface components {
         TetoIn: {
             /** Teto Mensal Usd */
             teto_mensal_usd: number | string;
+        };
+        /** TrocaDeTierIn */
+        TrocaDeTierIn: {
+            /** Justificativa */
+            justificativa: string;
+            /**
+             * Tier
+             * @enum {string}
+             */
+            tier: "A" | "B" | "C";
         };
         /** UsuarioOut */
         UsuarioOut: {
@@ -948,12 +1056,51 @@ export interface operations {
             };
         };
     };
+    aprovar_campanhas__campanha_id__aprovacoes_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                campanha_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AprovacaoIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AprovacaoOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     listar_candidatos_campanhas__campanha_id__candidatos_get: {
         parameters: {
             query?: {
                 status?: ("coletado" | "pendente" | "aprovado" | "recusado") | null;
                 limite?: number;
                 deslocamento?: number;
+                tier?: ("A" | "B" | "C") | null;
+                segmento?: string | null;
             };
             header?: {
                 authorization?: string | null;
@@ -1107,6 +1254,107 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["CandidatoDetalhe"];
                 };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    recusar_candidatos__candidato_id__recusa_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                candidato_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RecusaIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    restaurar_candidatos__candidato_id__restauracao_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                candidato_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    trocar_tier_candidatos__candidato_id__tier_put: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                candidato_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TrocaDeTierIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Validation Error */
             422: {
