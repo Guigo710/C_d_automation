@@ -329,6 +329,90 @@
         "title": "CandidatoResumo",
         "type": "object"
       },
+      "ChaveIn": {
+        "properties": {
+          "chave": {
+            "maxLength": 500,
+            "minLength": 8,
+            "title": "Chave",
+            "type": "string"
+          }
+        },
+        "required": [
+          "chave"
+        ],
+        "title": "ChaveIn",
+        "type": "object"
+      },
+      "ChaveStatus": {
+        "properties": {
+          "atualizada_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Atualizada Em"
+          },
+          "configurada": {
+            "title": "Configurada",
+            "type": "boolean"
+          },
+          "final": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Final"
+          },
+          "fornecedor": {
+            "title": "Fornecedor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "fornecedor",
+          "configurada",
+          "final",
+          "atualizada_em"
+        ],
+        "title": "ChaveStatus",
+        "type": "object"
+      },
+      "ConfiguracaoDaOrganizacao": {
+        "properties": {
+          "chaves": {
+            "items": {
+              "$ref": "#/components/schemas/ChaveStatus"
+            },
+            "title": "Chaves",
+            "type": "array"
+          },
+          "gasto_do_mes_usd": {
+            "title": "Gasto Do Mes Usd",
+            "type": "string"
+          },
+          "teto_mensal_usd": {
+            "title": "Teto Mensal Usd",
+            "type": "string"
+          }
+        },
+        "required": [
+          "teto_mensal_usd",
+          "gasto_do_mes_usd",
+          "chaves"
+        ],
+        "title": "ConfiguracaoDaOrganizacao",
+        "type": "object"
+      },
       "ContatoOut": {
         "properties": {
           "fonte": {
@@ -883,6 +967,27 @@
           "cnaes"
         ],
         "title": "SegmentoOut",
+        "type": "object"
+      },
+      "TetoIn": {
+        "properties": {
+          "teto_mensal_usd": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Teto Mensal Usd"
+          }
+        },
+        "required": [
+          "teto_mensal_usd"
+        ],
+        "title": "TetoIn",
         "type": "object"
       },
       "UsuarioOut": {
@@ -1611,6 +1716,248 @@
           }
         },
         "summary": "Catalogo Segmentos",
+        "tags": [
+          "configuração"
+        ]
+      }
+    },
+    "/configuracao": {
+      "get": {
+        "operationId": "ler_configuracao_configuracao_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfiguracaoDaOrganizacao"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Ler Configuracao",
+        "tags": [
+          "configuração"
+        ]
+      }
+    },
+    "/configuracao/chaves/{fornecedor}": {
+      "delete": {
+        "operationId": "remover_chave_configuracao_chaves__fornecedor__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "fornecedor",
+            "required": true,
+            "schema": {
+              "enum": [
+                "anthropic",
+                "google_places",
+                "brave"
+              ],
+              "title": "Fornecedor",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfiguracaoDaOrganizacao"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Remover Chave",
+        "tags": [
+          "configuração"
+        ]
+      },
+      "put": {
+        "operationId": "salvar_chave_configuracao_chaves__fornecedor__put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "fornecedor",
+            "required": true,
+            "schema": {
+              "enum": [
+                "anthropic",
+                "google_places",
+                "brave"
+              ],
+              "title": "Fornecedor",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChaveIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfiguracaoDaOrganizacao"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Salvar Chave",
+        "tags": [
+          "configuração"
+        ]
+      }
+    },
+    "/configuracao/teto": {
+      "put": {
+        "operationId": "definir_teto_configuracao_teto_put",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TetoIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfiguracaoDaOrganizacao"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Definir Teto",
         "tags": [
           "configuração"
         ]

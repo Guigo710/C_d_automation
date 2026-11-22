@@ -25,6 +25,7 @@ URL_BANCO = os.environ.get(
     "TEST_DATABASE_URL", "postgresql://postgres:postgres@localhost:54329/postgres"
 )
 SEGREDO_JWT = "segredo-de-teste-com-pelo-menos-32-bytes"
+CHAVE_CIFRAGEM = "dGVzdGUtdGVzdGUtdGVzdGUtdGVzdGUtdGVzdGUtMTI="  # 32 bytes, só para testes
 
 
 @dataclass(frozen=True)
@@ -76,6 +77,7 @@ def settings(banco: str) -> Settings:
         supabase_jwt_secret=SEGREDO_JWT,
         worker_ativo=False,  # a fila é drenada pelos testes, de forma síncrona
         agente_prospeccao="falso",
+        chave_cifragem=CHAVE_CIFRAGEM,
     )
 
 

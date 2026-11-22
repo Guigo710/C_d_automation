@@ -126,6 +126,58 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/configuracao": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ler Configuracao */
+        get: operations["ler_configuracao_configuracao_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/configuracao/chaves/{fornecedor}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Salvar Chave */
+        put: operations["salvar_chave_configuracao_chaves__fornecedor__put"];
+        post?: never;
+        /** Remover Chave */
+        delete: operations["remover_chave_configuracao_chaves__fornecedor__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/configuracao/teto": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Definir Teto */
+        put: operations["definir_teto_configuracao_teto_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/eu": {
         parameters: {
             query?: never;
@@ -387,6 +439,31 @@ export interface components {
              */
             status: "coletado" | "pendente" | "aprovado" | "recusado";
         };
+        /** ChaveIn */
+        ChaveIn: {
+            /** Chave */
+            chave: string;
+        };
+        /** ChaveStatus */
+        ChaveStatus: {
+            /** Atualizada Em */
+            atualizada_em: string | null;
+            /** Configurada */
+            configurada: boolean;
+            /** Final */
+            final: string | null;
+            /** Fornecedor */
+            fornecedor: string;
+        };
+        /** ConfiguracaoDaOrganizacao */
+        ConfiguracaoDaOrganizacao: {
+            /** Chaves */
+            chaves: components["schemas"]["ChaveStatus"][];
+            /** Gasto Do Mes Usd */
+            gasto_do_mes_usd: string;
+            /** Teto Mensal Usd */
+            teto_mensal_usd: string;
+        };
         /** ContatoOut */
         ContatoOut: {
             /** Fonte */
@@ -580,6 +657,11 @@ export interface components {
             id: string;
             /** Nome */
             nome: string;
+        };
+        /** TetoIn */
+        TetoIn: {
+            /** Teto Mensal Usd */
+            teto_mensal_usd: number | string;
         };
         /** UsuarioOut */
         UsuarioOut: {
@@ -943,6 +1025,142 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SegmentoOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    ler_configuracao_configuracao_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfiguracaoDaOrganizacao"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    salvar_chave_configuracao_chaves__fornecedor__put: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                fornecedor: "anthropic" | "google_places" | "brave";
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChaveIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfiguracaoDaOrganizacao"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    remover_chave_configuracao_chaves__fornecedor__delete: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                fornecedor: "anthropic" | "google_places" | "brave";
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfiguracaoDaOrganizacao"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    definir_teto_configuracao_teto_put: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TetoIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfiguracaoDaOrganizacao"];
                 };
             };
             /** @description Validation Error */

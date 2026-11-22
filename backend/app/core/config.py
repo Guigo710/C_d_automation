@@ -28,5 +28,9 @@ class Settings(BaseSettings):
     worker_intervalo_segundos: float = 2.0
     job_lease_segundos: int = 120
 
+    # Chave Fernet (base64 de 32 bytes) que cifra as chaves de API das organizações.
+    # Gerar com: python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+    chave_cifragem: str | None = None
+
     # Agente de prospecção: "falso" ou "pacote.modulo:Classe".
     agente_prospeccao: str = "falso"

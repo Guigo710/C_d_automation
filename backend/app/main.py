@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.auditoria.rotas import router as auditoria_router
 from app.campanhas.rotas import router as campanhas_router
+from app.configuracao.chaves import Cofre
 from app.configuracao.rotas import router as configuracao_router
 from app.core.config import Settings
 from app.core.db import Banco
@@ -40,6 +41,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.banco = banco
     app.state.fila = fila
     app.state.verificador = VerificadorDeToken(settings)
+    app.state.cofre = Cofre(settings.chave_cifragem)
 
     app.add_middleware(
         CORSMiddleware,

@@ -1,5 +1,6 @@
 import { ProvedorDoEu, useEu } from "./eu";
 import { CampanhaForm } from "./paginas/CampanhaForm";
+import { Configuracao } from "./paginas/Configuracao";
 import { Campanhas } from "./paginas/Campanhas";
 import { Login } from "./paginas/Login";
 import { MinhaOrganizacao, NOMES_DOS_PAPEIS } from "./paginas/MinhaOrganizacao";
@@ -47,6 +48,11 @@ function Portal() {
         <a href="#/organizacao" className={rota === "/organizacao" ? "ativo" : ""}>
           Minha organização
         </a>
+        {eu.papel === "administrador" && (
+          <a href="#/configuracao" className={rota === "/configuracao" ? "ativo" : ""}>
+            Configuração
+          </a>
+        )}
         <span className="espaco" />
         <span className="suave">
           {eu.nome} · {NOMES_DOS_PAPEIS[eu.papel] ?? eu.papel}
@@ -62,6 +68,7 @@ function Portal() {
 
 function pagina(rota: string) {
   if (rota === "/organizacao") return <MinhaOrganizacao />;
+  if (rota === "/configuracao") return <Configuracao />;
   if (rota === "/campanhas/nova") return <CampanhaForm key="nova" campanhaId={null} />;
   const campanha = rota.match(/^\/campanhas\/([0-9a-f-]{36})$/);
   if (campanha) return <CampanhaForm key={campanha[1]} campanhaId={campanha[1]} />;
