@@ -37,6 +37,7 @@ export function GavetaDaEmpresa({
   const [membros, setMembros] = useState<{ id: string; nome: string }[]>([]);
   const [destino, setDestino] = useState("");
   const [aviso, setAviso] = useState<string | null>(null);
+  const [perdida, setPerdida] = useState(false);
   const ehVendedor = eu?.papel === "vendedor";
   const ehCoordenador = eu?.papel === "coordenador";
   const caminho = { params: { path: { empresa_id: empresaId } } };
@@ -56,12 +57,10 @@ export function GavetaDaEmpresa({
     setAviso(null);
     const { data, response } = await api.POST("/empresas-da-campanha/{empresa_id}/assumir", caminho);
     if (data) setEmpresa(data);
-    else
-      setAviso(
-        response.status === 409 || response.status === 404
-          ? "Outro vendedor assumiu esta empresa primeiro."
-          : "Não foi possível assumir a empresa.",
-      );
+    else if (response.status === 409 || response.status === 404) {
+      setPerdida(true);
+      setAviso("Outro vendedor assumiu esta empresa primeiro. Ela saiu da sua lista.");
+    } else setAviso("Não foi possível assumir a empresa.");
     aoMudar();
   }
 
@@ -98,11 +97,13 @@ export function GavetaDaEmpresa({
         <div style={{ flex: 1 }}>
           <BarraDeNota nota={empresa.nota_total} />
         </div>
-        <span className="etiqueta">{empresa.responsavel ? `com ${empresa.responsavel.nome}` : "sem responsável"}</span>
+        <span className="etiqueta">
+          {perdida ? "com outro vendedor" : empresa.responsavel ? `com ${empresa.responsavel.nome}` : "sem responsável"}
+        </span>
       </div>
       {aviso && <p className="erro">{aviso}</p>}
 
-      {ehVendedor && !empresa.responsavel && (
+      {ehVendedor && !empresa.responsavel && !perdida && (
         <section>
           <button onClick={assumir}>Assumir esta empresa</button>
         </section>

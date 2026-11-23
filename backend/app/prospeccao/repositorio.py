@@ -23,7 +23,8 @@ _COLUNAS_CANDIDATO = (
     "c.id, c.campanha_id, c.status, c.criado_em, c.nota_total, c.tier_sugerido, c.tier_final, "
     "c.motivo_recusa, c.recusa_sugerida, c.baixa_confianca, c.em_revisao, "
     "coalesce((SELECT array_agg(DISTINCT ev.fonte ORDER BY ev.fonte) FROM evidencias ev "
-    "  WHERE ev.empresa_id = c.empresa_id), '{}') AS origens"
+    "  WHERE ev.empresa_id = c.empresa_id), '{}') AS origens, "
+    "EXISTS (SELECT 1 FROM empresas_da_campanha ec WHERE ec.candidato_id = c.id) AS promovido"
 )
 
 _EMPRESA_JSON = (

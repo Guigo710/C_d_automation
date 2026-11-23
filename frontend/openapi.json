@@ -469,6 +469,10 @@
             "title": "Origens",
             "type": "array"
           },
+          "promovido": {
+            "title": "Promovido",
+            "type": "boolean"
+          },
           "recusa_sugerida": {
             "title": "Recusa Sugerida",
             "type": "boolean"
@@ -547,6 +551,7 @@
           "baixa_confianca",
           "em_revisao",
           "origens",
+          "promovido",
           "endereco",
           "sinais",
           "nota_aderencia",
@@ -623,6 +628,10 @@
             "title": "Origens",
             "type": "array"
           },
+          "promovido": {
+            "title": "Promovido",
+            "type": "boolean"
+          },
           "recusa_sugerida": {
             "title": "Recusa Sugerida",
             "type": "boolean"
@@ -673,7 +682,8 @@
           "recusa_sugerida",
           "baixa_confianca",
           "em_revisao",
-          "origens"
+          "origens",
+          "promovido"
         ],
         "title": "CandidatoResumo",
         "type": "object"

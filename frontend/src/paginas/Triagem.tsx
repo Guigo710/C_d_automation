@@ -69,6 +69,7 @@ export function Triagem({ campanhaId }: { campanhaId: string }) {
     .sort((a, b) => (b.nota_total ?? -1) - (a.nota_total ?? -1));
 
   const aprovados = candidatos.filter((c) => c.status === "aprovado");
+  const paraSubir = aprovados.filter((c) => !c.promovido);
   const pendentes = candidatos.filter((c) => c.status === "pendente");
   const recusados = candidatos.filter((c) => c.status === "recusado");
 
@@ -102,7 +103,7 @@ export function Triagem({ campanhaId }: { campanhaId: string }) {
         // Uma chave nova por clique: repetir o mesmo pedido não duplica nada.
         header: { "Idempotency-Key": crypto.randomUUID() },
       },
-      body: { candidato_ids: aprovados.map((c) => c.id) },
+      body: { candidato_ids: paraSubir.map((c) => c.id) },
     });
     if (error || !data) avisar("erro", "Não foi possível enviar para a operação.");
     else avisar("aviso", `${data.promovidas.length} empresa(s) enviada(s) para os vendedores.`);
@@ -216,7 +217,9 @@ export function Triagem({ campanhaId }: { campanhaId: string }) {
               {NOMES_DAS_FONTES[o] ?? o}
             </span>
           ))}
-          {c.status === "aprovado" && <span className="etiqueta sucesso">aprovado</span>}
+          {c.status === "aprovado" && (
+            <span className="etiqueta sucesso">{c.promovido ? "na operação" : "aprovado"}</span>
+          )}
           {c.baixa_confianca && <span className="etiqueta alerta">baixa confiança</span>}
           {c.em_revisao && <span className="etiqueta perigo">revisão</span>}
           {c.motivo_recusa && (
@@ -248,8 +251,8 @@ export function Triagem({ campanhaId }: { campanhaId: string }) {
             <button className="secundario" onClick={exportar} disabled={aprovados.length === 0}>
               Exportar aprovados (Excel)
             </button>
-            <button onClick={subirParaOperacao} disabled={aprovados.length === 0}>
-              Subir {aprovados.length} para operação
+            <button onClick={subirParaOperacao} disabled={paraSubir.length === 0}>
+              Subir {paraSubir.length} para operação
             </button>
           </div>
         )}

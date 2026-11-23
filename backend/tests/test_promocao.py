@@ -202,3 +202,18 @@ def test_outra_organizacao_nao_promove_nem_ve(
     )
     assert resposta.status_code == 404
     assert client.get(f"/empresas-da-campanha/{empresa_id}", headers=outra).status_code == 404
+
+
+def test_candidato_enviado_fica_marcado_como_promovido(
+    client: TestClient,
+    dados: Dados,
+    como: Como,
+    campanha: Callable[..., str],  # noqa: F811
+) -> None:
+    campanha_id, c = _aprovados(client, dados, como, campanha)
+    _promover(client, dados, como, campanha_id, [c["Bom Preço Taquaral"]["id"]], "clique-0008")
+
+    depois = _candidatos(client, como, dados, campanha_id)
+
+    assert depois["Bom Preço Taquaral"]["promovido"] is True
+    assert depois["Mercado Vila Nova"]["promovido"] is False

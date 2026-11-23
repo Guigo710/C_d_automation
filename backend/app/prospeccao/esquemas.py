@@ -52,6 +52,7 @@ class CandidatoResumo(BaseModel):
     baixa_confianca: bool
     em_revisao: bool
     origens: list[str]
+    promovido: bool
 
 
 class PaginaDeCandidatos(BaseModel):

@@ -984,4 +984,16 @@ tr.clicavel:hover td {
   .card-campanha .metricas {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .alternador {
+    display: flex;
+    width: 100%;
+  }
+
+  .alternador button {
+    flex: 1;
+    padding: 8px 6px;
+    font-size: 0.82rem;
+    white-space: normal;
+  }
 }

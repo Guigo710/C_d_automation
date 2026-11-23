@@ -32,9 +32,9 @@ class ClienteDeDemonstracao:
         segmento = fatos.get("segmento") or "varejo"
 
         if "ficha" in esquema["properties"]:
-            partes = [f"{nome} é um(a) {segmento.lower()}"]
-            partes.append(f" com {lojas} loja(s)" if lojas else "")
-            partes.append(f", que trabalha com {', '.join(linhas)}." if linhas else ".")
+            partes = [f"{nome} atua no segmento {segmento.lower()}"]
+            partes.append(f", com {lojas} {'lojas' if lojas > 1 else 'loja'}" if lojas else "")
+            partes.append(f", e trabalha com {', '.join(linhas)}." if linhas else ".")
             if canal:
                 partes.append(f" As compras passam por {canal}.")
             partes.append(

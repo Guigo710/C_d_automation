@@ -682,6 +682,8 @@ export interface components {
             nota_total: number | null;
             /** Origens */
             origens: string[];
+            /** Promovido */
+            promovido: boolean;
             /** Recusa Sugerida */
             recusa_sugerida: boolean;
             /** Sinais */
@@ -730,6 +732,8 @@ export interface components {
             nota_total: number | null;
             /** Origens */
             origens: string[];
+            /** Promovido */
+            promovido: boolean;
             /** Recusa Sugerida */
             recusa_sugerida: boolean;
             /**
