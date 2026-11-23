@@ -1,10 +1,16 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-const url = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-const chave = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+let cliente: SupabaseClient | null = null;
 
-if (!url || !chave) {
-  throw new Error("Defina VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY no frontend/.env");
+// Criado só quando usado, para o modo demo funcionar sem projeto no Supabase.
+export function supabase(): SupabaseClient {
+  if (!cliente) {
+    const url = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+    const chave = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+    if (!url || !chave) {
+      throw new Error("Defina VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY no frontend/.env");
+    }
+    cliente = createClient(url, chave);
+  }
+  return cliente;
 }
-
-export const supabase = createClient(url, chave);

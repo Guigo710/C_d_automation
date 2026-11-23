@@ -10,7 +10,7 @@ export function NovaSenha() {
   async function salvar(evento: FormEvent) {
     evento.preventDefault();
     setErro(null);
-    const { error } = await supabase.auth.updateUser({ password: senha });
+    const { error } = await supabase().auth.updateUser({ password: senha });
     if (error) setErro("Não foi possível salvar a nova senha.");
     else setPronto(true);
   }

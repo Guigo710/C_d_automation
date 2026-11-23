@@ -7,14 +7,15 @@ import { MinhaOrganizacao, NOMES_DOS_PAPEIS } from "./paginas/MinhaOrganizacao";
 import { NovaSenha } from "./paginas/NovaSenha";
 import { irPara, useRota } from "./rota";
 import { useSessao } from "./sessao";
-import { supabase } from "./supabase";
+import { MODO_DEMO, sair } from "./autenticacao";
+import { LoginDemo } from "./paginas/LoginDemo";
 
 export function App() {
-  const { sessao, carregando, recuperandoSenha } = useSessao();
+  const { logado, carregando, recuperandoSenha } = useSessao();
 
   if (carregando) return <main className="cartao">Carregando...</main>;
   if (recuperandoSenha) return <NovaSenha />;
-  if (!sessao) return <Login />;
+  if (!logado) return MODO_DEMO ? <LoginDemo /> : <Login />;
   return (
     <ProvedorDoEu>
       <Portal />
@@ -30,7 +31,7 @@ function Portal() {
     return (
       <main className="cartao">
         <p className="erro">{erro}</p>
-        <button className="link" onClick={() => supabase.auth.signOut()}>
+        <button className="link" onClick={() => sair()}>
           Sair
         </button>
       </main>
@@ -57,7 +58,7 @@ function Portal() {
         <span className="suave">
           {eu.nome} · {NOMES_DOS_PAPEIS[eu.papel] ?? eu.papel}
         </span>
-        <button className="link" onClick={() => supabase.auth.signOut()}>
+        <button className="link" onClick={() => sair()}>
           Sair
         </button>
       </nav>

@@ -70,4 +70,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(triagem_router)
     app.include_router(operacao_router)
     app.include_router(exportacao_router)
+    if settings.demo_local:
+        from app.demo.rotas import router as demo_router
+
+        app.include_router(demo_router)
     return app

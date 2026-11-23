@@ -15,7 +15,7 @@ export function Login() {
     setErro(null);
     setAviso(null);
     setEnviando(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password: senha });
+    const { error } = await supabase().auth.signInWithPassword({ email, password: senha });
     setEnviando(false);
     if (error) {
       setErro("E-mail ou senha incorretos.");
@@ -32,7 +32,7 @@ export function Login() {
       setErro("Digite seu e-mail para recuperar a senha.");
       return;
     }
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    const { error } = await supabase().auth.resetPasswordForEmail(email, {
       redirectTo: window.location.origin,
     });
     if (error) setErro("Não foi possível enviar o e-mail de recuperação.");

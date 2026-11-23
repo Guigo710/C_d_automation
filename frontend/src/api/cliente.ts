@@ -1,13 +1,12 @@
 import createClient, { type Middleware } from "openapi-fetch";
 
-import { supabase } from "../supabase";
+import { obterToken } from "../autenticacao";
 import type { paths } from "./schema";
 
 // Toda chamada à API leva o token da sessão do Supabase.
 const autenticacao: Middleware = {
   async onRequest({ request }) {
-    const { data } = await supabase.auth.getSession();
-    const token = data.session?.access_token;
+    const token = await obterToken();
     if (token) {
       request.headers.set("Authorization", `Bearer ${token}`);
     }

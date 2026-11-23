@@ -12,6 +12,19 @@ Os tickets 01 a 09 e 11 a 13 da v0 estão implementados, e os 85 testes de API p
 
 O que roda em segundo plano, na fila do PostgreSQL (ADR 0004): prospecção (Agente de prospecção; o falso por padrão), qualificação (Agente 2, Claude Haiku 5.5) e ficha de abordagem (Claude Haiku 5.5). O Agente de prospecção real entra por `AGENTE_PROSPECCAO=pacote.modulo:Classe`; o contrato está em `backend/app/prospeccao/agente.py`.
 
+## Demonstração local (sem Supabase)
+
+Com o Docker ligado, em três passos:
+
+```powershell
+docker compose -p destak up -d db-test
+cd backend; .venv\Scripts\python -m app.demo.preparar
+```
+
+Depois suba `api-demo` e `frontend-demo` (definidos em `.claude/launch.json`) e abra http://localhost:5173. Na tela inicial você escolhe com quem entrar: Ana (coordenadora), Bruno e Carla (vendedores) ou Diego (administrador). Tudo é fictício: agente de prospecção falso e IA de demonstração, sem custo. Rodar `app.demo.preparar` de novo recria o banco `demo` do zero (pare a API antes).
+
+O login de demonstração só existe com `DEMO_LOCAL=true` e só atende localhost. Nunca ligue em produção.
+
 ## Estrutura
 
 | Pasta | O quê |

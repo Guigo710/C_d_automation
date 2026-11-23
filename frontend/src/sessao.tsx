@@ -1,41 +1,36 @@
-import type { Session } from "@supabase/supabase-js";
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
-import { supabase } from "./supabase";
+import { aoMudar, estaLogado } from "./autenticacao";
 
 interface EstadoDaSessao {
-  sessao: Session | null;
+  logado: boolean;
   carregando: boolean;
   // Verdadeiro quando o usuário chegou pelo link de recuperação de senha.
   recuperandoSenha: boolean;
 }
 
 const ContextoDaSessao = createContext<EstadoDaSessao>({
-  sessao: null,
+  logado: false,
   carregando: true,
   recuperandoSenha: false,
 });
 
 export function ProvedorDeSessao({ children }: { children: ReactNode }) {
   const [estado, setEstado] = useState<EstadoDaSessao>({
-    sessao: null,
+    logado: false,
     carregando: true,
     recuperandoSenha: false,
   });
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      setEstado((atual) => ({ ...atual, sessao: data.session, carregando: false }));
-    });
-    const { data } = supabase.auth.onAuthStateChange((evento, sessao) => {
+    estaLogado().then((logado) => setEstado((atual) => ({ ...atual, logado, carregando: false })));
+    return aoMudar((evento) => {
       setEstado((atual) => ({
-        sessao,
         carregando: false,
-        recuperandoSenha:
-          evento === "PASSWORD_RECOVERY" ? true : evento === "SIGNED_OUT" ? false : atual.recuperandoSenha,
+        logado: evento !== "saiu",
+        recuperandoSenha: evento === "recuperacao" ? true : evento === "saiu" ? false : atual.recuperandoSenha,
       }));
     });
-    return () => data.subscription.unsubscribe();
   }, []);
 
   return <ContextoDaSessao.Provider value={estado}>{children}</ContextoDaSessao.Provider>;

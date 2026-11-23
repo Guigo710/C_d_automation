@@ -32,8 +32,11 @@ class Settings(BaseSettings):
     # Gerar com: python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
     chave_cifragem: str | None = None
 
-    # Cliente de IA: "claude" ou "pacote.modulo:Classe" (cliente falso nos testes).
+    # Cliente de IA: "claude", "demonstracao" (sem custo) ou "pacote.modulo:Classe".
     cliente_ia: str = "claude"
+
+    # Login de demonstração sem Supabase (só localhost). Nunca ligar em produção.
+    demo_local: bool = False
 
     # Agente de prospecção: "falso" ou "pacote.modulo:Classe".
     agente_prospeccao: str = "falso"

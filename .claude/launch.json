@@ -1,0 +1,22 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "api-demo",
+      "runtimeExecutable": "backend/.venv/Scripts/python.exe",
+      "runtimeArgs": [
+        "-m", "uvicorn", "app.main:create_app", "--factory",
+        "--app-dir", "backend",
+        "--env-file", "backend/.env.demo",
+        "--host", "127.0.0.1", "--port", "8000"
+      ],
+      "port": 8000
+    },
+    {
+      "name": "frontend-demo",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "frontend", "run", "dev", "--", "--mode", "demo", "--port", "5173", "--strictPort"],
+      "port": 5173
+    }
+  ]
+}

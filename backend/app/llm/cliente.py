@@ -114,6 +114,10 @@ def carregar_cliente(referencia: str) -> ClienteDeIA:
     """'claude' ou 'pacote.modulo:Classe' (por exemplo, um cliente falso nos testes)."""
     if referencia == "claude":
         return ClienteClaude()
+    if referencia == "demonstracao":
+        from app.llm.demonstracao import ClienteDeDemonstracao
+
+        return ClienteDeDemonstracao()
     import importlib
 
     modulo, _, classe = referencia.partition(":")
