@@ -6,7 +6,7 @@
 
 **Status:** ready-for-agent
 
-> **Pendente (22/11/2026):** código commitado; tipos, lint, build e a cifragem (rodada isoladamente) passam. Testes de API (`tests/test_configuracao.py`) aguardam o PostgreSQL de teste (Docker).
+> **Estado (23/11/2026):** código commitado; tipos, lint, build e a cifragem (rodada isoladamente) passam. Testes de API (`tests/test_configuracao.py`) passam contra o PostgreSQL de teste (23/11/2026).
 
 - [ ] Chaves guardadas cifradas pela aplicação, por organização e por fornecedor
 - [ ] Depois de salva, a chave nunca volta inteira pela API, só os últimos caracteres (testado)

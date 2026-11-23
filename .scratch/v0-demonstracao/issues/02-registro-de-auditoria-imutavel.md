@@ -6,7 +6,7 @@
 
 **Status:** ready-for-agent
 
-> **Pendente (22/11/2026):** código commitado; tipos, lint e build passam. Testes de API (`tests/test_auditoria.py`) aguardam o PostgreSQL de teste (Docker).
+> **Estado (23/11/2026):** código commitado; tipos, lint e build passam. Testes de API (`tests/test_auditoria.py`) passam contra o PostgreSQL de teste (23/11/2026).
 
 - [ ] Registro de auditoria por organização com quem, o quê, sobre qual recurso e quando
 - [ ] O banco recusa UPDATE e DELETE no registro (testado)

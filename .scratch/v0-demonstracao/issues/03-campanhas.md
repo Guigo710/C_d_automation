@@ -6,7 +6,7 @@
 
 **Status:** ready-for-agent
 
-> **Pendente (22/11/2026):** código commitado; tipos, lint e build passam. Testes de API (`tests/test_campanhas.py`) aguardam o PostgreSQL de teste (Docker).
+> **Estado (23/11/2026):** código commitado; tipos, lint e build passam. Testes de API (`tests/test_campanhas.py`) passam contra o PostgreSQL de teste (23/11/2026).
 
 - [ ] Configuração da organização versionada, com catálogo de segmentos (segmento e CNAEs), perfil ideal, pesos e cortes (padrão 40/25/20/15; A ≥ 80, B ≥ 60, C ≥ 40), municípios com rota e atendidos sem rota, clientes atuais e lista de bloqueio, semeada por script com dados de exemplo da Destak
 - [ ] Coordenador cria e edita campanha com municípios (código IBGE), segmentos do catálogo, tiers-alvo, limite de empresas, teto de gasto e vendedores participantes

@@ -6,7 +6,7 @@
 
 **Status:** ready-for-agent
 
-> **Pendente (22/11/2026):** código commitado; tipos, lint, build e o agente falso (rodado isoladamente) passam. Testes de API (`tests/test_execucao.py`) aguardam o PostgreSQL de teste (Docker).
+> **Estado (23/11/2026):** código commitado; tipos, lint, build e o agente falso (rodado isoladamente) passam. Testes de API (`tests/test_execucao.py`) passam contra o PostgreSQL de teste (23/11/2026).
 
 - [ ] Contrato do agente de prospecção: recebe a fotografia da campanha (organização, municípios IBGE, segmentos e CNAEs, limite de empresas, saldo do teto) e devolve candidatos de forma incremental, cada um com CNPJ, razão social, nome fantasia, endereço, município, segmento, contatos e site com fonte, sinais comerciais, evidências (fonte, link, data) e custo incremental
 - [ ] Agente falso no mesmo contrato, lendo um arquivo de exemplo com empresas realistas; o agente usado é escolhido por configuração

@@ -9,7 +9,7 @@ from typing import Any, ClassVar
 
 from app.llm.cliente import MODELO_PADRAO, RespostaDaIA
 
-CUSTO_POR_CHAMADA = Decimal("0.001")
+CUSTO_POR_CHAMADA = Decimal("0.01")
 
 
 class ClienteFalso:

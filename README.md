@@ -6,9 +6,9 @@ Plataforma em que agentes de IA encontram e pontuam empresas compradoras para um
 - Decisões: [docs/adr](docs/adr)
 - Spec e tickets da v0: [.scratch/v0-demonstracao](.scratch/v0-demonstracao)
 
-## Estado (22/11/2026)
+## Estado (23/11/2026)
 
-Os tickets 01 a 09 e 11 a 13 da v0 estão implementados. Tipos, lint, build do frontend e o teste de contrato passam, mas **os testes de API contra o PostgreSQL ainda não rodaram** (o Docker Desktop não inicia nesta máquina). Antes de considerar qualquer ticket feito: `docker compose up -d db-test` e `pytest` no backend. O ticket 10 (publicação no Supabase, Render e Vercel) depende de criar as contas.
+Os tickets 01 a 09 e 11 a 13 da v0 estão implementados, e os 85 testes de API passam contra o PostgreSQL de teste (23/11/2026). Ainda não exercitados: a chamada real à Claude API (qualificação e ficha) e o agente de prospecção real. O ticket 10 (publicação no Supabase, Render e Vercel) depende de criar as contas.
 
 O que roda em segundo plano, na fila do PostgreSQL (ADR 0004): prospecção (Agente de prospecção; o falso por padrão), qualificação (Agente 2, Claude Haiku 5.5) e ficha de abordagem (Claude Haiku 5.5). O Agente de prospecção real entra por `AGENTE_PROSPECCAO=pacote.modulo:Classe`; o contrato está em `backend/app/prospeccao/agente.py`.
 
@@ -32,10 +32,10 @@ copy .env.example .env   # preencher
 .venv\Scripts\uvicorn app.main:create_app --factory --reload
 ```
 
-Testes (precisam do Docker para o PostgreSQL de teste):
+Testes (precisam do Docker para o PostgreSQL de teste; o projeto compose `destak` não toca em outros containers, volumes ou imagens):
 
 ```powershell
-docker compose up -d db-test
+docker compose -p destak up -d db-test
 cd backend
 .venv\Scripts\python -m pytest
 .venv\Scripts\python -m mypy

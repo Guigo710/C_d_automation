@@ -285,8 +285,8 @@ def test_sem_chave_da_ia_a_qualificacao_falha_e_pode_ser_repetida(
 def test_qualificacao_para_no_teto_de_gasto(
     client: TestClient, dados: Dados, como: Como, campanha: Callable[..., str]
 ) -> None:
-    # Prospecção: 5 empresas x US$ 0,03 = 0,15. Sobra US$ 0,001 = uma chamada de IA.
-    campanha_id = campanha(teto_gasto_usd="0.151")
+    # Prospecção: 5 empresas x US$ 0,03 = 0,15. Sobra US$ 0,01 = uma chamada de IA.
+    campanha_id = campanha(teto_gasto_usd="0.16")
     _fila(client).drenar()
 
     qualificacao = _execucoes(client, como, dados, campanha_id)["qualificacao"]

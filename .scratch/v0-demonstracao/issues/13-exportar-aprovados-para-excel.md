@@ -6,7 +6,7 @@
 
 **Status:** ready-for-agent
 
-> **Pendente (22/11/2026):** código commitado; tipos, lint e build passam. Na v0 o arquivo é baixado direto, sem bucket nem link que expira; contatos ficam fora da planilha. Testes de API (`tests/test_exportacao.py`) aguardam o PostgreSQL de teste (Docker).
+> **Estado (23/11/2026):** código commitado; tipos, lint e build passam. Na v0 o arquivo é baixado direto, sem bucket nem link que expira; contatos ficam fora da planilha. Testes de API (`tests/test_exportacao.py`) passam contra o PostgreSQL de teste (23/11/2026).
 
 - [ ] Botão de exportar aprovados na tela da campanha, só para coordenador
 - [ ] Arquivo XLSX gerado sob demanda a partir do banco, com os dados e notas dos aprovados

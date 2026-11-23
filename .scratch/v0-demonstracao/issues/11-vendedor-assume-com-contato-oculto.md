@@ -6,7 +6,7 @@
 
 **Status:** ready-for-agent
 
-> **Pendente (22/11/2026):** código commitado; tipos, lint e build passam. Testes de API (`tests/test_vendedor.py`) aguardam o PostgreSQL de teste (Docker).
+> **Estado (23/11/2026):** código commitado; tipos, lint e build passam. Testes de API (`tests/test_vendedor.py`) passam contra o PostgreSQL de teste (23/11/2026).
 
 - [ ] Vendedor vê só empresas das campanhas de que é membro; filtro de escopo aplicado no SQL
 - [ ] Contato mascarado pela API para quem não é coordenador nem responsável (testado)
