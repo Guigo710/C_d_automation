@@ -2,20 +2,22 @@ import { useEffect, useState, type FormEvent } from "react";
 
 import { api } from "../api/cliente";
 import type { components } from "../api/schema";
+import { Kpi, formatarDolar } from "../ui";
 
 type Configuracao = components["schemas"]["ConfiguracaoDaOrganizacao"];
 type Fornecedor = "anthropic" | "google_places" | "brave";
 
-const NOMES_DOS_FORNECEDORES: Record<string, string> = {
-  anthropic: "Claude API (Anthropic)",
-  google_places: "Google Places",
-  brave: "Brave Search",
+const FORNECEDORES: Record<string, { nome: string; uso: string }> = {
+  anthropic: { nome: "Claude API (Anthropic)", uso: "Qualificação e fichas de abordagem" },
+  google_places: { nome: "Google Places", uso: "Confirma lojas e acha site e telefone" },
+  brave: { nome: "Brave Search", uso: "Acha o site quando a empresa não informa" },
 };
 
 export function Configuracao() {
   const [config, setConfig] = useState<Configuracao | null>(null);
   const [teto, setTeto] = useState("");
   const [novasChaves, setNovasChaves] = useState<Record<string, string>>({});
+  const [remover, setRemover] = useState<Fornecedor | null>(null);
   const [mensagem, setMensagem] = useState<{ tipo: "erro" | "aviso"; texto: string } | null>(null);
 
   function aplicar(dados: Configuracao) {
@@ -46,78 +48,140 @@ export function Configuracao() {
     if (data) {
       aplicar(data);
       setNovasChaves({ ...novasChaves, [fornecedor]: "" });
-      setMensagem({ tipo: "aviso", texto: "Chave salva." });
+      setMensagem({ tipo: "aviso", texto: `Chave do ${FORNECEDORES[fornecedor].nome} salva.` });
     } else if (response.status === 503) {
       setMensagem({ tipo: "erro", texto: "O servidor não tem a cifragem de chaves configurada." });
     } else setMensagem({ tipo: "erro", texto: "Não foi possível salvar a chave." });
   }
 
-  async function removerChave(fornecedor: Fornecedor) {
+  async function confirmarRemocao() {
+    if (!remover) return;
+    const fornecedor = remover;
+    setRemover(null);
     const { data } = await api.DELETE("/configuracao/chaves/{fornecedor}", {
       params: { path: { fornecedor } },
     });
-    if (data) aplicar(data);
+    if (data) {
+      aplicar(data);
+      setMensagem({ tipo: "aviso", texto: `Chave do ${FORNECEDORES[fornecedor].nome} removida.` });
+    } else setMensagem({ tipo: "erro", texto: "Não foi possível remover a chave." });
   }
 
-  if (!config) return <section className="painel">Carregando...</section>;
+  if (!config) return <p className="suave">Carregando...</p>;
 
   const gasto = Number(config.gasto_do_mes_usd);
   const limite = Number(config.teto_mensal_usd);
+  const usado = limite > 0 ? Math.min(100, (gasto / limite) * 100) : 0;
 
   return (
-    <section className="painel">
-      <h1>Configuração da organização</h1>
-      {mensagem && <p className={mensagem.tipo}>{mensagem.texto}</p>}
+    <>
+      <header className="cabecalho">
+        <div>
+          <p className="rotulo">Administração</p>
+          <h1>Configuração</h1>
+        </div>
+      </header>
+      {mensagem && (
+        <p className={mensagem.tipo} role="status" style={{ marginBottom: 16 }}>
+          {mensagem.texto}
+        </p>
+      )}
 
-      <h2>Teto de gasto mensal</h2>
-      <p className="suave">
-        Gasto do mês com dados e IA: <strong>US$ {gasto.toFixed(2)}</strong> de US$ {limite.toFixed(2)}
-        {limite > 0 && ` (${Math.min(100, (gasto / limite) * 100).toFixed(0)}%)`}
-      </p>
-      <form onSubmit={salvarTeto} className="linha">
-        <label>
-          Teto (US$)
-          <input type="number" min={0} step="0.01" value={teto} onChange={(e) => setTeto(e.target.value)} />
-        </label>
-        <button type="submit">Salvar teto</button>
-      </form>
+      <div className="kpis">
+        <Kpi rotulo="Gasto do mês" valor={formatarDolar(gasto)} destaque />
+        <Kpi rotulo="Teto mensal" valor={formatarDolar(limite)} />
+        <Kpi rotulo="Usado" valor={`${usado.toFixed(0)}%`} />
+      </div>
 
-      <h2>Chaves de API</h2>
-      <p className="suave">
-        As chaves ficam cifradas no servidor e nunca são mostradas de novo; aparece só o final.
-      </p>
-      <table>
-        <tbody>
+      <section className="painel gasto">
+        <h2>Teto de gasto mensal</h2>
+        <p className="suave" style={{ margin: 0 }}>
+          Soma de dados e IA de todas as campanhas no mês. Ao atingir o teto, os agentes param.
+        </p>
+        <div className="trilho">
+          <div className="preenchido" style={{ width: `${usado}%` }} />
+        </div>
+        <form onSubmit={salvarTeto} className="formulario-em-linha">
+          <label>
+            Novo teto (US$)
+            <input type="number" min={0} step="0.01" value={teto} onChange={(e) => setTeto(e.target.value)} />
+          </label>
+          <button type="submit">Salvar teto</button>
+        </form>
+      </section>
+
+      <section className="painel">
+        <h2>Chaves de API</h2>
+        <p className="suave" style={{ marginTop: 0 }}>
+          A organização paga os próprios fornecedores. As chaves ficam cifradas no servidor e nunca são
+          mostradas de novo; aparece só o final.
+        </p>
+        <div className="lista-de-chaves">
           {config.chaves.map((c) => {
             const fornecedor = c.fornecedor as Fornecedor;
+            const info = FORNECEDORES[c.fornecedor];
             return (
-              <tr key={c.fornecedor}>
-                <td>{NOMES_DOS_FORNECEDORES[c.fornecedor] ?? c.fornecedor}</td>
-                <td>{c.configurada ? `configurada (…${c.final})` : <span className="suave">não configurada</span>}</td>
-                <td>
-                  <div className="linha">
-                    <input
-                      type="password"
-                      autoComplete="off"
-                      placeholder={c.configurada ? "Trocar chave" : "Colar chave"}
-                      value={novasChaves[c.fornecedor] ?? ""}
-                      onChange={(e) => setNovasChaves({ ...novasChaves, [c.fornecedor]: e.target.value })}
-                    />
-                    <button type="button" onClick={() => salvarChave(fornecedor)}>
-                      Salvar
+              <div key={c.fornecedor} className="chave">
+                <div className="chave-info">
+                  <strong>{info?.nome ?? c.fornecedor}</strong>
+                  <span className="suave">{info?.uso}</span>
+                  {c.configurada ? (
+                    <span className="etiqueta sucesso">
+                      configurada · final <span className="mono">{c.final}</span>
+                    </span>
+                  ) : (
+                    <span className="etiqueta">não configurada</span>
+                  )}
+                </div>
+                <div className="chave-acoes">
+                  <input
+                    type="password"
+                    autoComplete="off"
+                    aria-label={`Nova chave do ${info?.nome ?? c.fornecedor}`}
+                    placeholder={c.configurada ? "Trocar chave" : "Colar chave"}
+                    value={novasChaves[c.fornecedor] ?? ""}
+                    onChange={(e) => setNovasChaves({ ...novasChaves, [c.fornecedor]: e.target.value })}
+                  />
+                  <button
+                    type="button"
+                    disabled={!novasChaves[c.fornecedor]?.trim()}
+                    onClick={() => salvarChave(fornecedor)}
+                  >
+                    Salvar
+                  </button>
+                  {c.configurada && (
+                    <button type="button" className="secundario" onClick={() => setRemover(fornecedor)}>
+                      Remover
                     </button>
-                    {c.configurada && (
-                      <button type="button" className="link" onClick={() => removerChave(fornecedor)}>
-                        Remover
-                      </button>
-                    )}
-                  </div>
-                </td>
-              </tr>
+                  )}
+                </div>
+              </div>
             );
           })}
-        </tbody>
-      </table>
-    </section>
+        </div>
+      </section>
+
+      {remover && (
+        <div className="modal" onClick={() => setRemover(null)}>
+          <div role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
+            <h2>Remover chave</h2>
+            <p>
+              Remover a chave do <strong>{FORNECEDORES[remover].nome}</strong>?
+            </p>
+            <p className="suave" style={{ margin: 0 }}>
+              {remover === "anthropic"
+                ? "Sem ela, a qualificação e as fichas de abordagem param até uma nova chave ser cadastrada."
+                : "Sem ela, a prospecção deixa de usar esse fornecedor."}
+            </p>
+            <div className="linha" style={{ justifyContent: "flex-end" }}>
+              <button className="secundario" onClick={() => setRemover(null)}>
+                Cancelar
+              </button>
+              <button onClick={confirmarRemocao}>Remover</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

@@ -1,27 +1,32 @@
 import { useEu } from "../eu";
+import { NOMES_DOS_PAPEIS } from "../ui";
 
-export const NOMES_DOS_PAPEIS: Record<string, string> = {
-  administrador: "Administrador",
-  coordenador: "Coordenador",
-  vendedor: "Vendedor",
-};
+export { NOMES_DOS_PAPEIS };
 
 export function MinhaOrganizacao() {
   const { eu } = useEu();
   if (!eu) return null;
 
   return (
-    <section className="painel">
-      <p className="rotulo">Organização</p>
-      <h1>{eu.organizacao.nome}</h1>
-      <dl>
-        <dt>Usuário</dt>
-        <dd>{eu.nome}</dd>
-        <dt>E-mail</dt>
-        <dd>{eu.email}</dd>
-        <dt>Papel</dt>
-        <dd>{NOMES_DOS_PAPEIS[eu.papel] ?? eu.papel}</dd>
-      </dl>
-    </section>
+    <>
+      <header className="cabecalho">
+        <div>
+          <p className="rotulo">{eu.organizacao.nome}</p>
+          <h1>Meu perfil</h1>
+        </div>
+      </header>
+      <section className="painel" style={{ maxWidth: 560 }}>
+        <dl className="dados">
+          <dt>Nome</dt>
+          <dd>{eu.nome}</dd>
+          <dt>E-mail</dt>
+          <dd>{eu.email}</dd>
+          <dt>Papel</dt>
+          <dd>{NOMES_DOS_PAPEIS[eu.papel] ?? eu.papel}</dd>
+          <dt>Organização</dt>
+          <dd>{eu.organizacao.nome}</dd>
+        </dl>
+      </section>
+    </>
   );
 }

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { api } from "./api/cliente";
 import { MODO_DEMO, sair } from "./autenticacao";
 import { ProvedorDoEu, useEu } from "./eu";
+import { Auditoria } from "./paginas/Auditoria";
 import { CampanhaForm } from "./paginas/CampanhaForm";
 import { Campanhas } from "./paginas/Campanhas";
 import { Clientes } from "./paginas/Clientes";
@@ -105,6 +106,7 @@ function Portal() {
 
         <p className="rotulo secao">Organização</p>
         {papel === "administrador" && link("/configuracao", "Configuração", rota === "/configuracao")}
+        {papel === "administrador" && link("/auditoria", "Auditoria", rota === "/auditoria")}
         {link("/organizacao", "Meu perfil", rota === "/organizacao")}
 
         <div className="rodape">
@@ -131,6 +133,7 @@ function pagina(rota: string, campanhaId: string | null, aba: string, papel: str
   if (rota === "/campanhas/nova") return <CampanhaForm key="nova" campanhaId={null} />;
   if (rota === "/clientes" && papel === "vendedor") return <Clientes />;
   if (rota === "/configuracao" && papel === "administrador") return <Configuracao />;
+  if (rota === "/auditoria" && papel === "administrador") return <Auditoria />;
   if (rota === "/organizacao") return <MinhaOrganizacao />;
   if (rota !== "/campanhas") irPara("/campanhas");
   return <Campanhas />;

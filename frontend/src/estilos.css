@@ -907,6 +907,80 @@ tr.clicavel:hover td {
   border-radius: 10px;
 }
 
+/* --- formulários em linha, chaves de API, listas de dados --------------------------- */
+
+.formulario-em-linha {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.formulario-em-linha > label {
+  flex: 0 1 220px;
+}
+
+.lista-de-chaves {
+  display: flex;
+  flex-direction: column;
+}
+
+.chave {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--borda);
+}
+
+.chave:last-child {
+  border-bottom: none;
+}
+
+.chave-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 220px;
+}
+
+.chave-info .suave {
+  font-size: 0.85rem;
+}
+
+.chave-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex: 1 1 320px;
+  justify-content: flex-end;
+}
+
+.chave-acoes input {
+  flex: 1 1 180px;
+  min-width: 0;
+}
+
+dl.dados {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 10px 20px;
+  margin: 0;
+}
+
+dl.dados dt {
+  color: var(--texto-suave);
+}
+
+dl.dados dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
 /* --- celular: menu no topo e kanban rolando na horizontal ---------------------------- */
 
 @media (max-width: 860px) {
@@ -988,6 +1062,27 @@ tr.clicavel:hover td {
   .alternador {
     display: flex;
     width: 100%;
+  }
+
+  .chave-acoes {
+    justify-content: stretch;
+  }
+
+  .chave-acoes input {
+    flex-basis: 100%;
+  }
+
+  .chave-acoes button {
+    flex: 1;
+  }
+
+  dl.dados {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  dl.dados dd {
+    margin-bottom: 10px;
   }
 
   .alternador button {
