@@ -5,8 +5,6 @@ import type { components } from "../api/schema";
 import { useEu } from "../eu";
 import { irPara } from "../rota";
 import { NOMES_DOS_STATUS } from "./Campanhas";
-import { EmpresasDaCampanha } from "./EmpresasDaCampanha";
-import { SecaoProspeccao } from "./SecaoProspeccao";
 
 type CampanhaIn = components["schemas"]["CampanhaIn"];
 type Segmento = components["schemas"]["SegmentoOut"];
@@ -43,6 +41,7 @@ export function CampanhaForm({ campanhaId }: { campanhaId: string | null }) {
   const [outrosMunicipios, setOutrosMunicipios] = useState("");
   const [erro, setErro] = useState<string | null>(null);
   const [salvando, setSalvando] = useState(false);
+  const [salva, setSalva] = useState(false);
 
   useEffect(() => {
     api.GET("/catalogo-segmentos").then(({ data }) => data && setSegmentos(data));
@@ -96,6 +95,7 @@ export function CampanhaForm({ campanhaId }: { campanhaId: string | null }) {
       municipios_ibge: [...new Set([...campanha.municipios_ibge, ...codigosExtras])],
     };
     setSalvando(true);
+    setSalva(false);
     const { data, error } = campanhaId
       ? await api.PUT("/campanhas/{campanha_id}", {
           params: { path: { campanha_id: campanhaId } },
@@ -103,18 +103,20 @@ export function CampanhaForm({ campanhaId }: { campanhaId: string | null }) {
         })
       : await api.POST("/campanhas", { body: corpo });
     setSalvando(false);
-    if (data) irPara("/campanhas");
+    if (data && !campanhaId) irPara(`/campanhas/${data.id}/execucao`);
+    else if (data) setSalva(true);
     else setErro(typeof error?.detail === "string" ? error.detail : "Confira os campos da campanha.");
   }
 
-  const formulario = (
-    <section className="painel">
-      <header className="cabecalho-da-pagina">
-        <h1>{campanhaId ? campanha.nome || "Campanha" : "Nova campanha"}</h1>
-        <button className="link" onClick={() => irPara("/campanhas")}>
-          Voltar
-        </button>
+  return (
+    <>
+      <header className="cabecalho">
+        <div>
+          <p className="rotulo">{campanhaId ? (podeEditar ? "Configurar campanha" : "Dados da campanha") : "Campanhas"}</p>
+          <h1>{campanhaId ? campanha.nome || "Campanha" : "Nova campanha"}</h1>
+        </div>
       </header>
+    <section className="painel">
       <form onSubmit={salvar}>
         <fieldset disabled={!podeEditar}>
           <label>
@@ -165,6 +167,7 @@ export function CampanhaForm({ campanhaId }: { campanhaId: string | null }) {
 
           <div className="grupo">
             <span>Segmentos</span>
+            <div className="opcoes">
             {segmentos.map((s) => (
               <label key={s.id} className="opcao">
                 <input
@@ -175,6 +178,7 @@ export function CampanhaForm({ campanhaId }: { campanhaId: string | null }) {
                 {s.nome}
               </label>
             ))}
+            </div>
           </div>
 
           <div className="grupo">
@@ -238,16 +242,8 @@ export function CampanhaForm({ campanhaId }: { campanhaId: string | null }) {
           </button>
         )}
       </form>
+      {salva && <p className="aviso">Campanha salva.</p>}
     </section>
-  );
-
-  return (
-    <>
-      {formulario}
-      {campanhaId && (eu?.papel === "coordenador" || eu?.papel === "administrador") && (
-        <SecaoProspeccao campanhaId={campanhaId} />
-      )}
-      {campanhaId && eu?.papel === "vendedor" && <EmpresasDaCampanha campanhaId={campanhaId} versao={0} />}
     </>
   );
 }

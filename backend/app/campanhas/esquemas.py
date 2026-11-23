@@ -42,6 +42,22 @@ class CampanhaResumo(BaseModel):
     criada_em: datetime
 
 
+class MetricasDaCampanha(BaseModel):
+    candidatos: int
+    pendentes: int
+    aprovados: int
+    recusados: int
+    na_operacao: int
+    gasto_usd: Decimal
+
+
+class CampanhaNaLista(CampanhaResumo):
+    municipios_ibge: list[str]
+    tiers_alvo: list[str]
+    segmentos: list[str]
+    metricas: MetricasDaCampanha
+
+
 class CampanhaOut(CampanhaResumo):
     municipios_ibge: list[str]
     tiers_alvo: list[Tier]

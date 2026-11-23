@@ -32,6 +32,7 @@ class Responsavel(BaseModel):
 class EmpresaDaCampanhaResumo(BaseModel):
     id: uuid.UUID
     campanha_id: uuid.UUID
+    campanha_nome: str
     tier: str
     nota_total: int | None
     ficha_status: StatusDaFicha

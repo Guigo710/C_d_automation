@@ -51,6 +51,7 @@ class CandidatoResumo(BaseModel):
     recusa_sugerida: bool
     baixa_confianca: bool
     em_revisao: bool
+    origens: list[str]
 
 
 class PaginaDeCandidatos(BaseModel):

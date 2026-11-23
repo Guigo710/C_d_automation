@@ -447,6 +447,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/minhas-empresas": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Minhas Empresas
+         * @description As empresas de que o vendedor é responsável, em todas as campanhas.
+         */
+        get: operations["minhas_empresas_minhas_empresas_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/municipios-atendidos": {
         parameters: {
             query?: never;
@@ -540,6 +560,37 @@ export interface components {
             /** Tiers Alvo */
             tiers_alvo: ("A" | "B" | "C")[];
         };
+        /** CampanhaNaLista */
+        CampanhaNaLista: {
+            /**
+             * Criada Em
+             * Format: date-time
+             */
+            criada_em: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Limite Empresas */
+            limite_empresas: number;
+            metricas: components["schemas"]["MetricasDaCampanha"];
+            /** Municipios Ibge */
+            municipios_ibge: string[];
+            /** Nome */
+            nome: string;
+            /** Segmentos */
+            segmentos: string[];
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "rascunho" | "ativa" | "pausada" | "encerrada";
+            /** Teto Gasto Usd */
+            teto_gasto_usd: string;
+            /** Tiers Alvo */
+            tiers_alvo: string[];
+        };
         /** CampanhaOut */
         CampanhaOut: {
             /**
@@ -576,30 +627,6 @@ export interface components {
             teto_gasto_usd: string;
             /** Tiers Alvo */
             tiers_alvo: ("A" | "B" | "C")[];
-        };
-        /** CampanhaResumo */
-        CampanhaResumo: {
-            /**
-             * Criada Em
-             * Format: date-time
-             */
-            criada_em: string;
-            /**
-             * Id
-             * Format: uuid
-             */
-            id: string;
-            /** Limite Empresas */
-            limite_empresas: number;
-            /** Nome */
-            nome: string;
-            /**
-             * Status
-             * @enum {string}
-             */
-            status: "rascunho" | "ativa" | "pausada" | "encerrada";
-            /** Teto Gasto Usd */
-            teto_gasto_usd: string;
         };
         /** CandidatoDetalhe */
         CandidatoDetalhe: {
@@ -653,6 +680,8 @@ export interface components {
             nota_potencial: number | null;
             /** Nota Total */
             nota_total: number | null;
+            /** Origens */
+            origens: string[];
             /** Recusa Sugerida */
             recusa_sugerida: boolean;
             /** Sinais */
@@ -699,6 +728,8 @@ export interface components {
             motivo_recusa: string | null;
             /** Nota Total */
             nota_total: number | null;
+            /** Origens */
+            origens: string[];
             /** Recusa Sugerida */
             recusa_sugerida: boolean;
             /**
@@ -756,6 +787,8 @@ export interface components {
              * Format: uuid
              */
             campanha_id: string;
+            /** Campanha Nome */
+            campanha_nome: string;
             /** Contato Oculto */
             contato_oculto: boolean;
             /** Contatos */
@@ -799,6 +832,8 @@ export interface components {
              * Format: uuid
              */
             campanha_id: string;
+            /** Campanha Nome */
+            campanha_nome: string;
             empresa: components["schemas"]["EmpresaResumo"];
             /**
              * Ficha Status
@@ -968,6 +1003,21 @@ export interface components {
             id: string;
             /** Nome */
             nome: string;
+        };
+        /** MetricasDaCampanha */
+        MetricasDaCampanha: {
+            /** Aprovados */
+            aprovados: number;
+            /** Candidatos */
+            candidatos: number;
+            /** Gasto Usd */
+            gasto_usd: string;
+            /** Na Operacao */
+            na_operacao: number;
+            /** Pendentes */
+            pendentes: number;
+            /** Recusados */
+            recusados: number;
         };
         /** MunicipioOut */
         MunicipioOut: {
@@ -1168,7 +1218,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["CampanhaResumo"][];
+                    "application/json": components["schemas"]["CampanhaNaLista"][];
                 };
             };
             /** @description Validation Error */
@@ -2083,6 +2133,37 @@ export interface operations {
                     "application/json": {
                         [key: string]: string;
                     };
+                };
+            };
+        };
+    };
+    minhas_empresas_minhas_empresas_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EmpresaDaCampanhaResumo"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

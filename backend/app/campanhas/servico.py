@@ -4,7 +4,7 @@ import uuid
 
 from app.auth.contexto import Contexto
 from app.campanhas import repositorio
-from app.campanhas.esquemas import CampanhaIn, CampanhaOut, CampanhaResumo
+from app.campanhas.esquemas import CampanhaIn, CampanhaNaLista, CampanhaOut
 from app.configuracao import repositorio as configuracao
 
 
@@ -25,7 +25,7 @@ def _validar(contexto: Contexto, dados: CampanhaIn) -> None:
         raise CampanhaInvalida("Todo membro precisa ser vendedor ativo da organização")
 
 
-def listar(contexto: Contexto) -> list[CampanhaResumo]:
+def listar(contexto: Contexto) -> list[CampanhaNaLista]:
     return repositorio.listar(contexto.conn)
 
 

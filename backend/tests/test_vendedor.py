@@ -182,3 +182,38 @@ def test_coordenador_ve_todos_os_contatos_e_nao_assume(
     assert (
         client.post(f"/empresas-da-campanha/{empresa_id}/assumir", headers=coord).status_code == 403
     )
+
+
+def test_minhas_empresas_lista_so_as_do_vendedor_em_todas_as_campanhas(
+    client: TestClient,
+    dados: Dados,
+    como: Como,
+    operacao: dict[str, Any],
+    segundo_vendedor: UsuarioDeTeste,
+) -> None:
+    empresas = operacao["empresas"]
+    client.post(
+        f"/empresas-da-campanha/{empresas['Bom Preço Taquaral']}/assumir",
+        headers=como(dados.a.vendedor),
+    )
+    client.post(
+        f"/empresas-da-campanha/{empresas['Mercado Vila Nova']}/assumir",
+        headers=como(segundo_vendedor),
+    )
+
+    minhas = client.get("/minhas-empresas", headers=como(dados.a.vendedor)).json()
+
+    assert [m["empresa"]["nome_fantasia"] for m in minhas] == ["Bom Preço Taquaral"]
+    assert minhas[0]["campanha_nome"]
+    assert client.get("/minhas-empresas", headers=como(dados.a.coordenador)).status_code == 403
+
+
+def test_lista_de_campanhas_traz_metricas(
+    client: TestClient, dados: Dados, como: Como, operacao: dict[str, Any]
+) -> None:
+    lista = client.get("/campanhas", headers=como(dados.a.coordenador)).json()[0]
+
+    assert lista["segmentos"] == ["Padaria", "Supermercado"]
+    assert lista["metricas"]["aprovados"] == 2
+    assert lista["metricas"]["na_operacao"] == 2
+    assert lista["metricas"]["recusados"] == 1

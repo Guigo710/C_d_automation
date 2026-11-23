@@ -17,15 +17,18 @@ export function NovaSenha() {
 
   if (pronto) {
     return (
-      <main className="cartao">
+      <main className="tela-de-entrada">
+      <div className="cartao">
         <p>Senha alterada. Você já está conectado.</p>
         <button onClick={() => window.location.assign("/")}>Continuar</button>
-      </main>
+      </div>
+    </main>
     );
   }
 
   return (
-    <main className="cartao">
+    <main className="tela-de-entrada">
+      <div className="cartao">
       <h1>Criar nova senha</h1>
       <form onSubmit={salvar}>
         <label>
@@ -41,6 +44,7 @@ export function NovaSenha() {
         {erro && <p className="erro">{erro}</p>}
         <button type="submit">Salvar</button>
       </form>
+    </div>
     </main>
   );
 }

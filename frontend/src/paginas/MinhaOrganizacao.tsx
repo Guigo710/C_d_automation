@@ -11,7 +11,7 @@ export function MinhaOrganizacao() {
   if (!eu) return null;
 
   return (
-    <section className="cartao">
+    <section className="painel">
       <p className="rotulo">Organização</p>
       <h1>{eu.organizacao.nome}</h1>
       <dl>

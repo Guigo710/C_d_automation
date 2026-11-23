@@ -21,11 +21,13 @@ _RESPONSAVEL_JSON = (
     "ELSE json_build_object('id', p.usuario_id, 'nome', p.nome) END"
 )
 _COLUNAS = (
-    f"ec.id, ec.campanha_id, ec.tier, ec.nota_total, ec.ficha_status, ec.promovida_em, "
+    f"ec.id, ec.campanha_id, cp.nome AS campanha_nome, ec.tier, ec.nota_total, "
+    f"ec.ficha_status, ec.promovida_em, "
     f"{_RESPONSAVEL_JSON} AS responsavel, {_EMPRESA_JSON} AS empresa"
 )
 _DE = (
     "FROM empresas_da_campanha ec JOIN empresas e ON e.id = ec.empresa_id "
+    "JOIN campanhas cp ON cp.id = ec.campanha_id "
     "LEFT JOIN perfis p ON p.usuario_id = ec.responsavel_id"
 )
 
@@ -142,6 +144,15 @@ def listar(conn: Conexao, campanha_id: uuid.UUID) -> list[EmpresaDaCampanhaResum
         f"SELECT {_COLUNAS} {_DE} WHERE ec.campanha_id = %s "
         "ORDER BY ec.tier, ec.nota_total DESC NULLS LAST, e.razao_social",
         (campanha_id,),
+    ).fetchall()
+    return [EmpresaDaCampanhaResumo.model_validate(linha) for linha in linhas]
+
+
+def listar_do_responsavel(conn: Conexao, usuario_id: uuid.UUID) -> list[EmpresaDaCampanhaResumo]:
+    linhas = conn.execute(
+        f"SELECT {_COLUNAS} {_DE} WHERE ec.responsavel_id = %s "
+        "ORDER BY ec.tier, ec.nota_total DESC NULLS LAST, e.razao_social",
+        (usuario_id,),
     ).fetchall()
     return [EmpresaDaCampanhaResumo.model_validate(linha) for linha in linhas]
 

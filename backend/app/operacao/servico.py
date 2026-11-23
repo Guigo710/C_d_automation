@@ -85,6 +85,10 @@ def listar(contexto: Contexto, campanha_id: uuid.UUID) -> list[EmpresaDaCampanha
     return repo.listar(contexto.conn, campanha_id)
 
 
+def minhas(contexto: Contexto) -> list[EmpresaDaCampanhaResumo]:
+    return repo.listar_do_responsavel(contexto.conn, contexto.usuario.id)
+
+
 def detalhe(contexto: Contexto, empresa_da_campanha_id: uuid.UUID) -> EmpresaDaCampanhaDetalhe:
     linha = repo.buscar(contexto.conn, empresa_da_campanha_id)
     if linha is None:

@@ -8,7 +8,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from app.auth.contexto import Contexto
 from app.auth.permissoes import exige
 from app.campanhas import servico
-from app.campanhas.esquemas import CampanhaIn, CampanhaOut, CampanhaResumo
+from app.campanhas.esquemas import CampanhaIn, CampanhaNaLista, CampanhaOut
 
 router = APIRouter(tags=["campanhas"])
 
@@ -20,8 +20,8 @@ def _nao_encontrada() -> HTTPException:
     return HTTPException(status.HTTP_404_NOT_FOUND, "Campanha não encontrada")
 
 
-@router.get("/campanhas", response_model=list[CampanhaResumo])
-def listar(contexto: LerCampanhas) -> list[CampanhaResumo]:
+@router.get("/campanhas", response_model=list[CampanhaNaLista])
+def listar(contexto: LerCampanhas) -> list[CampanhaNaLista]:
     return servico.listar(contexto)
 
 

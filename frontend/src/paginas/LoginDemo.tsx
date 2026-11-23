@@ -25,9 +25,11 @@ export function LoginDemo() {
   }
 
   return (
-    <main className="cartao">
+    <main className="tela-de-entrada">
+      <div className="cartao">
       <p className="rotulo">Demonstração local</p>
-      <h1>Commercial Department Automation</h1>
+      <p className="marca">Commercial Department Automation</p>
+      <h1>Entrar</h1>
       <p className="suave">Escolha com quem entrar. Os dados são fictícios.</p>
       {erro && <p className="erro">{erro}</p>}
       {!usuarios && !erro && <p>Carregando...</p>}
@@ -41,6 +43,7 @@ export function LoginDemo() {
           </button>
         ))}
       </div>
+    </div>
     </main>
   );
 }

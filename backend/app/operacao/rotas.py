@@ -49,6 +49,14 @@ def listar(campanha_id: uuid.UUID, contexto: Ler) -> list[EmpresaDaCampanhaResum
         raise _nao_encontrado() from erro
 
 
+@router.get("/minhas-empresas", response_model=list[EmpresaDaCampanhaResumo])
+def minhas_empresas(
+    contexto: Annotated[Contexto, Depends(exige("lead.assumir"))],
+) -> list[EmpresaDaCampanhaResumo]:
+    """As empresas de que o vendedor é responsável, em todas as campanhas."""
+    return servico.minhas(contexto)
+
+
 @router.get("/empresas-da-campanha/{empresa_id}", response_model=EmpresaDaCampanhaDetalhe)
 def detalhe(empresa_id: uuid.UUID, contexto: Ler) -> EmpresaDaCampanhaDetalhe:
     try:

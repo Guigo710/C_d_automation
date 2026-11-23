@@ -40,8 +40,10 @@ export function Login() {
   }
 
   return (
-    <main className="cartao">
-      <h1>Commercial Department Automation</h1>
+    <main className="tela-de-entrada">
+      <div className="cartao">
+      <p className="marca">Commercial Department Automation</p>
+      <h1>Entrar</h1>
       <form onSubmit={entrar}>
         <label>
           E-mail
@@ -60,6 +62,7 @@ export function Login() {
           Esqueci minha senha
         </button>
       </form>
+    </div>
     </main>
   );
 }

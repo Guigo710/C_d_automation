@@ -3,7 +3,7 @@ from __future__ import annotations
 import uuid
 from collections.abc import Sequence
 
-from app.campanhas.esquemas import CampanhaIn, CampanhaOut, CampanhaResumo
+from app.campanhas.esquemas import CampanhaIn, CampanhaNaLista, CampanhaOut
 from app.core.db import Conexao
 
 _COLUNAS = (
@@ -12,12 +12,30 @@ _COLUNAS = (
 )
 
 
-def listar(conn: Conexao) -> list[CampanhaResumo]:
+def listar(conn: Conexao) -> list[CampanhaNaLista]:
+    """Campanhas visíveis com métricas. Cada contagem respeita o RLS de quem pergunta."""
     linhas = conn.execute(
-        "SELECT id, nome, status, limite_empresas, teto_gasto_usd, criada_em "
-        "FROM campanhas ORDER BY criada_em DESC"
+        "SELECT c.id, c.nome, c.status, c.limite_empresas, c.teto_gasto_usd, c.criada_em, "
+        "c.municipios_ibge::text[] AS municipios_ibge, c.tiers_alvo::text[] AS tiers_alvo, "
+        "coalesce((SELECT array_agg(s.nome ORDER BY s.nome) FROM campanha_segmentos cs "
+        "  JOIN catalogo_segmentos s ON s.id = cs.segmento_id WHERE cs.campanha_id = c.id), "
+        "  '{}') AS segmentos, "
+        "json_build_object("
+        "  'candidatos', (SELECT count(*) FROM candidatos ca WHERE ca.campanha_id = c.id), "
+        "  'pendentes', (SELECT count(*) FROM candidatos ca WHERE ca.campanha_id = c.id "
+        "                AND ca.status = 'pendente'), "
+        "  'aprovados', (SELECT count(*) FROM candidatos ca WHERE ca.campanha_id = c.id "
+        "                AND ca.status = 'aprovado'), "
+        "  'recusados', (SELECT count(*) FROM candidatos ca WHERE ca.campanha_id = c.id "
+        "                AND ca.status = 'recusado'), "
+        "  'na_operacao', (SELECT count(*) FROM empresas_da_campanha ec "
+        "                  WHERE ec.campanha_id = c.id), "
+        "  'gasto_usd', (SELECT coalesce(sum(j.custo_usd), 0) FROM jobs j "
+        "                WHERE j.campanha_id = c.id)"
+        ") AS metricas "
+        "FROM campanhas c ORDER BY c.criada_em DESC"
     ).fetchall()
-    return [CampanhaResumo.model_validate(linha) for linha in linhas]
+    return [CampanhaNaLista.model_validate(linha) for linha in linhas]
 
 
 def buscar(conn: Conexao, campanha_id: uuid.UUID) -> CampanhaOut | None:

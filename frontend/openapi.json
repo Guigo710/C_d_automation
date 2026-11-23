@@ -135,6 +135,80 @@
         "title": "CampanhaIn",
         "type": "object"
       },
+      "CampanhaNaLista": {
+        "properties": {
+          "criada_em": {
+            "format": "date-time",
+            "title": "Criada Em",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "limite_empresas": {
+            "title": "Limite Empresas",
+            "type": "integer"
+          },
+          "metricas": {
+            "$ref": "#/components/schemas/MetricasDaCampanha"
+          },
+          "municipios_ibge": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Municipios Ibge",
+            "type": "array"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "segmentos": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Segmentos",
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "rascunho",
+              "ativa",
+              "pausada",
+              "encerrada"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "teto_gasto_usd": {
+            "title": "Teto Gasto Usd",
+            "type": "string"
+          },
+          "tiers_alvo": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Tiers Alvo",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "nome",
+          "status",
+          "limite_empresas",
+          "teto_gasto_usd",
+          "criada_em",
+          "municipios_ibge",
+          "tiers_alvo",
+          "segmentos",
+          "metricas"
+        ],
+        "title": "CampanhaNaLista",
+        "type": "object"
+      },
       "CampanhaOut": {
         "properties": {
           "atualizada_em": {
@@ -222,52 +296,6 @@
           "atualizada_em"
         ],
         "title": "CampanhaOut",
-        "type": "object"
-      },
-      "CampanhaResumo": {
-        "properties": {
-          "criada_em": {
-            "format": "date-time",
-            "title": "Criada Em",
-            "type": "string"
-          },
-          "id": {
-            "format": "uuid",
-            "title": "Id",
-            "type": "string"
-          },
-          "limite_empresas": {
-            "title": "Limite Empresas",
-            "type": "integer"
-          },
-          "nome": {
-            "title": "Nome",
-            "type": "string"
-          },
-          "status": {
-            "enum": [
-              "rascunho",
-              "ativa",
-              "pausada",
-              "encerrada"
-            ],
-            "title": "Status",
-            "type": "string"
-          },
-          "teto_gasto_usd": {
-            "title": "Teto Gasto Usd",
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "nome",
-          "status",
-          "limite_empresas",
-          "teto_gasto_usd",
-          "criada_em"
-        ],
-        "title": "CampanhaResumo",
         "type": "object"
       },
       "CandidatoDetalhe": {
@@ -434,6 +462,13 @@
             ],
             "title": "Nota Total"
           },
+          "origens": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Origens",
+            "type": "array"
+          },
           "recusa_sugerida": {
             "title": "Recusa Sugerida",
             "type": "boolean"
@@ -511,6 +546,7 @@
           "recusa_sugerida",
           "baixa_confianca",
           "em_revisao",
+          "origens",
           "endereco",
           "sinais",
           "nota_aderencia",
@@ -580,6 +616,13 @@
             ],
             "title": "Nota Total"
           },
+          "origens": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Origens",
+            "type": "array"
+          },
           "recusa_sugerida": {
             "title": "Recusa Sugerida",
             "type": "boolean"
@@ -629,7 +672,8 @@
           "motivo_recusa",
           "recusa_sugerida",
           "baixa_confianca",
-          "em_revisao"
+          "em_revisao",
+          "origens"
         ],
         "title": "CandidatoResumo",
         "type": "object"
@@ -772,6 +816,10 @@
             "title": "Campanha Id",
             "type": "string"
           },
+          "campanha_nome": {
+            "title": "Campanha Nome",
+            "type": "string"
+          },
           "contato_oculto": {
             "title": "Contato Oculto",
             "type": "boolean"
@@ -868,6 +916,7 @@
         "required": [
           "id",
           "campanha_id",
+          "campanha_nome",
           "tier",
           "nota_total",
           "ficha_status",
@@ -889,6 +938,10 @@
           "campanha_id": {
             "format": "uuid",
             "title": "Campanha Id",
+            "type": "string"
+          },
+          "campanha_nome": {
+            "title": "Campanha Nome",
             "type": "string"
           },
           "empresa": {
@@ -942,6 +995,7 @@
         "required": [
           "id",
           "campanha_id",
+          "campanha_nome",
           "tier",
           "nota_total",
           "ficha_status",
@@ -1398,6 +1452,44 @@
           "nome"
         ],
         "title": "MembroDaCampanha",
+        "type": "object"
+      },
+      "MetricasDaCampanha": {
+        "properties": {
+          "aprovados": {
+            "title": "Aprovados",
+            "type": "integer"
+          },
+          "candidatos": {
+            "title": "Candidatos",
+            "type": "integer"
+          },
+          "gasto_usd": {
+            "title": "Gasto Usd",
+            "type": "string"
+          },
+          "na_operacao": {
+            "title": "Na Operacao",
+            "type": "integer"
+          },
+          "pendentes": {
+            "title": "Pendentes",
+            "type": "integer"
+          },
+          "recusados": {
+            "title": "Recusados",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "candidatos",
+          "pendentes",
+          "aprovados",
+          "recusados",
+          "na_operacao",
+          "gasto_usd"
+        ],
+        "title": "MetricasDaCampanha",
         "type": "object"
       },
       "MunicipioOut": {
@@ -1873,7 +1965,7 @@
               "application/json": {
                 "schema": {
                   "items": {
-                    "$ref": "#/components/schemas/CampanhaResumo"
+                    "$ref": "#/components/schemas/CampanhaNaLista"
                   },
                   "title": "Response Listar Campanhas Get",
                   "type": "array"
@@ -3566,6 +3658,60 @@
         "summary": "Health",
         "tags": [
           "infra"
+        ]
+      }
+    },
+    "/minhas-empresas": {
+      "get": {
+        "description": "As empresas de que o vendedor é responsável, em todas as campanhas.",
+        "operationId": "minhas_empresas_minhas_empresas_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/EmpresaDaCampanhaResumo"
+                  },
+                  "title": "Response Minhas Empresas Minhas Empresas Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Minhas Empresas",
+        "tags": [
+          "operação"
         ]
       }
     },

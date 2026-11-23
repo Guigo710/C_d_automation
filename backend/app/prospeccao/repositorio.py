@@ -21,7 +21,9 @@ _COLUNAS_JOB = (
 
 _COLUNAS_CANDIDATO = (
     "c.id, c.campanha_id, c.status, c.criado_em, c.nota_total, c.tier_sugerido, c.tier_final, "
-    "c.motivo_recusa, c.recusa_sugerida, c.baixa_confianca, c.em_revisao"
+    "c.motivo_recusa, c.recusa_sugerida, c.baixa_confianca, c.em_revisao, "
+    "coalesce((SELECT array_agg(DISTINCT ev.fonte ORDER BY ev.fonte) FROM evidencias ev "
+    "  WHERE ev.empresa_id = c.empresa_id), '{}') AS origens"
 )
 
 _EMPRESA_JSON = (
