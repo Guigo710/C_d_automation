@@ -87,6 +87,7 @@ class CandidatoDetalhe(CandidatoResumo):
     lacunas: list[str]
     confianca: Decimal | None
     motivo_revisao: str | None
+    justificativa_tier: str | None
     modelo: str | None
     versao_prompt: str | None
     versao_regras: int | None

@@ -80,6 +80,11 @@ export function GavetaDoCandidato({
         )}
       </div>
       {candidato.em_revisao && <p className="erro">Em revisão: {candidato.motivo_revisao}</p>}
+      {candidato.tier_final && candidato.tier_final !== candidato.tier_sugerido && (
+        <p className="suave">
+          Tier mudado pelo coordenador (sugerido: {candidato.tier_sugerido ?? "–"}): {candidato.justificativa_tier}
+        </p>
+      )}
 
       {podeDecidir && (
         <section className="acoes">
@@ -122,7 +127,8 @@ export function GavetaDoCandidato({
               Restaurar recusa sugerida
             </button>
           )}
-          {(candidato.status === "pendente" || candidato.status === "aprovado") && (
+          {candidato.promovido && <p className="suave">Já enviada para a operação; decisões encerradas.</p>}
+          {(candidato.status === "pendente" || candidato.status === "aprovado") && !candidato.promovido && (
             <div className="linha">
               <select value={novoTier} onChange={(ev) => setNovoTier(ev.target.value as TierLetra)}>
                 <option value="A">Tier A</option>

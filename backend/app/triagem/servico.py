@@ -39,7 +39,10 @@ def aprovar(contexto: Contexto, campanha_id: uuid.UUID, ids: list[uuid.UUID]) ->
 
 def _status(contexto: Contexto, candidato_id: uuid.UUID) -> dict[str, object]:
     linha = contexto.conn.execute(
-        "SELECT status, recusa_sugerida FROM candidatos WHERE id = %s FOR UPDATE", (candidato_id,)
+        "SELECT status, recusa_sugerida, EXISTS (SELECT 1 FROM empresas_da_campanha ec "
+        "WHERE ec.candidato_id = candidatos.id) AS promovido "
+        "FROM candidatos WHERE id = %s FOR UPDATE",
+        (candidato_id,),
     ).fetchone()
     if linha is None:
         raise NaoEncontrado
@@ -76,6 +79,9 @@ def trocar_tier(contexto: Contexto, candidato_id: uuid.UUID, tier: str, justific
     atual = _status(contexto, candidato_id)
     if atual["status"] not in ("pendente", "aprovado"):
         raise EstadoInvalido("O tier só muda em candidatos pendentes ou aprovados")
+    if atual["promovido"]:
+        # A empresa já está com os vendedores, com o tier copiado na promoção.
+        raise EstadoInvalido("A empresa já foi enviada para a operação; o tier não muda mais")
     contexto.conn.execute(
         "UPDATE candidatos SET tier_final = %s, justificativa_tier = %s, decidido_por = %s, "
         "decidido_em = now() WHERE id = %s",

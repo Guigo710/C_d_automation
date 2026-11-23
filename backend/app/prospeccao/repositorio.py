@@ -257,7 +257,7 @@ def buscar_candidato(conn: Conexao, candidato_id: uuid.UUID) -> CandidatoDetalhe
         f"SELECT {_COLUNAS_CANDIDATO}, {_EMPRESA_JSON} AS empresa, "
         "e.endereco, e.sinais, e.id AS empresa_id, c.nota_aderencia, c.nota_potencial, "
         "c.nota_geografia, c.nota_dados, c.justificativas, c.lacunas, c.confianca, "
-        "c.motivo_revisao, c.modelo, c.versao_prompt, c.versao_regras "
+        "c.motivo_revisao, c.modelo, c.versao_prompt, c.versao_regras, c.justificativa_tier "
         "FROM candidatos c JOIN empresas e ON e.id = c.empresa_id WHERE c.id = %s",
         (candidato_id,),
     ).fetchone()

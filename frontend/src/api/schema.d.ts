@@ -658,6 +658,8 @@ export interface components {
              * Format: uuid
              */
             id: string;
+            /** Justificativa Tier */
+            justificativa_tier: string | null;
             /** Justificativas */
             justificativas: {
                 [key: string]: unknown;

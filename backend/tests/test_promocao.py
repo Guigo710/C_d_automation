@@ -217,3 +217,43 @@ def test_candidato_enviado_fica_marcado_como_promovido(
 
     assert depois["Bom Preço Taquaral"]["promovido"] is True
     assert depois["Mercado Vila Nova"]["promovido"] is False
+
+
+def test_tier_nao_muda_depois_de_enviado_para_a_operacao(
+    client: TestClient,
+    dados: Dados,
+    como: Como,
+    campanha: Callable[..., str],  # noqa: F811
+) -> None:
+    campanha_id, c = _aprovados(client, dados, como, campanha)
+    alvo = c["Bom Preço Taquaral"]["id"]
+    _promover(client, dados, como, campanha_id, [alvo], "clique-0009")
+
+    resposta = client.put(
+        f"/candidatos/{alvo}/tier",
+        json={"tier": "C", "justificativa": "Mudança depois do envio"},
+        headers=como(dados.a.coordenador),
+    )
+
+    assert resposta.status_code == 409
+    assert _empresas(client, dados, como, campanha_id)[0]["tier"] == "A"
+
+
+def test_detalhe_mostra_a_justificativa_da_troca_de_tier(
+    client: TestClient,
+    dados: Dados,
+    como: Como,
+    campanha: Callable[..., str],  # noqa: F811
+) -> None:
+    _, c = _aprovados(client, dados, como, campanha)
+    alvo = c["Mercado Vila Nova"]["id"]
+    client.put(
+        f"/candidatos/{alvo}/tier",
+        json={"tier": "A", "justificativa": "Abriu a segunda loja"},
+        headers=como(dados.a.coordenador),
+    )
+
+    detalhe = client.get(f"/candidatos/{alvo}", headers=como(dados.a.coordenador)).json()
+
+    assert detalhe["tier_final"] == "A"
+    assert detalhe["justificativa_tier"] == "Abriu a segunda loja"

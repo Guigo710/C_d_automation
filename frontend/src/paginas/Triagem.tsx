@@ -134,6 +134,9 @@ export function Triagem({ campanhaId }: { campanhaId: string }) {
     if (destino === "recusados" && candidato.status === "aprovado") {
       return avisar("erro", "Candidato aprovado não pode ser recusado.");
     }
+    if (candidato.promovido) {
+      return avisar("erro", "Esta empresa já está com os vendedores; o tier não muda mais.");
+    }
     if (destino !== "recusados" && candidato.status === "recusado") {
       return avisar("erro", "Para tirar dos recusados, abra o candidato e restaure a recusa sugerida.");
     }
@@ -165,6 +168,7 @@ export function Triagem({ campanhaId }: { campanhaId: string }) {
     return {
       onDragOver: (e: DragEvent) => {
         e.preventDefault();
+        e.dataTransfer.dropEffect = "move";
         setSobre(destino);
       },
       onDragLeave: () => setSobre((atual) => (atual === destino ? null : atual)),
@@ -182,8 +186,13 @@ export function Triagem({ campanhaId }: { campanhaId: string }) {
       <article
         key={c.id}
         className={`card-empresa ${recusado ? "" : (tier ?? "")}`}
-        draggable={podeDecidir && c.status !== "coletado"}
-        onDragStart={() => setArrastando(c.id)}
+        draggable={podeDecidir && c.status !== "coletado" && !c.promovido}
+        onDragStart={(e) => {
+          // O Firefox só inicia o arrasto se houver dados no dataTransfer.
+          e.dataTransfer.setData("text/plain", c.id);
+          e.dataTransfer.effectAllowed = "move";
+          setArrastando(c.id);
+        }}
         onDragEnd={() => setArrastando(null)}
         onClick={() => abrir(c.id)}
       >

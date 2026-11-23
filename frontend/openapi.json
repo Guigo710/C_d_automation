@@ -362,6 +362,17 @@
             "title": "Id",
             "type": "string"
           },
+          "justificativa_tier": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Justificativa Tier"
+          },
           "justificativas": {
             "additionalProperties": true,
             "title": "Justificativas",
@@ -562,6 +573,7 @@
           "lacunas",
           "confianca",
           "motivo_revisao",
+          "justificativa_tier",
           "modelo",
           "versao_prompt",
           "versao_regras",
