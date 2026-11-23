@@ -2151,6 +2151,61 @@
         ]
       }
     },
+    "/campanhas/{campanha_id}/aprovados.xlsx": {
+      "get": {
+        "operationId": "exportar_aprovados_campanhas__campanha_id__aprovados_xlsx_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "campanha_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Campanha Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {}
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Exportar Aprovados",
+        "tags": [
+          "exportação"
+        ]
+      }
+    },
     "/campanhas/{campanha_id}/candidatos": {
       "get": {
         "operationId": "listar_candidatos_campanhas__campanha_id__candidatos_get",

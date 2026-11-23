@@ -115,6 +115,24 @@ export function SecaoProspeccao({ campanhaId }: { campanhaId: string }) {
     else if (data) setVersaoDaOperacao((v) => v + 1);
   }
 
+  async function exportar() {
+    setErro(null);
+    const { data, error } = await api.GET("/campanhas/{campanha_id}/aprovados.xlsx", {
+      ...caminho,
+      parseAs: "blob",
+    });
+    if (error || !data) {
+      setErro("Não foi possível exportar.");
+      return;
+    }
+    const url = URL.createObjectURL(data as Blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "aprovados.xlsx";
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
   async function abrir(candidatoId: string) {
     const { data } = await api.GET("/candidatos/{candidato_id}", {
       params: { path: { candidato_id: candidatoId } },
@@ -134,6 +152,9 @@ export function SecaoProspeccao({ campanhaId }: { campanhaId: string }) {
             </button>
             <button className="secundario" onClick={subirParaOperacao} disabled={aprovados.length === 0}>
               Subir {aprovados.length} aprovado(s) para operação
+            </button>
+            <button className="secundario" onClick={exportar} disabled={aprovados.length === 0}>
+              Exportar aprovados (Excel)
             </button>
           </div>
         )}

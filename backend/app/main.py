@@ -13,6 +13,7 @@ from app.configuracao.rotas import router as configuracao_router
 from app.core.config import Settings
 from app.core.db import Banco
 from app.core.seguranca import VerificadorDeToken
+from app.exportacao.rotas import router as exportacao_router
 from app.fila.fila import Fila
 from app.operacao import servico as operacao
 from app.operacao.rotas import router as operacao_router
@@ -68,4 +69,5 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(prospeccao_router)
     app.include_router(triagem_router)
     app.include_router(operacao_router)
+    app.include_router(exportacao_router)
     return app
